@@ -1,6 +1,8 @@
 package com.revbase.zaidanarrafif.presentation.login_screen.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -13,12 +15,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.revbase.zaidanarrafif.presentation.ui.theme.LightGrey
 import com.revbase.zaidanarrafif.presentation.ui.theme.Pink
+import java.time.format.TextStyle
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun SelectRole() {
@@ -31,12 +38,13 @@ fun SelectRole() {
     
     Row(
         modifier = Modifier
-            .height(152.dp)
+            .height(200.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         CardRoleOption(
+            imageUrl = "https://cdn-icons-png.flaticon.com/512/2784/2784461.png",
             modifier = Modifier.weight(1F),
             isSelected = isStudentRoleSelected,
             onSelect = {
@@ -47,6 +55,7 @@ fun SelectRole() {
         )
         Spacer(modifier = Modifier.width(16.dp))
         CardRoleOption(
+            imageUrl = "https://cdn-icons-png.flaticon.com/512/2784/2784488.png",
             modifier = Modifier.weight(1F),
             isSelected = isTeacherRoleSelected,
             onSelect = {
@@ -54,13 +63,16 @@ fun SelectRole() {
                 isTeacherRoleSelected = true
             },
             text = "Masuk sebagai guru"
+
         )
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun CardRoleOption(
+    imageUrl:String,
     modifier: Modifier = Modifier,
     isSelected: Boolean,
     onSelect: ()->Unit,
@@ -80,7 +92,21 @@ fun CardRoleOption(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = text, textAlign = TextAlign.Center)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Image(painter = rememberImagePainter(data = imageUrl),
+                    contentDescription = null,
+                    modifier = Modifier.size(128.dp))
+
+                Text(
+                    text = text,
+                    style = androidx.compose.ui.text.TextStyle(textAlign = TextAlign.Center),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+
+                )
+            }
         }
     }
 }

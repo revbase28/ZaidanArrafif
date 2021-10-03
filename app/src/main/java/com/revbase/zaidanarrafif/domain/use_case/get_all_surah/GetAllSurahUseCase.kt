@@ -15,6 +15,7 @@ import javax.inject.Inject
 class GetAllSurahUseCase @Inject constructor(
     private val repository: QuranRepository
 ) {
+
     operator fun invoke(): Flow<Resource<List<Surah>>> = flow {
         try {
             emit(Resource.Loading<List<Surah>>())

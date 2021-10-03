@@ -43,7 +43,7 @@ fun QuranScreen(
             .padding(start = 16.dp,  end = 16.dp, top = 24.dp)
     ) {
         Text(
-            text = "Assalamua'laikum Person",
+            text = "Assalamua'laikum Rizki",
             fontSize = 14.sp,
             fontFamily = Constant.LATO_FONT_FAMILY
         )

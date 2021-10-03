@@ -31,6 +31,7 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.Pink
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
 
 @ExperimentalMaterialApi
+
 @Composable
 fun QuranScreen(
     navController: NavController,

@@ -1,12 +1,16 @@
 package com.revbase.zaidanarrafif.di
 
+import android.content.Context
 import com.revbase.zaidanarrafif.common.Constant.QURAN_API_BASE_URL
+import com.revbase.zaidanarrafif.data.DownloadRepoImpl
 import com.revbase.zaidanarrafif.data.QuranRepoImpl
 import com.revbase.zaidanarrafif.data.remote.QuranAPI
+import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
 import com.revbase.zaidanarrafif.domain.repositories.QuranRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,4 +49,9 @@ class AppModule {
     @Singleton
     fun provideQuranRepository(api: QuranAPI): QuranRepository =
         QuranRepoImpl(api)
+
+    @Provides
+    @Singleton
+    fun provideDownloadRepository(@ApplicationContext context: Context): DownloadRepository =
+        DownloadRepoImpl(context)
 }

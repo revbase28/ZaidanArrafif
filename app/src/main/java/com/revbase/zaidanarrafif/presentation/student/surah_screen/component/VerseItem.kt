@@ -23,7 +23,8 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.Blue
 
 @Composable
 fun VerseItem(
-    verseData: VerseSimplified
+    verseData: VerseSimplified,
+    onPlayAudioButtonClicked: ()->Unit,
 ) {
     Row(
         modifier = Modifier
@@ -43,7 +44,9 @@ fun VerseItem(
             )
             Spacer(modifier = Modifier.height(8.dp))
             PlayAudioButton(
-                onClick = {  },
+                onClick = {
+                    onPlayAudioButtonClicked()
+                },
                 size = 32.dp
             )
         }

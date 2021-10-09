@@ -99,7 +99,12 @@ fun SurahScreen(
                     }
                 }
                 items(surahData.verses) { verse ->
-                    VerseItem(verseData = verse)
+                    VerseItem(
+                        verseData = verse,
+                        onPlayAudioButtonClicked = {
+                            viewModel.downloadAudioFromUrl(surahData)
+                        }
+                    )
                 }
             }
         }

@@ -20,12 +20,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Constant.PARAM_SURAH_NUMBER
 import com.revbase.zaidanarrafif.domain.models.BottomNavItem
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.student.hafalan_screen.HafalanScreen
-import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.JurnalScreen
+import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.JurnalMainScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.component.TopBar
 import com.revbase.zaidanarrafif.presentation.student.profile_screen.ProfileScreen
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.QuranScreen
@@ -62,7 +63,7 @@ fun StudentMainScreen(
                         ),
                         BottomNavItem(
                             name = "Jurnal",
-                            route = Screen.JurnalScreen.route,
+                            route = Screen.JournalMainScreen.route,
                             selectedIcon = Icons.Filled.Ballot,
                             unselectedIcon = Icons.Outlined.Ballot
                         ),
@@ -100,6 +101,7 @@ fun StudentMainScreen(
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun StudentNavigation(
@@ -114,8 +116,8 @@ fun StudentNavigation(
             QuranScreen(navController = mainNavController)
         }
 
-        composable(route = Screen.JurnalScreen.route) {
-            JurnalScreen()
+        composable(route = Screen.JournalMainScreen.route) {
+            JurnalMainScreen(navController = mainNavController)
         }
 
         composable(route = Screen.HafalanScreen.route) {

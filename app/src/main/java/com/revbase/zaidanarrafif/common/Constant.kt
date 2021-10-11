@@ -9,6 +9,7 @@ object Constant {
     const val QURAN_API_BASE_URL = "https://api.quran.sutanlab.id/"
     const val LOGIN_AS_STUDENT = 100
     const val LOGIN_AS_TEACHER = 100
+    const val DOWNLOAD_DONE = 1024
     const val ALFATIHAH = 1
     const val ATTAUBAH = 9
     const val PARAM_SURAH_NUMBER = "surah number"

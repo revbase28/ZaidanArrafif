@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Constant.ALFATIHAH
 import com.revbase.zaidanarrafif.common.Constant.ATTAUBAH
+import com.revbase.zaidanarrafif.common.Constant.DOWNLOAD_DONE
 import com.revbase.zaidanarrafif.presentation.common_component.BlueButton
 import com.revbase.zaidanarrafif.presentation.common_component.ErrorText
 import com.revbase.zaidanarrafif.presentation.common_component.Loading
@@ -43,6 +44,15 @@ fun SurahScreen(
         viewModel.getSurahDetail(surahNumber)
     }
     val state = viewModel.state.value
+    val downloadState = viewModel.downloadState
+    LaunchedEffect(key1 = downloadState.value) {
+        downloadState.value.data?.let {
+            if(it == DOWNLOAD_DONE)
+                Log.d("Done", "Download done")
+            else
+                print("surah ${state.data?.name} screen emit response ${it}\n")
+        } ?: print("data null\n")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()

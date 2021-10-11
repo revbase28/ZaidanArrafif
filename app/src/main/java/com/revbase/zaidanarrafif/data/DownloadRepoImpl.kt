@@ -38,7 +38,7 @@ class DownloadRepoImpl @Inject constructor(
                 total += count
             }
         } catch (e: IOException) {
-            throw IOException("Download gagal karena tidak ada koneksi")
+            throw IOException("Unduh surah gagal karena tidak ada koneksi, coba periksa sambungan internet")
         } finally {
             outputStream.flush()
             outputStream.close()

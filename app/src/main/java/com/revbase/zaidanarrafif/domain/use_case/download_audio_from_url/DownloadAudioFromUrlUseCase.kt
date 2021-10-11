@@ -1,5 +1,7 @@
 package com.revbase.zaidanarrafif.domain.use_case.download_audio_from_url
 
+import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.common.Constant.DOWNLOAD_DONE
 import com.revbase.zaidanarrafif.common.Resource
 import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.domain.models.SurahDetail
@@ -18,25 +20,35 @@ import kotlin.jvm.Throws
 class DownloadAudioFromUrlUseCase @Inject constructor(
     private val repository: DownloadRepository
 ) {
-    operator fun invoke(surahData: SurahDetail) {
-        var isDownloadError = false
-        CoroutineScope(Dispatchers.IO).launch {
+    operator fun invoke(surahData: SurahDetail): Flow<Resource<Int>> = flow {
+        try{
+            emit(Resource.Loading<Int>())
+            var isDownloadError = false
             for (verse in surahData.verses) {
                 val fileName = "${surahData.name}_${verse.verseNumber}"
-                launch {
-                    try {
-                        repository.downloadAudioFromUrl(
-                            surahName = surahData.name,
-                            downloadUrl = verse.audio.primary,
-                            fileName = fileName
-                        )
-                    } catch (e: IOException) {
-                        print("Canceled\n")
-                        isDownloadError = true
-                    }
-                }.join()
-                if (isDownloadError) break
+                try {
+                    repository.downloadAudioFromUrl(
+                        surahName = surahData.name,
+                        downloadUrl = verse.audio.primary,
+                        fileName = fileName
+                    )
+                } catch (e: IOException) {
+                    emit(Resource.Error<Int>(e.message ?: "Terjadi kesalahan saat mengunduh, coba beberapa saat lagi"))
+                    isDownloadError = true
+                    print("download Canceled\n")
+                    break
+                }
+                print("$fileName downloaded\n")
+                emit(Resource.Success<Int>(data = verse.verseNumber))
             }
+            if(!isDownloadError) {
+                print("download done")
+                emit(Resource.Success<Int>(DOWNLOAD_DONE))
+            } else print("Canceled")
+        } catch (e: HttpException) {
+            emit(Resource.Error<Int>(e.localizedMessage ?: "Terjadi kesalahan saat mengunduh, coba beberapa saat lagi"))
+        } catch (e: IOException) {
+            emit(Resource.Error<Int>("Unduh surah gagal karena tidak ada koneksi, coba periksa sambungan internet"))
         }
     }
 }

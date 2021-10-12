@@ -23,7 +23,6 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.revbase.zaidanarrafif.presentation.ui.theme.LightGrey
 import com.revbase.zaidanarrafif.presentation.ui.theme.Pink
-import java.time.format.TextStyle
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi

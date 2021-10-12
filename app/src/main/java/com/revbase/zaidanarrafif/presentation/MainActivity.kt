@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.presentation.login_screen.LoginScreen
 import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
+import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.ActivityJurnalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
@@ -45,6 +46,9 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.StudentMainScreen.route) {
                             StudentMainScreen(mainNavController = navController)
+                        }
+                        composable(route = Screen.ActivityJournalScreen.route+"") {
+                            ActivityJurnalScreen(navController = navController)
                         }
 
                         composable(

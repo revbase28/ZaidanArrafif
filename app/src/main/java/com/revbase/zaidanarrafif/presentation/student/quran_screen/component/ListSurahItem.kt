@@ -15,7 +15,8 @@ import com.revbase.zaidanarrafif.domain.models.Surah
 @Composable
 fun ListSurahItem(
     surahData: Surah,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onPlayAudioClicked: ()->Unit
 ) {
     Card(
         modifier = Modifier
@@ -38,7 +39,11 @@ fun ListSurahItem(
                 SurahInfo(revelation = surahData.revelation, surahName = surahData.name, totalAyah = surahData.numberOfVerses)
             }
             Spacer(modifier = Modifier.width(16.dp))
-            PlayAudioButton(onClick = {  })
+            PlayAudioButton(
+                onClick = {
+                    onPlayAudioClicked()
+                }
+            )
         }
     }
     Spacer(modifier = Modifier.height(16.dp))

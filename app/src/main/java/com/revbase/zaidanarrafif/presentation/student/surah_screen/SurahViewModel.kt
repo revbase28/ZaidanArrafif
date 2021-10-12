@@ -12,6 +12,8 @@ import com.revbase.zaidanarrafif.domain.models.VerseSimplified
 //import com.revbase.zaidanarrafif.domain.use_case.download_audio_from_url.DownloadAudioFromUrlUseCase
 import com.revbase.zaidanarrafif.domain.use_case.get_surah_detail.GetSurahDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -21,20 +23,18 @@ import javax.inject.Inject
 @HiltViewModel
 class SurahViewModel @Inject constructor(
     private val getSurahDetailUseCase: GetSurahDetailUseCase,
-//    private val downloadAudioFromUrlUseCase: DownloadAudioFromUrlUseCase,
-): ViewModel() {
-
-    private val _state = mutableStateOf(SurahState())
     val state: State<SurahState> = _state
+    private val _downloadState = mutableStateOf(DownloadState())
 
     fun getSurahDetail(surahNumber: Int) {
         getSurahDetailUseCase(surahNumber).onEach { result ->
-            when(result) {
+            when (result) {
                 is Resource.Success -> {
                     _state.value = SurahState(data = result.data)
                 }
                 is Resource.Error -> {
-                    _state.value = SurahState(error = result.message ?: "Terjadi kesalahan tidak terduga")
+                    _state.value =
+                        SurahState(error = result.message ?: "Terjadi kesalahan tidak terduga")
                 }
                 is Resource.Loading -> {
                     _state.value = SurahState(isLoading = true)
@@ -44,6 +44,21 @@ class SurahViewModel @Inject constructor(
     }
 
     fun downloadAudioFromUrl(surahData: SurahDetail) {
-//        downloadAudioFromUrlUseCase(surahData)
+        downloadAudioFromUrlUseCase(surahData).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _downloadState.value = DownloadState(data = result.data)
+                }
+                is Resource.Error -> {
+                    _downloadState.value = DownloadState(
+                        error = result.message
+                            ?: "Terjadi kesalahan tidak terduga, coba lagi beberapa saat lagi"
+                    )
+                }
+                is Resource.Loading -> {
+                    _downloadState.value = DownloadState(isLoading = true)
+                }
+            }
+        }.launchIn(CoroutineScope(Dispatchers.IO))
     }
 }

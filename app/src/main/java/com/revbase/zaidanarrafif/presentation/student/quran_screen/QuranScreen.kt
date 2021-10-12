@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.student.quran_screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +39,16 @@ fun QuranScreen(
     viewModel: QuranViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
+    val downloadState = viewModel.downloadState
+    var currentPlayedSurah by remember { mutableStateOf("")}
+    LaunchedEffect(key1 = downloadState.value) {
+        downloadState.value.data?.let {
+            if(it == Constant.DOWNLOAD_DONE)
+                Log.d("Done", "Download done")
+            else
+                print("surah $currentPlayedSurah screen emit response ${it} from quran screen\n")
+        } ?: print("data null\n")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,6 +82,10 @@ fun QuranScreen(
                     surahData = surah,
                     onClick = {
                         navController.navigate("${Screen.SurahScreen.route}/${surah.surahNumber}")
+                    },
+                    onPlayAudioClicked = {
+                        viewModel.getSurahDetailThenDownloadAudio(surah.surahNumber)
+                        currentPlayedSurah = surah.name
                     }
                 )
             }

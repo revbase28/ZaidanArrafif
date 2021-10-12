@@ -57,7 +57,7 @@ class SurahViewModel @Inject constructor(
                 is Resource.Error -> {
                     _downloadState.value = DownloadState(
                         error = result.message
-                            ?: "Terjadi kesalahan tidak terduga, coba lagi beberapa saat lagi"
+                            ?: "Terjadi kesalahan tidak terduga, cobalah beberapa saat lagi"
                     )
                 }
                 is Resource.Loading -> {

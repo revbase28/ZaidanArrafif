@@ -2,10 +2,12 @@ package com.revbase.zaidanarrafif.di
 
 import android.content.Context
 import com.revbase.zaidanarrafif.common.Constant.QURAN_API_BASE_URL
+import com.revbase.zaidanarrafif.data.DownloadRepoImpl
 //import com.revbase.zaidanarrafif.data.DownloadRepoImpl
 import com.revbase.zaidanarrafif.data.QuranRepoImpl
 import com.revbase.zaidanarrafif.data.remote.JournalRepoImpl
 import com.revbase.zaidanarrafif.data.remote.QuranAPI
+import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
 import com.revbase.zaidanarrafif.domain.repositories.JournalRepository
 //import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
 import com.revbase.zaidanarrafif.domain.repositories.QuranRepository
@@ -57,8 +59,8 @@ class AppModule {
     fun provideJournalRepository(): JournalRepository =
         JournalRepoImpl()
 
-//    @Provides
-//    @Singleton
-//    fun provideDownloadRepository(@ApplicationContext context: Context): DownloadRepository =
-//        DownloadRepoImpl(context)
+    @Provides
+    @Singleton
+    fun provideDownloadRepository(@ApplicationContext context: Context): DownloadRepository =
+        DownloadRepoImpl(context)
 }

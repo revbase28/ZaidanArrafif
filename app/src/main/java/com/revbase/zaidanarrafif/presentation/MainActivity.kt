@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screen.StudentMainScreen.route) {
                             StudentMainScreen(mainNavController = navController)
                         }
-                        composable(route = Screen.ActivityJournalScreen.route+"") {
+                        composable(route = Screen.ActivityJournalScreen.route) {
                             ActivityJurnalScreen(navController = navController)
                         }
 

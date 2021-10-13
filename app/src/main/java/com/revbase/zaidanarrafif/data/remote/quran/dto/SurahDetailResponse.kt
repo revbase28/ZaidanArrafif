@@ -1,4 +1,4 @@
-package com.revbase.zaidanarrafif.data.remote.dto
+package com.revbase.zaidanarrafif.data.remote.quran.dto
 
 data class SurahDetailResponse(
     val code: Int,

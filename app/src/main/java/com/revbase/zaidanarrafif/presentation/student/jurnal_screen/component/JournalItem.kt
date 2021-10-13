@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,20 +42,23 @@ fun JournalItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text =jurnalData.name ,
-                style = TextStyle(
-                    color = Color.Black,
-                    fontFamily = Constant.LATO_FONT_FAMILY,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = textSize
+            Box(modifier = androidx.compose.ui.Modifier.fillMaxWidth(0.4f)) {
+
+                Text(
+                    text = jurnalData.description,
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontFamily = Constant.LATO_FONT_FAMILY,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = textSize
+                    ),
                 )
-            )
+            }
             Image(
                 painter = rememberImagePainter(jurnalData.iconURL),
                 contentDescription = null,
                 modifier = androidx.compose.ui.Modifier
-                    .size(50.dp)
+                    .size(60.dp)
             )
             JournalCheckBox()
         }

@@ -26,6 +26,7 @@ import com.revbase.zaidanarrafif.common.Constant.PARAM_SURAH_NUMBER
 import com.revbase.zaidanarrafif.domain.models.BottomNavItem
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.student.hafalan_screen.HafalanScreen
+import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.ActivityJurnalScreen
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.JurnalMainScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.component.TopBar
 import com.revbase.zaidanarrafif.presentation.student.profile_screen.ProfileScreen
@@ -131,5 +132,8 @@ fun StudentNavigation(
         composable(route = Screen.ProfileScreen.route) {
             ProfileScreen()
         }
+//        composable(route = Screen.ActivityJournalScreen.route) {
+//            ActivityJurnalScreen(navController = mainNavController)
+//        }
     }
 }

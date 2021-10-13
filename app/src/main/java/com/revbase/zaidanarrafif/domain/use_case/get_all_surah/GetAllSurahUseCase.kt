@@ -2,7 +2,7 @@ package com.revbase.zaidanarrafif.domain.use_case.get_all_surah
 
 import android.util.Log
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.data.remote.dto.toSurah
+import com.revbase.zaidanarrafif.data.remote.quran.dto.toSurah
 import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.domain.repositories.QuranRepository
 import kotlinx.coroutines.flow.Flow

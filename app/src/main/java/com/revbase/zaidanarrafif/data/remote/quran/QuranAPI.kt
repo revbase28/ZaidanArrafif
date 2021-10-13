@@ -1,7 +1,7 @@
-package com.revbase.zaidanarrafif.data.remote
+package com.revbase.zaidanarrafif.data.remote.quran
 
-import com.revbase.zaidanarrafif.data.remote.dto.AllSurahResponse
-import com.revbase.zaidanarrafif.data.remote.dto.SurahDetailResponse
+import com.revbase.zaidanarrafif.data.remote.quran.dto.AllSurahResponse
+import com.revbase.zaidanarrafif.data.remote.quran.dto.SurahDetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

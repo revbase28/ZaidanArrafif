@@ -1,6 +1,6 @@
 package com.revbase.zaidanarrafif.domain.models
 
-import com.revbase.zaidanarrafif.data.remote.dto.Audio
+import com.revbase.zaidanarrafif.data.remote.quran.dto.Audio
 
 data class VerseSimplified(
     val text : String,

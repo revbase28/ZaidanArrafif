@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,24 +11,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.revbase.zaidanarrafif.R
-import com.revbase.zaidanarrafif.common.Constant
-import com.revbase.zaidanarrafif.common.Constant.LATO_FONT_FAMILY
-import com.revbase.zaidanarrafif.data.remote.dto.Text
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.common_component.BlueButton
 import com.revbase.zaidanarrafif.presentation.login_screen.components.CustomPasswordTextField
 import com.revbase.zaidanarrafif.presentation.login_screen.components.CustomTextField
 import com.revbase.zaidanarrafif.presentation.login_screen.components.SelectRole
-import com.revbase.zaidanarrafif.presentation.ui.theme.Blue
 import com.revbase.zaidanarrafif.presentation.ui.theme.LightGrey
 
 @ExperimentalMaterialApi

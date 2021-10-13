@@ -1,7 +1,8 @@
 package com.revbase.zaidanarrafif.domain.models
 
-data class Journal (
-    val name: String,
+data class Journal(
+    val id: Int,
+    val description: String,
+    val type: String ,
     val iconURL: String,
-    val isDone:Boolean
 )

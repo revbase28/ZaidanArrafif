@@ -5,8 +5,10 @@ import com.revbase.zaidanarrafif.common.Constant.QURAN_API_BASE_URL
 import com.revbase.zaidanarrafif.data.DownloadRepoImpl
 //import com.revbase.zaidanarrafif.data.DownloadRepoImpl
 import com.revbase.zaidanarrafif.data.QuranRepoImpl
-import com.revbase.zaidanarrafif.data.remote.JournalRepoImpl
-import com.revbase.zaidanarrafif.data.remote.QuranAPI
+import com.revbase.zaidanarrafif.data.JournalRepoImpl
+import com.revbase.zaidanarrafif.data.remote.quran.QuranAPI
+import com.revbase.zaidanarrafif.data.remote.zaidan.AuthInterceptor
+import com.revbase.zaidanarrafif.data.remote.zaidan.ZaidanAPI
 import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
 import com.revbase.zaidanarrafif.domain.repositories.JournalRepository
 //import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
@@ -27,11 +29,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient().newBuilder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(AuthInterceptor())
             .build()
 
     @Provides
@@ -56,11 +59,26 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideJournalRepository(): JournalRepository =
-        JournalRepoImpl()
+    fun provideDownloadRepository(@ApplicationContext context: Context): DownloadRepository =
+        DownloadRepoImpl(context)
 
     @Provides
     @Singleton
-    fun provideDownloadRepository(@ApplicationContext context: Context): DownloadRepository =
-        DownloadRepoImpl(context)
+    @Named("Journal")
+    fun provideRetrofitForJournal(client: OkHttpClient) :Retrofit =
+        Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8000/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideZaidanAPI(@Named("Journal") retrofit: Retrofit): ZaidanAPI =
+        retrofit.create(ZaidanAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideJournalRepository(api:ZaidanAPI): JournalRepository =
+        JournalRepoImpl(api)
 }

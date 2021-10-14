@@ -29,17 +29,16 @@ import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.Lis
 @ExperimentalCoilApi
 @Composable
 fun DailyJournalScreen(
-    navController:NavController,
-    journalType:String,
+    navController: NavController,
+    journalType: String,
     viewModel: JurnalViewModel = hiltViewModel()
 ) {
 
-    LaunchedEffect(key1 = Unit){
-        if(journalType == "ACTIVITY_JOURNAL")
-        {
+    LaunchedEffect(key1 = Unit) {
+        if (journalType == "ACTIVITY_JOURNAL") {
 
             viewModel.getAllDailyActivityJournal()
-        }else{
+        } else {
 
             viewModel.getAllDailyWorshipJournal()
         }
@@ -71,32 +70,34 @@ fun DailyJournalScreen(
             fontFamily = Constant.LATO_FONT_FAMILY
         )
         Spacer(modifier = Modifier.height(16.dp))
+        if (state.isLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    color = Color.Blue,
+                )
+            }
+        }  else if (state.error.isNotBlank()) {
+            Log.d("gagal", state.error)
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
 
-        LazyColumn (modifier = Modifier.fillMaxSize()){
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
 
-            items(state.journalList){ journal ->
-               JournalItem(jurnalData = journal)
+                )
+            }
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(state.journalList) { journal ->
+                    JournalItem(jurnalData = journal)
+                }
+
             }
 
-        }
-        if(state.isLoading) {
-            CircularProgressIndicator(
-                color = Color.Blue,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-            )
-        }
-        if(state.error.isNotBlank()) {
-            Log.d("gagal",state.error)
-            Text(
-                text = state.error,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
         }
 
 

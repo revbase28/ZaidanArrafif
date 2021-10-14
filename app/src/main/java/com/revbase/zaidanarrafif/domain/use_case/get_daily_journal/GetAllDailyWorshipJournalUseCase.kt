@@ -27,10 +27,10 @@ class GetAllDailyWorshipJournalUseCase @Inject constructor(
         }
         catch (e:HttpException)
         {
-            emit(Resource.Error<List<Journal>>(e.localizedMessage?:"Failed to fetch data"))
+            emit(Resource.Error<List<Journal>>(e.message?:"Failed to fetch data"))
         }
         catch (e: IOException) {
-            emit(Resource.Error<List<Journal>>("$e"))
+            emit(Resource.Error<List<Journal>>("IOException: $e"))
         }
     }
 

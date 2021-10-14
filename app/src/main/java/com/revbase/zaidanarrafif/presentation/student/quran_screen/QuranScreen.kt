@@ -76,36 +76,46 @@ fun QuranScreen(
             fontFamily = Constant.LATO_FONT_FAMILY
         )
         Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(state.listSurah){ surah ->
-                ListSurahItem(
-                    surahData = surah,
-                    onClick = {
-                        navController.navigate("${Screen.SurahScreen.route}/${surah.surahNumber}")
-                    },
-                    onPlayAudioClicked = {
-                        viewModel.getSurahDetailThenDownloadAudio(surah.surahNumber)
-                        currentPlayedSurah = surah.name
-                    }
+
+        if (state.isLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    color = Color.Blue,
+                )
+            }
+        }  else if (state.error.isNotBlank()) {
+            Log.d("gagal", state.error)
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+
                 )
             }
         }
-        if(state.error.isBlank()) {
-            Text(
-                text = state.error,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .align(CenterHorizontally)
-            )
+        else{
+
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(state.listSurah){ surah ->
+                    ListSurahItem(
+                        surahData = surah,
+                        onClick = {
+                            navController.navigate("${Screen.SurahScreen.route}/${surah.surahNumber}")
+                        },
+                        onPlayAudioClicked = {
+                            viewModel.getSurahDetailThenDownloadAudio(surah.surahNumber)
+                            currentPlayedSurah = surah.name
+                        }
+                    )
+                }
+            }
         }
-        if(state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(CenterHorizontally)
-            )
-        }
+
+
     }
 }

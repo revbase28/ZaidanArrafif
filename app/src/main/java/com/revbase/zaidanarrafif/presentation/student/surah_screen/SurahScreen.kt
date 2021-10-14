@@ -53,76 +53,100 @@ fun SurahScreen(
                 print("surah ${state.data?.name} screen emit response ${it}\n")
         } ?: print("data null\n")
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 16.dp)
-    ) {
-        ScreenTitleBar(
-            screenTitle = "Baca Qur'an",
-            navController = navController,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        state.data?.let { surahData ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                SurahNumber(surahNumber = surahData.surahNumber, size = 48.dp, textSize = 24.sp)
-                Spacer(modifier = Modifier.width(16.dp))
-                SurahInfo(
-                    revelation = surahData.revelation ,
-                    surahName = surahData.name,
-                    totalAyah = surahData.numberOfVerses,
-                    surahNameTextSize = 20.sp,
-                    surahAdditionalInfoSize = 14.sp
-                )
-            }
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "Sudah hafal Surat ini ?",
-                style = TextStyle(
-                    fontFamily = Constant.LATO_FONT_FAMILY,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.padding(horizontal = 16.dp)
+    if (state.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(
+                color = Color.Blue,
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            BlueButton(
+        }
+    }  else if (state.error.isNotBlank()) {
+        Log.d("gagal", state.error)
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+
+            Text(
+                text = state.error,
+                color = MaterialTheme.colors.error,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                ,
-                onClick = {  },
-                text = "Ambil Quiz" ,
-                textSize = 16.sp
+
+            )
+        }
+    }
+else{
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp)
+        ) {
+            ScreenTitleBar(
+                screenTitle = "Baca Qur'an",
+                navController = navController,
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                if(surahNumber != ALFATIHAH && surahNumber != ATTAUBAH) {
-                    item {
-                        Bismillah()
-                    }
-                }
-                items(surahData.verses) { verse ->
-                    VerseItem(
-                        verseData = verse,
-                        onPlayAudioButtonClicked = {
-                            viewModel.downloadAudioFromUrl(surahData)
-                        }
+            state.data?.let { surahData ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    SurahNumber(surahNumber = surahData.surahNumber, size = 48.dp, textSize = 24.sp)
+                    Spacer(modifier = Modifier.width(16.dp))
+                    SurahInfo(
+                        revelation = surahData.revelation ,
+                        surahName = surahData.name,
+                        totalAyah = surahData.numberOfVerses,
+                        surahNameTextSize = 20.sp,
+                        surahAdditionalInfoSize = 14.sp
                     )
                 }
+                Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    text = "Sudah hafal Surat ini ?",
+                    style = TextStyle(
+                        fontFamily = Constant.LATO_FONT_FAMILY,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                BlueButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                    ,
+                    onClick = {  },
+                    text = "Ambil Quiz" ,
+                    textSize = 16.sp
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    if(surahNumber != ALFATIHAH && surahNumber != ATTAUBAH) {
+                        item {
+                            Bismillah()
+                        }
+                    }
+                    items(surahData.verses) { verse ->
+                        VerseItem(
+                            verseData = verse,
+                            onPlayAudioButtonClicked = {
+                                viewModel.downloadAudioFromUrl(surahData)
+                            }
+                        )
+                    }
+                }
             }
-        }
-        if(state.error.isBlank()) {
-            ErrorText(errorText = state.error)
-        }
-        if(state.isLoading) {
-            Loading()
+            if(state.error.isBlank()) {
+                ErrorText(errorText = state.error)
+            }
+            if(state.isLoading) {
+                Loading()
+            }
         }
     }
 }

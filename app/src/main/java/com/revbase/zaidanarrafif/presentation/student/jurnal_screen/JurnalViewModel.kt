@@ -29,14 +29,15 @@ class JurnalViewModel @Inject constructor(
      fun getAllDailyActivityJournal() {
         getAllDailyActivityJournalUseCase().onEach { result ->
             when (result) {
-                is Resource.Success -> {
-                    _state.value = JournalState(journalList = result.data ?: emptyList())
-                }
-                is Resource.Error -> {
-                    _state.value = JournalState(error = result.message ?: "Failed to fetch data")
-                }
                 is Resource.Loading -> {
                     _state.value = JournalState(isLoading = true)
+                }
+                is Resource.Error -> {
+                    Log.d("teserror","${result.message}")
+                    _state.value = JournalState(error = result.message ?: "Failed to fetch data")
+                }
+                is Resource.Success -> {
+                    _state.value = JournalState(journalList = result.data ?: emptyList())
                 }
             }
             Log.d("state_value", "${_state.value}")
@@ -49,6 +50,8 @@ class JurnalViewModel @Inject constructor(
                     _state.value = JournalState(journalList = result.data ?: emptyList())
                 }
                 is Resource.Error -> {
+                    Log.d("teserror","${result.message}")
+
                     _state.value = JournalState(error = result.message ?: "Failed to fetch data")
                 }
                 is Resource.Loading -> {

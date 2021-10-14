@@ -1,8 +1,7 @@
-package com.revbase.zaidanarrafif.domain.use_case.get_journal_activities
+package com.revbase.zaidanarrafif.domain.use_case.get_daily_journal
 
 import android.util.Log
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.DailyActivityDTO
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.toJournal
 import com.revbase.zaidanarrafif.domain.models.Journal
 import com.revbase.zaidanarrafif.domain.repositories.JournalRepository
@@ -12,19 +11,19 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetAllDailyJournalUseCase @Inject constructor(
+class GetAllDailyWorshipJournalUseCase @Inject constructor(
     private val repository: JournalRepository
 ) {
     operator fun invoke():Flow<Resource<List<Journal>>> = flow{
-        Log.d("GetAllDailyJournalUC", "GetAllDailyJournalUC  executed")
+        Log.d("GetAllDailyWJournalUC", "GetAllDailyWJournalUC  executed")
         try {
             emit(Resource.Loading<List<Journal>>())
-            val allDailyJournal = repository.getAllDailyJournal().data.map { DailyActivityDTO->
-                DailyActivityDTO.toJournal()
+            val allDailyWorshipJournal = repository.getAllDailyWorshipJournal().data.map { DailyJournalDTO->
+                DailyJournalDTO.toJournal()
             }
-            Log.d("get_all_journalUC", "get all journal executed")
-            Log.d("allDailyJournal", "$allDailyJournal")
-            emit(Resource.Success<List<Journal>>(data = allDailyJournal))
+            Log.d("get_all_W_journalUC", "get all W journal executed")
+            Log.d("allDailyWJournal", "$allDailyWorshipJournal")
+            emit(Resource.Success<List<Journal>>(data = allDailyWorshipJournal))
         }
         catch (e:HttpException)
         {

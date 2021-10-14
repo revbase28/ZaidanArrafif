@@ -8,8 +8,10 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,10 +28,22 @@ import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.Lis
 
 @ExperimentalCoilApi
 @Composable
-fun ActivityJurnalScreen(
+fun DailyJournalScreen(
     navController:NavController,
+    journalType:String,
     viewModel: JurnalViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(key1 = Unit){
+        if(journalType == "ACTIVITY_JOURNAL")
+        {
+
+            viewModel.getAllDailyActivityJournal()
+        }else{
+
+            viewModel.getAllDailyWorshipJournal()
+        }
+    }
     val state = viewModel.state.value
     Column(
         modifier = Modifier
@@ -67,6 +81,7 @@ fun ActivityJurnalScreen(
         }
         if(state.isLoading) {
             CircularProgressIndicator(
+                color = Color.Blue,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
             )

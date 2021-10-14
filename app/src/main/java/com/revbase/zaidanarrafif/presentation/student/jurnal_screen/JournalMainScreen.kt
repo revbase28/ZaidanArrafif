@@ -44,7 +44,7 @@ fun JurnalMainScreen(navController: NavController) {
                     imageUrl = "https://cdn-icons-png.flaticon.com/512/4852/4852363.png",
                     progress = "4 dari 11 kegiatan sudah rizki lakukan",
                     onClick = {
-                        navController.navigate(com.revbase.zaidanarrafif.presentation.Screen.ActivityJournalScreen.route)
+                        navController.navigate(com.revbase.zaidanarrafif.presentation.Screen.ActivityJournalScreen.route+"/ACTIVITY_JOURNAL")
                     }
                 )
             }
@@ -53,7 +53,10 @@ fun JurnalMainScreen(navController: NavController) {
                     journalType = "Jurnal Ibadah",
                     imageUrl = "https://cdn-icons-png.flaticon.com/512/3858/3858880.png",
                     progress = "5 dari 12 ibadah sudah rizki lakukan",
-                    onClick = {}
+                    onClick = {
+                        navController.navigate(com.revbase.zaidanarrafif.presentation.Screen.ActivityJournalScreen.route+"/WORSHIP_JOURNAL")
+
+                        }
                 )
             }
         }

@@ -9,7 +9,11 @@ class JournalRepoImpl @Inject constructor(
     private val api:ZaidanAPI
 
 ): JournalRepository{
-    override suspend fun getAllDailyJournal():JournalResponse{
-        return api.getAllDailyJournal()
+    override suspend fun getAllDailyActivityJournal():JournalResponse{
+        return api.getAllDailyActivityJournal()
+    }
+
+    override suspend fun getAllDailyWorshipJournal(): JournalResponse {
+        return api.getAllDailyWorshipJournal()
     }
 }

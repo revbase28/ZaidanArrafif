@@ -8,8 +8,10 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,10 +28,21 @@ import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.Lis
 
 @ExperimentalCoilApi
 @Composable
-fun ActivityJurnalScreen(
-    navController:NavController,
+fun DailyJournalScreen(
+    navController: NavController,
+    journalType: String,
     viewModel: JurnalViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(key1 = Unit) {
+        if (journalType == "ACTIVITY_JOURNAL") {
+
+            viewModel.getAllDailyActivityJournal()
+        } else {
+
+            viewModel.getAllDailyWorshipJournal()
+        }
+    }
     val state = viewModel.state.value
     Column(
         modifier = Modifier
@@ -57,31 +70,34 @@ fun ActivityJurnalScreen(
             fontFamily = Constant.LATO_FONT_FAMILY
         )
         Spacer(modifier = Modifier.height(16.dp))
+        if (state.isLoading) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    color = Color.Blue,
+                )
+            }
+        }  else if (state.error.isNotBlank()) {
+            Log.d("gagal", state.error)
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
 
-        LazyColumn (modifier = Modifier.fillMaxSize()){
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
 
-            items(state.journalList){ journal ->
-               JournalItem(jurnalData = journal)
+                )
+            }
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(state.journalList) { journal ->
+                    JournalItem(jurnalData = journal)
+                }
+
             }
 
-        }
-        if(state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-            )
-        }
-        if(state.error.isNotBlank()) {
-            Log.d("gagal",state.error)
-            Text(
-                text = state.error,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
         }
 
 

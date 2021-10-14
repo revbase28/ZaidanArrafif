@@ -7,6 +7,8 @@ import retrofit2.http.Header
 interface ZaidanAPI {
 
     @GET("kegiatan?jenis=kegiatan")
+    suspend fun getAllDailyActivityJournal():JournalResponse
 
-    suspend fun getAllDailyJournal():JournalResponse
+    @GET("kegiatan?jenis=ibadah")
+    suspend fun getAllDailyWorshipJournal():JournalResponse
 }

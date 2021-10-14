@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.domain.models.Journal
-import com.revbase.zaidanarrafif.domain.use_case.get_journal_activities.GetAllDailyJournalUseCase
+import com.revbase.zaidanarrafif.domain.use_case.get_daily_journal.GetAllDailyActivityJournalUseCase
+import com.revbase.zaidanarrafif.domain.use_case.get_daily_journal.GetAllDailyWorshipJournalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,32 +15,50 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JurnalViewModel @Inject constructor(
-    private val getAllDailyJournalUseCase: GetAllDailyJournalUseCase,
-):ViewModel() {
+    private val getAllDailyActivityJournalUseCase: GetAllDailyActivityJournalUseCase,
+    private val getAllDailyWorshipJournalUseCase: GetAllDailyWorshipJournalUseCase,
+) : ViewModel() {
     private val _state = mutableStateOf(JournalState())
     val state: State<JournalState> = _state
 
     init {
-        Log.d("journal_vm","Journal VM is Executed")
-        getAllDailyJournal()
+        Log.d("journal_vm", "Journal VM is Executed")
 
     }
 
-    private fun getAllDailyJournal()
-    {
-        getAllDailyJournalUseCase().onEach { result->
-            when(result){
-                is Resource.Success ->{
-                    _state.value = JournalState(journalList = result.data?: emptyList())
+     fun getAllDailyActivityJournal() {
+        getAllDailyActivityJournalUseCase().onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _state.value = JournalState(isLoading = true)
                 }
-                is Resource.Error->{
-                    _state.value = JournalState(error = result.message?:"Failed to fetch data")
+                is Resource.Error -> {
+                    Log.d("teserror","${result.message}")
+                    _state.value = JournalState(error = result.message ?: "Failed to fetch data")
                 }
-                is Resource.Loading ->{
+                is Resource.Success -> {
+                    _state.value = JournalState(journalList = result.data ?: emptyList())
+                }
+            }
+            Log.d("state_value", "${_state.value}")
+        }.launchIn(viewModelScope)
+    }
+     fun getAllDailyWorshipJournal() {
+        getAllDailyWorshipJournalUseCase().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.value = JournalState(journalList = result.data ?: emptyList())
+                }
+                is Resource.Error -> {
+                    Log.d("teserror","${result.message}")
+
+                    _state.value = JournalState(error = result.message ?: "Failed to fetch data")
+                }
+                is Resource.Loading -> {
                     _state.value = JournalState(isLoading = true)
                 }
             }
-            Log.d("state_value","${_state.value}")
+            Log.d("state_value", "${_state.value}")
         }.launchIn(viewModelScope)
     }
 

@@ -22,6 +22,7 @@ import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.common_component.ErrorScreen
 import com.revbase.zaidanarrafif.presentation.common_component.LoadingScreen
+import com.revbase.zaidanarrafif.presentation.common_component.SearchNotFoundScreen
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.ConfirmALertDialog
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.DownloadAlertDialog
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.FailedToDownloadAlertDialog
@@ -107,7 +108,11 @@ fun QuranScreen(
             fontFamily = Constant.LATO_FONT_FAMILY
         )
         Spacer(modifier = Modifier.height(16.dp))
-        SearchBar(onSearchButtonClicked = { })
+        SearchBar(
+            onSearchButtonClicked = {
+                viewModel.searchSurah(it)
+            }
+        )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Daftar Surat",
@@ -134,9 +139,9 @@ fun QuranScreen(
                     .background(Color.White)
             )
         }
-        if (state.listSurah.isNotEmpty()) {
+        if (viewModel.allSurahList.value.isNotEmpty()) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.listSurah) { surah ->
+                items(viewModel.allSurahList.value) { surah ->
                     ListSurahItem(
                         surahData = surah,
                         onClick = {
@@ -153,6 +158,11 @@ fun QuranScreen(
                     )
                 }
             }
+        } else if (!state.isLoading && state.error.isBlank()) {
+            SearchNotFoundScreen(
+                modifier = Modifier.fillMaxSize(),
+                message = "Maaf kami tidak menemukan apa yang kamu cari, coba periksa ejaan dan tanda bacanya yaa"
+            )
         }
     }
 }

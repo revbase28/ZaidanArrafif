@@ -1,5 +1,5 @@
 package com.revbase.zaidanarrafif.presentation.common_component
-
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -21,14 +21,11 @@ import com.revbase.zaidanarrafif.R
 import com.revbase.zaidanarrafif.common.Constant
 
 @Composable
-fun ErrorScreen(
+fun SearchNotFoundScreen(
     message: String,
-    modifier: Modifier = Modifier,
-    showButton: Boolean = false,
-    onButtonClicked: () -> Unit = {},
-    buttonText: String = ""
+    modifier: Modifier = Modifier
 ) {
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.no_internet))
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.search_not_found))
 
     Column(
         modifier = modifier,
@@ -40,6 +37,7 @@ fun ErrorScreen(
             iterations = LottieConstants.IterateForever,
             modifier = Modifier
                 .fillMaxWidth(0.5f)
+                .aspectRatio(1f)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -54,14 +52,5 @@ fun ErrorScreen(
                 fontFamily = Constant.LATO_FONT_FAMILY
             )
         )
-        if(showButton) {
-            Spacer(modifier = Modifier.height(16.dp))
-            PrimaryButton(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onButtonClicked() },
-                text = buttonText,
-                textSize = 16.sp
-            )
-        }
     }
 }

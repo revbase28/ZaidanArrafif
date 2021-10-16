@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.Resource
+import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.domain.models.SurahDetail
 import com.revbase.zaidanarrafif.domain.use_case.check_if_folder_exist.CheckIfFolderExistUseCase
 import com.revbase.zaidanarrafif.domain.use_case.download_audio_from_url.DownloadAudioFromUrlUseCase
@@ -18,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +32,9 @@ class QuranViewModel @Inject constructor(
 
     private val _state = mutableStateOf(QuranState())
     val state: State<QuranState> = _state
+
+    private val allSurahReferenceList= mutableStateOf<List<Surah>>(listOf())
+    val allSurahList = mutableStateOf<List<Surah>>(allSurahReferenceList.value)
 
     private val _surahDetailState = mutableStateOf(SurahState())
 
@@ -46,6 +51,8 @@ class QuranViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     _state.value = QuranState(listSurah = result.data ?: emptyList())
+                    allSurahReferenceList.value = result.data ?: emptyList()
+                    allSurahList.value = allSurahReferenceList.value
                 }
                 is Resource.Error -> {
                     _state.value =
@@ -79,6 +86,18 @@ class QuranViewModel @Inject constructor(
 
     fun checkIfFolderExist(folderName: String): Boolean {
         return checkIfFolderExistUseCase(folderName)
+    }
+
+    fun searchSurah(surahName: String) {
+        viewModelScope.launch {
+            if(surahName.isEmpty()) {
+                allSurahList.value = allSurahReferenceList.value
+            }
+            val searchResult = allSurahReferenceList.value.filter {
+                it.name.contains(surahName.trim(), ignoreCase = true)
+            }
+            allSurahList.value = searchResult
+        }
     }
 
     private fun downloadAudioFromUrl(surahData: SurahDetail) {

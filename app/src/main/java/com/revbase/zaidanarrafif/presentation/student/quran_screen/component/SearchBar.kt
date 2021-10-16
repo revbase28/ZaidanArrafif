@@ -68,6 +68,9 @@ fun SearchBar(
             placeholder = "Cari surat disini yukk" ,
             onTextChanged = {
                 searchQuery = it
+                if(searchQuery.isEmpty()) {
+                    onSearchButtonClicked(searchQuery)
+                }
             },
             modifier = Modifier.layoutId("searchTextField")
         )

@@ -9,28 +9,22 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
-import com.revbase.zaidanarrafif.common.Constant
-import com.revbase.zaidanarrafif.common.Constant.PARAM_SURAH_NUMBER
+import coil.annotation.ExperimentalCoilApi
 import com.revbase.zaidanarrafif.domain.models.BottomNavItem
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.student.hafalan_screen.HafalanScreen
-import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.JurnalScreen
+import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.JurnalMainScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.component.TopBar
 import com.revbase.zaidanarrafif.presentation.student.profile_screen.ProfileScreen
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.QuranScreen
 import com.revbase.zaidanarrafif.presentation.student.rank_screen.RankScreen
-import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 
 @ExperimentalMaterialApi
@@ -62,7 +56,7 @@ fun StudentMainScreen(
                         ),
                         BottomNavItem(
                             name = "Jurnal",
-                            route = Screen.JurnalScreen.route,
+                            route = Screen.JournalMainScreen.route,
                             selectedIcon = Icons.Filled.Ballot,
                             unselectedIcon = Icons.Outlined.Ballot
                         ),
@@ -100,6 +94,7 @@ fun StudentMainScreen(
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun StudentNavigation(
@@ -114,8 +109,8 @@ fun StudentNavigation(
             QuranScreen(navController = mainNavController)
         }
 
-        composable(route = Screen.JurnalScreen.route) {
-            JurnalScreen()
+        composable(route = Screen.JournalMainScreen.route) {
+            JurnalMainScreen(navController = mainNavController)
         }
 
         composable(route = Screen.HafalanScreen.route) {
@@ -129,5 +124,8 @@ fun StudentNavigation(
         composable(route = Screen.ProfileScreen.route) {
             ProfileScreen()
         }
+//        composable(route = Screen.ActivityJournalScreen.route) {
+//            ActivityJurnalScreen(navController = mainNavController)
+//        }
     }
 }

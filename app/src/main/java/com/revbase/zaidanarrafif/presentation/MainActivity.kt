@@ -13,9 +13,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.presentation.login_screen.LoginScreen
 import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
+import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
@@ -24,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @ExperimentalCoilApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +48,13 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.StudentMainScreen.route) {
                             StudentMainScreen(mainNavController = navController)
+                        }
+                        composable(Screen.ActivityJournalScreen.route+"/{journalType}") { backStackEntry ->
+                            DailyJournalScreen(navController,
+                                backStackEntry.arguments?.getString("journalType")!!
+
+                            )
+
                         }
 
                         composable(

@@ -45,4 +45,20 @@ class DownloadRepoImpl @Inject constructor(
             inputStream?.close()
         }
     }
+
+    override fun checkIfFolderExist(folder: String): Boolean {
+        val dir = File("${context.filesDir}/$folder")
+        return dir.exists()
+    }
+
+
+    override suspend fun rollbackDownload(folder: String) {
+        val fileOrDir = File("${context.filesDir}/$folder")
+        if(fileOrDir.isDirectory) {
+            fileOrDir.listFiles().forEach { file ->
+                file.delete()
+            }
+        }
+        fileOrDir.delete()
+    }
 }

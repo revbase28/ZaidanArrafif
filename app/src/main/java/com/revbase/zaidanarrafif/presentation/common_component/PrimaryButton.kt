@@ -19,7 +19,7 @@ import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.ui.theme.Blue
 
 @Composable
-fun BlueButton(
+fun PrimaryButton(
     onClick: ()->Unit,
     text : String,
     textSize: TextUnit,

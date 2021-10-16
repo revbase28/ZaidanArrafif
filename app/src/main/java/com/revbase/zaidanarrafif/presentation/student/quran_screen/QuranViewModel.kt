@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.Resource
 import com.revbase.zaidanarrafif.domain.models.SurahDetail
+import com.revbase.zaidanarrafif.domain.use_case.check_if_folder_exist.CheckIfFolderExistUseCase
 import com.revbase.zaidanarrafif.domain.use_case.download_audio_from_url.DownloadAudioFromUrlUseCase
 import com.revbase.zaidanarrafif.domain.use_case.get_all_surah.GetAllSurahUseCase
 import com.revbase.zaidanarrafif.domain.use_case.get_surah_detail.GetSurahDetailUseCase
@@ -23,7 +24,8 @@ import javax.inject.Inject
 class QuranViewModel @Inject constructor(
     private val getAllSurahUseCase: GetAllSurahUseCase,
     private val downloadAudioFromUrlUseCase: DownloadAudioFromUrlUseCase,
-    private val getSurahDetailUseCase: GetSurahDetailUseCase
+    private val getSurahDetailUseCase: GetSurahDetailUseCase,
+    private val checkIfFolderExistUseCase: CheckIfFolderExistUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(QuranState())
@@ -39,7 +41,7 @@ class QuranViewModel @Inject constructor(
         getAllSurah()
     }
 
-    private fun getAllSurah() {
+    fun getAllSurah() {
         getAllSurahUseCase().onEach { result ->
             when (result) {
                 is Resource.Success -> {
@@ -73,6 +75,10 @@ class QuranViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun checkIfFolderExist(folderName: String): Boolean {
+        return checkIfFolderExistUseCase(folderName)
     }
 
     private fun downloadAudioFromUrl(surahData: SurahDetail) {

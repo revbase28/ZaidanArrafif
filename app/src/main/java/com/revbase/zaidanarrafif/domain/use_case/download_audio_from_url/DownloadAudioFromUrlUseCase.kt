@@ -44,7 +44,10 @@ class DownloadAudioFromUrlUseCase @Inject constructor(
             if(!isDownloadError) {
                 print("download done")
                 emit(Resource.Success<Int>(DOWNLOAD_DONE))
-            } else print("Canceled")
+            } else {
+                print("Canceled")
+                repository.rollbackDownload(surahData.name)
+            }
         } catch (e: HttpException) {
             emit(Resource.Error<Int>(e.localizedMessage ?: "Terjadi kesalahan saat mengunduh, coba beberapa saat lagi"))
         } catch (e: IOException) {

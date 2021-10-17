@@ -50,7 +50,7 @@ fun SurahScreen(
     }
     LaunchedEffect(key1 = downloadState.value) {
         downloadState.value.data?.let {
-            if (it == Constant.DOWNLOAD_DONE)
+            if (it == DOWNLOAD_DONE)
                 isDownloadingDialogShown = false
             else {
                 isDownloadingDialogShown = true
@@ -152,7 +152,7 @@ fun SurahScreen(
                                 isConfirmDialogShown = true
                                 surahClickedData = surahData
                             } else {
-                                Log.d("play audio", "Already downloaded, should play surah instead")
+                                viewModel.playAudio(surahData.name, verse.verseNumber)
                             }
                         }
                     )

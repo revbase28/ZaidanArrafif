@@ -51,7 +51,11 @@ fun SurahScreen(
     }
     LaunchedEffect(key1 = currentPlayedAyah) {
         if (isAudioPlayed) {
-            listState.animateScrollToItem(currentPlayedAyah)
+            surahClickedData?.let {
+                if(it.surahNumber == ALFATIHAH || it.surahNumber == ATTAUBAH)
+                    listState.animateScrollToItem(currentPlayedAyah - 1)
+                else listState.animateScrollToItem(currentPlayedAyah)
+            }
             viewModel.playAudio(currentPlayedSurah, currentPlayedAyah)
         }
     }
@@ -77,7 +81,8 @@ fun SurahScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp)
+            .padding(top = 16.dp),
+        verticalArrangement = Arrangement.Top
     ) {
         if (isConfirmDialogShown) {
             ConfirmALertDialog(
@@ -151,7 +156,7 @@ fun SurahScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxWidth(),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 LazyColumn(

@@ -29,6 +29,7 @@ class SurahViewModel @Inject constructor(
     val state: State<SurahState> = _state
     private val _downloadState = mutableStateOf(DownloadState())
     val downloadState: State<DownloadState> = _downloadState
+    private var isPaused = false
 
     fun getSurahDetail(surahNumber: Int) {
         getSurahDetailUseCase(surahNumber).onEach { result ->
@@ -70,7 +71,21 @@ class SurahViewModel @Inject constructor(
         return checkIfFolderExistUseCase(folderName)
     }
 
+    fun playAudio() {
+        playAudioUseCase.playAgain()
+        isPaused = false
+    }
     fun playAudio(surah: String, ayah: Int) {
         playAudioUseCase(surah = surah, fileName = "${surah}_${ayah}.mp3")
+    }
+
+    fun pauseAudio() {
+        isPaused = true
+        playAudioUseCase.pause()
+    }
+
+    fun stopAudio(){
+        isPaused = false
+        playAudioUseCase.stop()
     }
 }

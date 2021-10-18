@@ -25,6 +25,7 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.Blue
 fun VerseItem(
     verseData: VerseSimplified,
     onPlayAudioButtonClicked: ()->Unit,
+    isLastItemAndAudioPlayed: Boolean = false
 ) {
     Row(
         modifier = Modifier
@@ -34,7 +35,11 @@ fun VerseItem(
                     Blue.copy(alpha = 0.15f)
                 } else Color.White
             )
-            .padding(16.dp)
+            .then(
+                if(isLastItemAndAudioPlayed){
+                    Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = (56+32).dp)
+                } else Modifier.padding(16.dp)
+            )
     ) {
         Column {
             SurahNumber(

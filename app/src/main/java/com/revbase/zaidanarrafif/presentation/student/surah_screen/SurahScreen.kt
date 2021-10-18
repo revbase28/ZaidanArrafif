@@ -1,10 +1,10 @@
 package com.revbase.zaidanarrafif.presentation.student.surah_screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,7 +20,6 @@ import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Constant.ALFATIHAH
 import com.revbase.zaidanarrafif.common.Constant.ATTAUBAH
 import com.revbase.zaidanarrafif.common.Constant.DOWNLOAD_DONE
-import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.domain.models.SurahDetail
 import com.revbase.zaidanarrafif.presentation.common_component.*
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.*
@@ -36,23 +35,27 @@ fun SurahScreen(
     val state = viewModel.state.value
     val downloadState = viewModel.downloadState
     var currentPlayedSurah by remember { mutableStateOf("") }
+    var currentPlayedAyah by remember { mutableStateOf(0) }
+    var isAudioPaused by remember { mutableStateOf(false) }
+    var isAudioPlayed by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("Terjadi kesalahan tidak terduga, coba lagi nanti") }
     var currentDownloadedAyah by remember { mutableStateOf(0) }
     var isConfirmDialogShown by remember { mutableStateOf(false) }
     var isDownloadingDialogShown by remember { mutableStateOf(false) }
     var isDownloadErrorDialogShown by remember { mutableStateOf(false) }
-    var surahClickedData: SurahDetail? by remember {
-        mutableStateOf(null)
-    }
+    var surahClickedData: SurahDetail? by remember { mutableStateOf(null) }
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getSurahDetail(surahNumber)
     }
     LaunchedEffect(key1 = downloadState.value) {
         downloadState.value.data?.let {
-            if (it == DOWNLOAD_DONE)
+            if (it == DOWNLOAD_DONE) {
                 isDownloadingDialogShown = false
-            else {
+                isAudioPlayed = true
+                isAudioPaused = false
+                viewModel.playAudio(currentPlayedSurah, currentPlayedAyah)
+            } else {
                 isDownloadingDialogShown = true
                 currentDownloadedAyah = it
             }
@@ -63,6 +66,7 @@ fun SurahScreen(
             errorMessage = downloadState.value.error
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -138,46 +142,85 @@ fun SurahScreen(
                 textSize = 16.sp
             )
             Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                if (surahNumber != ALFATIHAH && surahNumber != ATTAUBAH) {
-                    item {
-                        Bismillah()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    if (surahNumber != ALFATIHAH && surahNumber != ATTAUBAH) {
+                        item {
+                            Bismillah()
+                        }
+                    }
+                    itemsIndexed(surahData.verses) { index, verse ->
+                        VerseItem(
+                            verseData = verse,
+                            onPlayAudioButtonClicked = {
+                                surahClickedData = surahData
+                                currentPlayedAyah = verse.verseNumber
+                                if (!viewModel.checkIfFolderExist(surahData.name)) {
+                                    isConfirmDialogShown = true
+                                } else {
+                                    isAudioPlayed = true
+                                    isAudioPaused = false
+                                    viewModel.playAudio(surahData.name, verse.verseNumber)
+                                }
+                            },
+                            isLastItemAndAudioPlayed = (index == surahData.verses.size - 1) && isAudioPlayed
+                        )
                     }
                 }
-                items(surahData.verses) { verse ->
-                    VerseItem(
-                        verseData = verse,
-                        onPlayAudioButtonClicked = {
-                            if (!viewModel.checkIfFolderExist(surahData.name)) {
-                                isConfirmDialogShown = true
-                                surahClickedData = surahData
-                            } else {
-                                viewModel.playAudio(surahData.name, verse.verseNumber)
-                            }
-                        }
-                    )
+                if (isAudioPlayed) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        AudioControl(
+                            onPlay = {
+                                viewModel.playAudio()
+                                isAudioPaused = false
+                            },
+                            onPause = {
+                                viewModel.pauseAudio()
+                                isAudioPaused = true
+                            },
+                            onStop = {
+                                isAudioPlayed = false
+                                viewModel.stopAudio()
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(0.7f)
+                                .height(56.dp),
+                            playing = isAudioPaused
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
         }
-        if (state.error.isNotBlank()) {
-            ErrorScreen(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                message = state.error,
-                showButton = true,
-                buttonText = "Coba lagi",
-                onButtonClicked = {
-                    viewModel.getSurahDetail(surahNumber)
-                }
-            )
-        }
-        if (state.isLoading) {
-            LoadingScreen(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-            )
-        }
+    }
+    if (state.error.isNotBlank()) {
+        ErrorScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            message = state.error,
+            showButton = true,
+            buttonText = "Coba lagi",
+            onButtonClicked = {
+                viewModel.getSurahDetail(surahNumber)
+            }
+        )
+    }
+    if (state.isLoading) {
+        LoadingScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        )
     }
 }

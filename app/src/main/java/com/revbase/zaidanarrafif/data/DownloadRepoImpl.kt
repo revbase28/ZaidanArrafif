@@ -7,6 +7,7 @@ import java.net.URL
 import javax.inject.Inject
 import kotlin.jvm.Throws
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class DownloadRepoImpl @Inject constructor(
     private val context: Context
 ): DownloadRepository {
@@ -22,11 +23,6 @@ class DownloadRepoImpl @Inject constructor(
         val downloadDir = File("${context.filesDir}/$surahName")
         if(!downloadDir.exists()) {
             downloadDir.mkdirs()
-        } else {
-            if(downloadDir.listFiles()?.size != numberOfVerses){
-                rollbackDownload(surahName)
-                downloadDir.mkdirs()
-            }
         }
 
         val downloadFile = File(downloadDir, "$fileName.mp3")
@@ -61,7 +57,7 @@ class DownloadRepoImpl @Inject constructor(
     override fun checkIfFolderExist(folder: String, numberOfFile: Int): Boolean {
         val dir = File("${context.filesDir}/$folder")
         if(dir.exists()) {
-            return dir.listFiles()?.size == numberOfFile
+            return dir.listFiles()?.count() == numberOfFile
         }
         return false
     }

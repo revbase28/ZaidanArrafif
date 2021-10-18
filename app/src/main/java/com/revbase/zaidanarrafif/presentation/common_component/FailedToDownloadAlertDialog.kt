@@ -1,31 +1,35 @@
-package com.revbase.zaidanarrafif.presentation.student.quran_screen.component
+package com.revbase.zaidanarrafif.presentation.common_component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.revbase.zaidanarrafif.R
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.presentation.common_component.PrimaryButton
 import com.revbase.zaidanarrafif.presentation.common_component.SecondaryButton
 
 @Composable
-fun ConfirmALertDialog(
+fun FailedToDownloadAlertDialog(
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    message: String
 ) {
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.download_failed))
     AlertDialog(
         onDismissRequest = {
             onDismiss()
@@ -34,12 +38,14 @@ fun ConfirmALertDialog(
         title = {
             Box(
                 modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.TopCenter
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.warning_icon),
-                    contentDescription = "warning icon",
-                    modifier = Modifier.fillMaxWidth(0.3f)
+                LottieAnimation(
+                    composition = composition,
+                    iterations = LottieConstants.IterateForever,
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .aspectRatio(1f)
                 )
             }
         },
@@ -52,7 +58,7 @@ fun ConfirmALertDialog(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Sepertinya Person belum mengunduh audio surah ini",
+                    text = "Opps, download gagal..",
                     style = TextStyle(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -64,7 +70,7 @@ fun ConfirmALertDialog(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "Mau unduh sekarang ?",
+                    text = message,
                     style = TextStyle(
                         color = Color.Black,
                         fontSize = 14.sp,
@@ -83,18 +89,9 @@ fun ConfirmALertDialog(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SecondaryButton(
-                    onClick = { onDismiss() },
-                    text = "Nanti saja",
-                    textSize = 14.sp,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
                 PrimaryButton(
-                    onClick = { onConfirm() },
-                    text = "Unduh Audio",
+                    onClick = { onDismiss() },
+                    text = "Mengerti",
                     textSize = 14.sp,
                     modifier = Modifier
                         .weight(1f)

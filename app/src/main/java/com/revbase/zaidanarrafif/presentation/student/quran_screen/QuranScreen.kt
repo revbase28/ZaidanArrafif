@@ -7,12 +7,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,9 +20,9 @@ import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.common_component.ErrorScreen
 import com.revbase.zaidanarrafif.presentation.common_component.LoadingScreen
 import com.revbase.zaidanarrafif.presentation.common_component.SearchNotFoundScreen
-import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.ConfirmALertDialog
-import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.DownloadAlertDialog
-import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.FailedToDownloadAlertDialog
+import com.revbase.zaidanarrafif.presentation.common_component.ConfirmALertDialog
+import com.revbase.zaidanarrafif.presentation.common_component.DownloadAlertDialog
+import com.revbase.zaidanarrafif.presentation.common_component.FailedToDownloadAlertDialog
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.ListSurahItem
 
 @ExperimentalMaterialApi

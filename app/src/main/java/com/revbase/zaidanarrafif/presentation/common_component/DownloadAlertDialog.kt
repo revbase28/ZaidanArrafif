@@ -1,5 +1,6 @@
-package com.revbase.zaidanarrafif.presentation.student.quran_screen.component
+package com.revbase.zaidanarrafif.presentation.common_component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,14 +27,13 @@ import com.revbase.zaidanarrafif.presentation.common_component.PrimaryButton
 import com.revbase.zaidanarrafif.presentation.common_component.SecondaryButton
 
 @Composable
-fun FailedToDownloadAlertDialog(
-    onDismiss: () -> Unit,
-    message: String
+fun DownloadAlertDialog(
+    downloadingFileName: String
 ) {
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.download_failed))
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.download_anim))
     AlertDialog(
         onDismissRequest = {
-            onDismiss()
+
         },
         shape = RoundedCornerShape(20.dp),
         title = {
@@ -41,10 +42,10 @@ fun FailedToDownloadAlertDialog(
                 contentAlignment = Alignment.TopCenter
             ) {
                 LottieAnimation(
-                    composition = composition,
+                    composition = composition ,
                     iterations = LottieConstants.IterateForever,
                     modifier = Modifier
-                        .fillMaxWidth(0.7f)
+                        .fillMaxWidth(0.5f)
                         .aspectRatio(1f)
                 )
             }
@@ -58,7 +59,7 @@ fun FailedToDownloadAlertDialog(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Opps, download gagal..",
+                    text = "Sedang megunduh, jangan tutup dulu aplikasinya yaa..",
                     style = TextStyle(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -70,7 +71,7 @@ fun FailedToDownloadAlertDialog(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = message,
+                    text = "Mengunduh $downloadingFileName",
                     style = TextStyle(
                         color = Color.Black,
                         fontSize = 14.sp,
@@ -82,22 +83,7 @@ fun FailedToDownloadAlertDialog(
             }
         },
         buttons = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                PrimaryButton(
-                    onClick = { onDismiss() },
-                    text = "Mengerti",
-                    textSize = 14.sp,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp)
-                )
-            }
+
         }
     )
 }

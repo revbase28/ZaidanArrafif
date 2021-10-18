@@ -3,7 +3,6 @@ package com.revbase.zaidanarrafif.presentation.student.surah_screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
@@ -172,7 +171,7 @@ fun SurahScreen(
                                 surahClickedData = surahData
                                 currentPlayedSurah = surahData.name
                                 currentPlayedAyah = verse.verseNumber
-                                if (!viewModel.checkIfFolderExist(surahData.name, verse.verseNumber)) {
+                                if (!viewModel.checkIfFolderExist(surahData.name, surahData.numberOfVerses)) {
                                     isConfirmDialogShown = true
                                 } else {
                                     isAudioPlayed = true

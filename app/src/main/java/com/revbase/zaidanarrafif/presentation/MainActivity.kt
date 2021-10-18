@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity() {
                                 backStackEntry.arguments?.getString("journalType")!!
 
                             )
-
                         }
 
                         composable(

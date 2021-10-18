@@ -30,7 +30,8 @@ class DownloadAudioFromUrlUseCase @Inject constructor(
                     repository.downloadAudioFromUrl(
                         surahName = surahData.name,
                         downloadUrl = verse.audio.primary,
-                        fileName = fileName
+                        fileName = fileName,
+                        numberOfVerses = surahData.numberOfVerses
                     )
                 } catch (e: IOException) {
                     emit(Resource.Error<Int>(e.message ?: "Terjadi kesalahan saat mengunduh, coba beberapa saat lagi"))

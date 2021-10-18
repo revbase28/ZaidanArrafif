@@ -148,7 +148,7 @@ fun QuranScreen(
                             navController.navigate("${Screen.SurahScreen.route}/${surah.surahNumber}")
                         },
                         onPlayAudioClicked = {
-                            if (!viewModel.checkIfFolderExist(surah.name)) {
+                            if (!viewModel.checkIfFolderExist(surah.name, surah.numberOfVerses)) {
                                 isConfirmDialogShown = true
                                 surahClickedData = surah
                             } else {

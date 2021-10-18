@@ -67,8 +67,8 @@ class SurahViewModel @Inject constructor(
         }.launchIn(CoroutineScope(Dispatchers.IO))
     }
 
-    fun checkIfFolderExist(folderName: String): Boolean {
-        return checkIfFolderExistUseCase(folderName)
+    fun checkIfFolderExist(folderName: String, numberOfVerses: Int): Boolean {
+        return checkIfFolderExistUseCase(folderName, numberOfVerses)
     }
 
     fun playAudio() {

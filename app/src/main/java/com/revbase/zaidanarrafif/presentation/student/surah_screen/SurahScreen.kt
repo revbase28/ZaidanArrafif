@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -44,9 +45,16 @@ fun SurahScreen(
     var isDownloadingDialogShown by remember { mutableStateOf(false) }
     var isDownloadErrorDialogShown by remember { mutableStateOf(false) }
     var surahClickedData: SurahDetail? by remember { mutableStateOf(null) }
+    val listState = rememberLazyListState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getSurahDetail(surahNumber)
+    }
+    LaunchedEffect(key1 = currentPlayedAyah) {
+        if (isAudioPlayed) {
+            listState.animateScrollToItem(currentPlayedAyah)
+            viewModel.playAudio(currentPlayedSurah, currentPlayedAyah)
+        }
     }
     LaunchedEffect(key1 = downloadState.value) {
         downloadState.value.data?.let {
@@ -149,7 +157,8 @@ fun SurahScreen(
             ) {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    state = listState
                 ) {
                     if (surahNumber != ALFATIHAH && surahNumber != ATTAUBAH) {
                         item {
@@ -161,13 +170,13 @@ fun SurahScreen(
                             verseData = verse,
                             onPlayAudioButtonClicked = {
                                 surahClickedData = surahData
+                                currentPlayedSurah = surahData.name
                                 currentPlayedAyah = verse.verseNumber
-                                if (!viewModel.checkIfFolderExist(surahData.name)) {
+                                if (!viewModel.checkIfFolderExist(surahData.name, verse.verseNumber)) {
                                     isConfirmDialogShown = true
                                 } else {
                                     isAudioPlayed = true
                                     isAudioPaused = false
-                                    viewModel.playAudio(surahData.name, verse.verseNumber)
                                 }
                             },
                             isLastItemAndAudioPlayed = (index == surahData.verses.size - 1) && isAudioPlayed
@@ -191,6 +200,12 @@ fun SurahScreen(
                             onStop = {
                                 isAudioPlayed = false
                                 viewModel.stopAudio()
+                            },
+                            onSkipNext = {
+                                currentPlayedAyah++
+                            },
+                            onSkipPrevious = {
+                                currentPlayedAyah--
                             },
                             modifier = Modifier
                                 .fillMaxWidth(0.7f)

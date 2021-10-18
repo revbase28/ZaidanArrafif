@@ -19,6 +19,8 @@ fun AudioControl(
     onPlay: () -> Unit,
     onPause: () -> Unit,
     onStop: () -> Unit,
+    onSkipNext: () -> Unit,
+    onSkipPrevious: () -> Unit,
     playing: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -34,7 +36,7 @@ fun AudioControl(
                 .padding(10.dp)
         ) {
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = { onSkipPrevious() },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(
@@ -45,7 +47,7 @@ fun AudioControl(
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(
                 onClick = {
-                    if(!playing){
+                    if (!playing) {
                         onPause()
                     } else {
                         onPlay()
@@ -54,13 +56,13 @@ fun AudioControl(
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(
-                    imageVector = if(!playing) Icons.Filled.Pause else Icons.Filled.PlayArrow,
+                    imageVector = if (!playing) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                     contentDescription = "play pause"
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = { onSkipNext() },
                 modifier = Modifier.weight(1f)
             ) {
                 Icon(

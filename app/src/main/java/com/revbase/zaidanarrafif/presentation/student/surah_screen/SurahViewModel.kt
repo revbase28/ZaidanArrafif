@@ -9,6 +9,7 @@ import com.revbase.zaidanarrafif.domain.models.SurahDetail
 import com.revbase.zaidanarrafif.domain.use_case.check_if_folder_exist.CheckIfFolderExistUseCase
 import com.revbase.zaidanarrafif.domain.use_case.download_audio_from_url.DownloadAudioFromUrlUseCase
 import com.revbase.zaidanarrafif.domain.use_case.get_surah_detail.GetSurahDetailUseCase
+import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,13 +21,15 @@ import javax.inject.Inject
 class SurahViewModel @Inject constructor(
     private val getSurahDetailUseCase: GetSurahDetailUseCase,
     private val downloadAudioFromUrlUseCase: DownloadAudioFromUrlUseCase,
-    private val checkIfFolderExistUseCase: CheckIfFolderExistUseCase
+    private val checkIfFolderExistUseCase: CheckIfFolderExistUseCase,
+    private val playAudioUseCase: PlayAudioUseCase
 ) : ViewModel() {
 
     private val _state = mutableStateOf(SurahState())
     val state: State<SurahState> = _state
     private val _downloadState = mutableStateOf(DownloadState())
     val downloadState: State<DownloadState> = _downloadState
+    private var isPaused = false
 
     fun getSurahDetail(surahNumber: Int) {
         getSurahDetailUseCase(surahNumber).onEach { result ->
@@ -64,7 +67,34 @@ class SurahViewModel @Inject constructor(
         }.launchIn(CoroutineScope(Dispatchers.IO))
     }
 
-    fun checkIfFolderExist(folderName: String): Boolean {
-        return checkIfFolderExistUseCase(folderName)
+    fun checkIfFolderExist(folderName: String, numberOfVerses: Int): Boolean {
+        return checkIfFolderExistUseCase(folderName, numberOfVerses)
+    }
+
+    fun playAudio(onFinishPlaying: () -> Unit) {
+        playAudioUseCase.playAgain().setOnCompletionListener {
+            onFinishPlaying()
+        }
+        isPaused = false
+    }
+
+    fun playAudio(surah: String, ayah: Int, onFinishPlaying: () -> Unit) {
+        playAudioUseCase(surah = surah, fileName = "${surah}_${ayah}.mp3").setOnCompletionListener {
+            onFinishPlaying()
+        }
+    }
+
+    fun pauseAudio() {
+        isPaused = true
+        playAudioUseCase.pause()
+    }
+
+    fun stopAudio(){
+        isPaused = false
+        playAudioUseCase.stop()
+    }
+
+    fun checkIfAudioPlaying(): Boolean{
+        return playAudioUseCase.isMediaPlaying()
     }
 }

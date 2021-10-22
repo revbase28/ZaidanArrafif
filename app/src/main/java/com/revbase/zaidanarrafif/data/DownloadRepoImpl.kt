@@ -7,6 +7,7 @@ import java.net.URL
 import javax.inject.Inject
 import kotlin.jvm.Throws
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class DownloadRepoImpl @Inject constructor(
     private val context: Context
 ): DownloadRepository {
@@ -14,6 +15,7 @@ class DownloadRepoImpl @Inject constructor(
     @Throws(IOException::class)
     override suspend fun downloadAudioFromUrl(
         surahName: String,
+        numberOfVerses: Int,
         downloadUrl: String,
         fileName: String
     ) {
@@ -22,6 +24,7 @@ class DownloadRepoImpl @Inject constructor(
         if(!downloadDir.exists()) {
             downloadDir.mkdirs()
         }
+
         val downloadFile = File(downloadDir, "$fileName.mp3")
         val outputStream = FileOutputStream(downloadFile)
         var inputStream: BufferedInputStream? = null
@@ -51,11 +54,18 @@ class DownloadRepoImpl @Inject constructor(
         return dir.exists()
     }
 
+    override fun checkIfFolderExist(folder: String, numberOfFile: Int): Boolean {
+        val dir = File("${context.filesDir}/$folder")
+        if(dir.exists()) {
+            return dir.listFiles()?.count() == numberOfFile
+        }
+        return false
+    }
 
     override suspend fun rollbackDownload(folder: String) {
         val fileOrDir = File("${context.filesDir}/$folder")
         if(fileOrDir.isDirectory) {
-            fileOrDir.listFiles().forEach { file ->
+            fileOrDir.listFiles()?.forEach { file ->
                 file.delete()
             }
         }

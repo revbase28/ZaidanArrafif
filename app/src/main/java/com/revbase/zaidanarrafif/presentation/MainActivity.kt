@@ -23,9 +23,12 @@ import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity: ComponentActivity() {
+    @Inject lateinit var savedState: Bundle
+
     @ExperimentalCoilApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,27 +50,29 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = Screen.StudentMainScreen.route) {
-                            StudentMainScreen(mainNavController = navController)
+                            StudentMainScreen(mainNavController = navController, savedState = savedState)
                         }
-                        composable(Screen.ActivityJournalScreen.route+"/{journalType}") { backStackEntry ->
-                            DailyJournalScreen(navController,
+                        composable(Screen.ActivityJournalScreen.route + "/{journalType}") { backStackEntry ->
+                            DailyJournalScreen(
+                                navController,
                                 backStackEntry.arguments?.getString("journalType")!!
-
                             )
-
                         }
 
                         composable(
-                            route = Screen.SurahScreen.route+"/{${Constant.PARAM_SURAH_NUMBER}}",
+                            route = Screen.SurahScreen.route + "/{${Constant.PARAM_SURAH_NUMBER}}",
                             arguments = listOf(
                                 navArgument(name = Constant.PARAM_SURAH_NUMBER) {
                                     type = NavType.IntType
                                 }
                             )
                         ) {
-                            SurahScreen(navController = navController, it.arguments!!.getInt(
-                                Constant.PARAM_SURAH_NUMBER
-                            ))
+                            SurahScreen(
+                                navController = navController, it.arguments!!.getInt(
+                                    Constant.PARAM_SURAH_NUMBER
+                                ),
+                                savedState = savedState
+                            )
                         }
                     }
                 }

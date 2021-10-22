@@ -13,6 +13,7 @@ import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
 import com.revbase.zaidanarrafif.domain.repositories.JournalRepository
 //import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
 import com.revbase.zaidanarrafif.domain.repositories.QuranRepository
+import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,4 +82,9 @@ class AppModule {
     @Singleton
     fun provideJournalRepository(api:ZaidanAPI): JournalRepository =
         JournalRepoImpl(api)
+
+    @Provides
+    @Singleton
+    fun providePlayAudioUseCase(@ApplicationContext context: Context): PlayAudioUseCase =
+        PlayAudioUseCase(context)
 }

@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.student.quran_screen
 
+import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,25 +8,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.common.Constant.AUDIO_PLAYING_STATE
+import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_AYAH
+import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_SURAH
 import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.common_component.ErrorScreen
 import com.revbase.zaidanarrafif.presentation.common_component.LoadingScreen
 import com.revbase.zaidanarrafif.presentation.common_component.SearchNotFoundScreen
-import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.ConfirmALertDialog
-import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.DownloadAlertDialog
-import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.FailedToDownloadAlertDialog
+import com.revbase.zaidanarrafif.presentation.common_component.ConfirmALertDialog
+import com.revbase.zaidanarrafif.presentation.common_component.DownloadAlertDialog
+import com.revbase.zaidanarrafif.presentation.common_component.FailedToDownloadAlertDialog
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.ListSurahItem
 
 @ExperimentalMaterialApi
@@ -33,7 +34,8 @@ import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.Lis
 @Composable
 fun QuranScreen(
     navController: NavController,
-    viewModel: QuranViewModel = hiltViewModel()
+    viewModel: QuranViewModel = hiltViewModel(),
+    savedState: Bundle
 ) {
     val state = viewModel.state.value
     val downloadState = viewModel.downloadState
@@ -148,11 +150,14 @@ fun QuranScreen(
                             navController.navigate("${Screen.SurahScreen.route}/${surah.surahNumber}")
                         },
                         onPlayAudioClicked = {
-                            if (!viewModel.checkIfFolderExist(surah.name)) {
+                            if (!viewModel.checkIfFolderExist(surah.name, surah.numberOfVerses)) {
                                 isConfirmDialogShown = true
                                 surahClickedData = surah
                             } else {
-                                Log.d("play audio", "Already downloaded, should play surah instead")
+                                savedState.putBoolean(AUDIO_PLAYING_STATE, true)
+                                savedState.putString(CURRENT_PLAYED_SURAH, surah.name)
+                                savedState.putInt(CURRENT_PLAYED_AYAH, 1)
+                                navController.navigate("${Screen.SurahScreen.route}/${surah.surahNumber}")
                             }
                         }
                     )

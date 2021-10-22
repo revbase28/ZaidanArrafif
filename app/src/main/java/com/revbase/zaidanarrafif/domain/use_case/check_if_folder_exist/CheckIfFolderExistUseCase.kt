@@ -9,4 +9,8 @@ class CheckIfFolderExistUseCase @Inject constructor(
     operator fun invoke(folderName: String): Boolean {
         return downloadRepository.checkIfFolderExist(folderName)
     }
+
+    operator fun invoke(folderName: String, numberOfFiles: Int): Boolean {
+        return downloadRepository.checkIfFolderExist(folderName, numberOfFiles)
+    }
 }

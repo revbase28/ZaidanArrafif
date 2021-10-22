@@ -1,10 +1,12 @@
 package com.revbase.zaidanarrafif.presentation.student.surah_screen
 
+import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,8 +21,10 @@ import androidx.navigation.NavController
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Constant.ALFATIHAH
 import com.revbase.zaidanarrafif.common.Constant.ATTAUBAH
+import com.revbase.zaidanarrafif.common.Constant.AUDIO_PLAYING_STATE
+import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_AYAH
+import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_SURAH
 import com.revbase.zaidanarrafif.common.Constant.DOWNLOAD_DONE
-import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.domain.models.SurahDetail
 import com.revbase.zaidanarrafif.presentation.common_component.*
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.*
@@ -31,28 +35,64 @@ import com.revbase.zaidanarrafif.presentation.student.surah_screen.component.Ver
 fun SurahScreen(
     navController: NavController,
     surahNumber: Int,
-    viewModel: SurahViewModel = hiltViewModel()
+    viewModel: SurahViewModel = hiltViewModel(),
+    savedState: Bundle
 ) {
     val state = viewModel.state.value
     val downloadState = viewModel.downloadState
     var currentPlayedSurah by remember { mutableStateOf("") }
+    var currentPlayedAyah by remember { mutableStateOf(0) }
+    var isAudioPaused by remember { mutableStateOf(false) }
+    var isAudioPlayed by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("Terjadi kesalahan tidak terduga, coba lagi nanti") }
     var currentDownloadedAyah by remember { mutableStateOf(0) }
     var isConfirmDialogShown by remember { mutableStateOf(false) }
     var isDownloadingDialogShown by remember { mutableStateOf(false) }
     var isDownloadErrorDialogShown by remember { mutableStateOf(false) }
-    var surahClickedData: SurahDetail? by remember {
-        mutableStateOf(null)
-    }
+    var surahClickedData: SurahDetail? by remember { mutableStateOf(null) }
+    val listState = rememberLazyListState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getSurahDetail(surahNumber)
     }
+    LaunchedEffect(key1 = currentPlayedAyah) {
+        if (isAudioPlayed) {
+            surahClickedData?.let {
+                if (it.surahNumber == ALFATIHAH || it.surahNumber == ATTAUBAH)
+                    listState.animateScrollToItem(currentPlayedAyah - 1)
+                else listState.animateScrollToItem(currentPlayedAyah)
+            }
+            viewModel.playAudio(currentPlayedSurah, currentPlayedAyah) {
+                surahClickedData?.let {
+                    if (currentPlayedAyah + 1 > it.numberOfVerses) {
+                        isAudioPlayed = false
+                        savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+                    } else {
+                        currentPlayedAyah++
+                        savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                    }
+                }
+            }
+        }
+    }
     LaunchedEffect(key1 = downloadState.value) {
         downloadState.value.data?.let {
-            if (it == Constant.DOWNLOAD_DONE)
+            if (it == DOWNLOAD_DONE) {
                 isDownloadingDialogShown = false
-            else {
+                isAudioPlayed = true
+                isAudioPaused = false
+                viewModel.playAudio(currentPlayedSurah, currentPlayedAyah) {
+                    surahClickedData?.let { surah ->
+                        if (currentPlayedAyah + 1 > surah.numberOfVerses) {
+                            isAudioPlayed = false
+                            savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+                        } else {
+                            currentPlayedAyah++
+                            savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                        }
+                    }
+                }
+            } else {
                 isDownloadingDialogShown = true
                 currentDownloadedAyah = it
             }
@@ -63,10 +103,12 @@ fun SurahScreen(
             errorMessage = downloadState.value.error
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp)
+            .padding(top = 16.dp),
+        verticalArrangement = Arrangement.Top
     ) {
         if (isConfirmDialogShown) {
             ConfirmALertDialog(
@@ -102,6 +144,16 @@ fun SurahScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         state.data?.let { surahData ->
+            LaunchedEffect(key1 = surahData) {
+                if(savedState.getBoolean(AUDIO_PLAYING_STATE)) {
+                    isAudioPlayed = true
+                    isAudioPaused = false
+                    surahClickedData = surahData
+                    currentPlayedSurah = savedState.getString(CURRENT_PLAYED_SURAH, surahData.name)
+                    currentPlayedAyah = savedState.getInt(CURRENT_PLAYED_AYAH, 1)
+                }
+            }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -138,46 +190,124 @@ fun SurahScreen(
                 textSize = 16.sp
             )
             Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                if (surahNumber != ALFATIHAH && surahNumber != ATTAUBAH) {
-                    item {
-                        Bismillah()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    state = listState
+                ) {
+                    if (surahNumber != ALFATIHAH && surahNumber != ATTAUBAH) {
+                        item {
+                            Bismillah()
+                        }
+                    }
+                    itemsIndexed(surahData.verses) { index, verse ->
+                        VerseItem(
+                            verseData = verse,
+                            onPlayAudioButtonClicked = {
+                                surahClickedData = surahData
+                                currentPlayedSurah = surahData.name
+                                currentPlayedAyah = verse.verseNumber
+                                if (!viewModel.checkIfFolderExist(
+                                        surahData.name,
+                                        surahData.numberOfVerses
+                                    )
+                                ) {
+                                    isConfirmDialogShown = true
+                                } else {
+                                    isAudioPlayed = true
+                                    isAudioPaused = false
+                                }
+                            },
+                            isLastItemAndAudioPlayed = (index == surahData.verses.size - 1) && isAudioPlayed
+                        )
                     }
                 }
-                items(surahData.verses) { verse ->
-                    VerseItem(
-                        verseData = verse,
-                        onPlayAudioButtonClicked = {
-                            if (!viewModel.checkIfFolderExist(surahData.name)) {
-                                isConfirmDialogShown = true
-                                surahClickedData = surahData
-                            } else {
-                                Log.d("play audio", "Already downloaded, should play surah instead")
-                            }
-                        }
-                    )
+                if (isAudioPlayed) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        AudioControl(
+                            onPlay = {
+                                viewModel.playAudio() {
+                                    surahClickedData?.let {
+                                        if (currentPlayedAyah + 1 > it.numberOfVerses) {
+                                            isAudioPlayed = false
+                                        } else {
+                                            currentPlayedAyah++
+                                            savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                                        }
+                                    }
+                                }
+                                isAudioPaused = false
+                                savedState.putBoolean(AUDIO_PLAYING_STATE, true)
+                            },
+                            onPause = {
+                                viewModel.pauseAudio()
+                                isAudioPaused = true
+                                savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+                            },
+                            onStop = {
+                                isAudioPlayed = false
+                                savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+                                viewModel.stopAudio()
+                            },
+                            onSkipNext = {
+                                surahClickedData?.let {
+                                    if (currentPlayedAyah + 1 <= it.numberOfVerses) {
+                                        currentPlayedAyah++
+                                        savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                                    }
+                                }
+                            },
+                            onSkipPrevious = {
+                                surahClickedData?.let {
+                                    if (currentPlayedAyah - 1 >= 1) {
+                                        currentPlayedAyah--
+                                        savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(0.7f)
+                                .height(56.dp),
+                            playing = isAudioPaused
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
             }
         }
-        if (state.error.isNotBlank()) {
-            ErrorScreen(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                message = state.error,
-                showButton = true,
-                buttonText = "Coba lagi",
-                onButtonClicked = {
-                    viewModel.getSurahDetail(surahNumber)
-                }
-            )
-        }
-        if (state.isLoading) {
-            LoadingScreen(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-            )
+    }
+    if (state.error.isNotBlank()) {
+        ErrorScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            message = state.error,
+            showButton = true,
+            buttonText = "Coba lagi",
+            onButtonClicked = {
+                viewModel.getSurahDetail(surahNumber)
+            }
+        )
+    }
+    if (state.isLoading) {
+        LoadingScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        )
+    }
+    DisposableEffect(key1 = Unit){
+        onDispose {
+            savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+            viewModel.stopAudio()
         }
     }
 }

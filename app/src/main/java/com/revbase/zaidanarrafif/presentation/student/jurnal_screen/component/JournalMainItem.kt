@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,6 +19,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.presentation.common_component.PrimaryButton
 import com.revbase.zaidanarrafif.presentation.ui.theme.Blue
 import com.revbase.zaidanarrafif.presentation.ui.theme.DarkGrey
 import com.revbase.zaidanarrafif.presentation.ui.theme.LightGrey
@@ -26,7 +28,7 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.LightGrey
 @Composable
 fun JournalMainItem(
     journalType: String,
-    imageUrl: String,
+    icon: Int,
     progress: String,
     onClick: () -> Unit,
 ) {
@@ -37,10 +39,9 @@ fun JournalMainItem(
         shape = RoundedCornerShape(10.dp),
         elevation = 2.dp,
     ) {
-
         Row(
             modifier = Modifier
-                .fillMaxWidth().height(IntrinsicSize.Max)
+                .fillMaxWidth()
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -54,44 +55,36 @@ fun JournalMainItem(
                         color = Color.Black,
                         fontFamily = Constant.LATO_FONT_FAMILY,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 16.sp
                     ),
 
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = progress,
                     softWrap= true,
                     style = TextStyle(
                         color = DarkGrey,
                         fontFamily = Constant.LATO_FONT_FAMILY,
-                        fontWeight = FontWeight.Bold,
                         fontSize = 14.sp
                     ),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2
                 )
-                Spacer(modifier = Modifier.height(10.dp))
-                TextButton(
-                    onClick = onClick,
-                    modifier = Modifier.width(100.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        Blue
-                    )
-                ) {
-                    Text(text = "Isi Jurnal", style = TextStyle(color = Color.White))
-
-                }
-
+                Spacer(modifier = Modifier.height(16.dp))
+                PrimaryButton(
+                    onClick = { onClick() },
+                    text = "Isi Jurnal",
+                    textSize = 14.sp
+                )
             }
             Image(
-                painter = rememberImagePainter(imageUrl),
-                contentDescription = null,
+                painter = painterResource(id = icon),
+                contentDescription = "Jurnal type icon",
                 modifier = Modifier
                     .size(80.dp)
             )
         }
     }
-    Spacer(modifier = Modifier.height(32.dp))
-
+    Spacer(modifier = Modifier.height(24.dp))
 }

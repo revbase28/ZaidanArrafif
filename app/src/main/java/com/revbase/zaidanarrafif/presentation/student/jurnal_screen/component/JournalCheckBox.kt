@@ -22,7 +22,5 @@ fun JournalCheckBox()
             uncheckedColor = Color.DarkGray,
             checkmarkColor = Color.White
         )
-
-
     )
 }

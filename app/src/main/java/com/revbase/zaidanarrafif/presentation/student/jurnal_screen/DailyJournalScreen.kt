@@ -36,7 +36,6 @@ fun DailyJournalScreen(
 
     LaunchedEffect(key1 = Unit) {
         if (journalType == "ACTIVITY_JOURNAL") {
-
             viewModel.getAllDailyActivityJournal()
         } else {
 

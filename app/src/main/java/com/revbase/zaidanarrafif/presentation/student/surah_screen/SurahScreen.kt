@@ -1,5 +1,7 @@
 package com.revbase.zaidanarrafif.presentation.student.surah_screen
 
+import android.os.Bundle
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +21,9 @@ import androidx.navigation.NavController
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Constant.ALFATIHAH
 import com.revbase.zaidanarrafif.common.Constant.ATTAUBAH
+import com.revbase.zaidanarrafif.common.Constant.AUDIO_PLAYING_STATE
+import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_AYAH
+import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_SURAH
 import com.revbase.zaidanarrafif.common.Constant.DOWNLOAD_DONE
 import com.revbase.zaidanarrafif.domain.models.SurahDetail
 import com.revbase.zaidanarrafif.presentation.common_component.*
@@ -30,7 +35,8 @@ import com.revbase.zaidanarrafif.presentation.student.surah_screen.component.Ver
 fun SurahScreen(
     navController: NavController,
     surahNumber: Int,
-    viewModel: SurahViewModel = hiltViewModel()
+    viewModel: SurahViewModel = hiltViewModel(),
+    savedState: Bundle
 ) {
     val state = viewModel.state.value
     val downloadState = viewModel.downloadState
@@ -52,11 +58,21 @@ fun SurahScreen(
     LaunchedEffect(key1 = currentPlayedAyah) {
         if (isAudioPlayed) {
             surahClickedData?.let {
-                if(it.surahNumber == ALFATIHAH || it.surahNumber == ATTAUBAH)
+                if (it.surahNumber == ALFATIHAH || it.surahNumber == ATTAUBAH)
                     listState.animateScrollToItem(currentPlayedAyah - 1)
                 else listState.animateScrollToItem(currentPlayedAyah)
             }
-            viewModel.playAudio(currentPlayedSurah, currentPlayedAyah)
+            viewModel.playAudio(currentPlayedSurah, currentPlayedAyah) {
+                surahClickedData?.let {
+                    if (currentPlayedAyah + 1 > it.numberOfVerses) {
+                        isAudioPlayed = false
+                        savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+                    } else {
+                        currentPlayedAyah++
+                        savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                    }
+                }
+            }
         }
     }
     LaunchedEffect(key1 = downloadState.value) {
@@ -65,7 +81,17 @@ fun SurahScreen(
                 isDownloadingDialogShown = false
                 isAudioPlayed = true
                 isAudioPaused = false
-                viewModel.playAudio(currentPlayedSurah, currentPlayedAyah)
+                viewModel.playAudio(currentPlayedSurah, currentPlayedAyah) {
+                    surahClickedData?.let { surah ->
+                        if (currentPlayedAyah + 1 > surah.numberOfVerses) {
+                            isAudioPlayed = false
+                            savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+                        } else {
+                            currentPlayedAyah++
+                            savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                        }
+                    }
+                }
             } else {
                 isDownloadingDialogShown = true
                 currentDownloadedAyah = it
@@ -118,6 +144,16 @@ fun SurahScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         state.data?.let { surahData ->
+            LaunchedEffect(key1 = surahData) {
+                if(savedState.getBoolean(AUDIO_PLAYING_STATE)) {
+                    isAudioPlayed = true
+                    isAudioPaused = false
+                    surahClickedData = surahData
+                    currentPlayedSurah = savedState.getString(CURRENT_PLAYED_SURAH, surahData.name)
+                    currentPlayedAyah = savedState.getInt(CURRENT_PLAYED_AYAH, 1)
+                }
+            }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -176,7 +212,11 @@ fun SurahScreen(
                                 surahClickedData = surahData
                                 currentPlayedSurah = surahData.name
                                 currentPlayedAyah = verse.verseNumber
-                                if (!viewModel.checkIfFolderExist(surahData.name, surahData.numberOfVerses)) {
+                                if (!viewModel.checkIfFolderExist(
+                                        surahData.name,
+                                        surahData.numberOfVerses
+                                    )
+                                ) {
                                     isConfirmDialogShown = true
                                 } else {
                                     isAudioPlayed = true
@@ -194,22 +234,44 @@ fun SurahScreen(
                     ) {
                         AudioControl(
                             onPlay = {
-                                viewModel.playAudio()
+                                viewModel.playAudio() {
+                                    surahClickedData?.let {
+                                        if (currentPlayedAyah + 1 > it.numberOfVerses) {
+                                            isAudioPlayed = false
+                                        } else {
+                                            currentPlayedAyah++
+                                            savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                                        }
+                                    }
+                                }
                                 isAudioPaused = false
+                                savedState.putBoolean(AUDIO_PLAYING_STATE, true)
                             },
                             onPause = {
                                 viewModel.pauseAudio()
                                 isAudioPaused = true
+                                savedState.putBoolean(AUDIO_PLAYING_STATE, false)
                             },
                             onStop = {
                                 isAudioPlayed = false
+                                savedState.putBoolean(AUDIO_PLAYING_STATE, false)
                                 viewModel.stopAudio()
                             },
                             onSkipNext = {
-                                currentPlayedAyah++
+                                surahClickedData?.let {
+                                    if (currentPlayedAyah + 1 <= it.numberOfVerses) {
+                                        currentPlayedAyah++
+                                        savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                                    }
+                                }
                             },
                             onSkipPrevious = {
-                                currentPlayedAyah--
+                                surahClickedData?.let {
+                                    if (currentPlayedAyah - 1 >= 1) {
+                                        currentPlayedAyah--
+                                        savedState.putInt(CURRENT_PLAYED_AYAH, currentPlayedAyah)
+                                    }
+                                }
                             },
                             modifier = Modifier
                                 .fillMaxWidth(0.7f)
@@ -241,5 +303,11 @@ fun SurahScreen(
                 .fillMaxSize()
                 .background(Color.White)
         )
+    }
+    DisposableEffect(key1 = Unit){
+        onDispose {
+            savedState.putBoolean(AUDIO_PLAYING_STATE, false)
+            viewModel.stopAudio()
+        }
     }
 }

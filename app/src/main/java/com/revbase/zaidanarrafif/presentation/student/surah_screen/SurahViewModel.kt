@@ -71,12 +71,17 @@ class SurahViewModel @Inject constructor(
         return checkIfFolderExistUseCase(folderName, numberOfVerses)
     }
 
-    fun playAudio() {
-        playAudioUseCase.playAgain()
+    fun playAudio(onFinishPlaying: () -> Unit) {
+        playAudioUseCase.playAgain().setOnCompletionListener {
+            onFinishPlaying()
+        }
         isPaused = false
     }
-    fun playAudio(surah: String, ayah: Int) {
-        playAudioUseCase(surah = surah, fileName = "${surah}_${ayah}.mp3")
+
+    fun playAudio(surah: String, ayah: Int, onFinishPlaying: () -> Unit) {
+        playAudioUseCase(surah = surah, fileName = "${surah}_${ayah}.mp3").setOnCompletionListener {
+            onFinishPlaying()
+        }
     }
 
     fun pauseAudio() {
@@ -87,5 +92,9 @@ class SurahViewModel @Inject constructor(
     fun stopAudio(){
         isPaused = false
         playAudioUseCase.stop()
+    }
+
+    fun checkIfAudioPlaying(): Boolean{
+        return playAudioUseCase.isMediaPlaying()
     }
 }

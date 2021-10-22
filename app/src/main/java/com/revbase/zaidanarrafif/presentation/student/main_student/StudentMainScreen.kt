@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.student.main_student
 
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
@@ -30,7 +31,8 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 @ExperimentalMaterialApi
 @Composable
 fun StudentMainScreen(
-    mainNavController: NavController
+    mainNavController: NavController,
+    savedState: Bundle
 ) {
     Column(
         modifier = Modifier
@@ -88,7 +90,7 @@ fun StudentMainScreen(
             backgroundColor = WhiteBackground
         ) {
             Box(modifier = Modifier.padding(bottom = it.calculateBottomPadding())) {
-                StudentNavigation(navController = navController, mainNavController = mainNavController)
+                StudentNavigation(navController = navController, mainNavController = mainNavController, savedState = savedState)
             }
         }
     }
@@ -99,14 +101,15 @@ fun StudentMainScreen(
 @Composable
 fun StudentNavigation(
     navController: NavHostController,
-    mainNavController: NavController
+    mainNavController: NavController,
+    savedState: Bundle
 ) {
     NavHost(
         navController = navController,
         startDestination =Screen.QuranScreen.route
     ) {
         composable(route = Screen.QuranScreen.route) {
-            QuranScreen(navController = mainNavController)
+            QuranScreen(navController = mainNavController, savedState = savedState)
         }
 
         composable(route = Screen.JournalMainScreen.route) {
@@ -124,8 +127,5 @@ fun StudentNavigation(
         composable(route = Screen.ProfileScreen.route) {
             ProfileScreen()
         }
-//        composable(route = Screen.ActivityJournalScreen.route) {
-//            ActivityJurnalScreen(navController = mainNavController)
-//        }
     }
 }

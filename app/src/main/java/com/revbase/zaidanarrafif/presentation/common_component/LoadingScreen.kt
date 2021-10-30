@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.common_component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -19,12 +21,15 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.Pink
 
 @Composable
 fun LoadingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isDimmed: Boolean = false
 ) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading))
     Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
+        modifier = if(isDimmed) {
+            modifier.background(color = Color.Black.copy(0.25F))
+        } else modifier,
+        contentAlignment = Alignment.Center,
     ) {
         LottieAnimation(
             composition = composition ,

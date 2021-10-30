@@ -8,6 +8,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +22,7 @@ import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
+import com.revbase.zaidanarrafif.presentation.teacher.main_teacher.TeacherMainScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +55,11 @@ class MainActivity: ComponentActivity() {
                         composable(route = Screen.StudentMainScreen.route) {
                             StudentMainScreen(mainNavController = navController, savedState = savedState)
                         }
+
+                        composable(route = Screen.TeacherMainScreen.route) {
+                            TeacherMainScreen()
+                        }
+
                         composable(Screen.ActivityJournalScreen.route + "/{journalType}") { backStackEntry ->
                             DailyJournalScreen(
                                 navController,

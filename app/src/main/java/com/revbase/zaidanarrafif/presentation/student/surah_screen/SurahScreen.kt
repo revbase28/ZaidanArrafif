@@ -1,7 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.student.surah_screen
 
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.revbase.zaidanarrafif.R
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Constant.ALFATIHAH
 import com.revbase.zaidanarrafif.common.Constant.ATTAUBAH
@@ -128,12 +128,14 @@ fun SurahScreen(
             )
         }
         if (isDownloadErrorDialogShown) {
-            FailedToDownloadAlertDialog(
+            FailedActionAlertDialog(
                 onDismiss = {
                     isDownloadErrorDialogShown = false
                     errorMessage = ""
                 },
-                message = errorMessage
+                message = errorMessage,
+                title = "Opps, download gagal..",
+                animRes = R.raw.download_failed
             )
         }
 

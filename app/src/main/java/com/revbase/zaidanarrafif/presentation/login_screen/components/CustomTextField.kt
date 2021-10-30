@@ -29,7 +29,8 @@ fun CustomTextField(
     color: Color,
     height: Dp = 62.dp,
     onTextChanged: (String) -> Unit,
-    onFocusChanged: (FocusState) -> Unit
+    onFocusChanged: (FocusState) -> Unit,
+    hasError: Boolean
 ) {
     Box(
         contentAlignment = Alignment.BottomCenter
@@ -50,6 +51,7 @@ fun CustomTextField(
                     onFocusChanged(it)
                 },
             value = text,
+            isError = hasError,
             onValueChange = { onTextChanged(it) },
             label = {
                 Text(text = label)
@@ -59,14 +61,16 @@ fun CustomTextField(
                 fontSize = 21.sp
             ),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Pink,
+                focusedBorderColor = if(hasError) Color.Red else Pink,
                 cursorColor = Pink,
-                focusedLabelColor = Pink,
+                focusedLabelColor = if(hasError) Color.Red else Pink,
                 unfocusedBorderColor = if(text.isBlank()){
                     Color.Transparent
                 } else {
                     DarkGrey
-                }
+                },
+                errorLabelColor = Color.Red,
+                errorBorderColor = Color.Red
             )
         )
     }

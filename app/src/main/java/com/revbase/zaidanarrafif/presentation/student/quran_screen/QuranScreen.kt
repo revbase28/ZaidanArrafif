@@ -1,7 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.student.quran_screen
 
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,10 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.revbase.zaidanarrafif.R
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Constant.AUDIO_PLAYING_STATE
 import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_AYAH
 import com.revbase.zaidanarrafif.common.Constant.CURRENT_PLAYED_SURAH
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.Siswa
 import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.common_component.ErrorScreen
@@ -26,7 +27,7 @@ import com.revbase.zaidanarrafif.presentation.common_component.LoadingScreen
 import com.revbase.zaidanarrafif.presentation.common_component.SearchNotFoundScreen
 import com.revbase.zaidanarrafif.presentation.common_component.ConfirmALertDialog
 import com.revbase.zaidanarrafif.presentation.common_component.DownloadAlertDialog
-import com.revbase.zaidanarrafif.presentation.common_component.FailedToDownloadAlertDialog
+import com.revbase.zaidanarrafif.presentation.common_component.FailedActionAlertDialog
 import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.ListSurahItem
 
 @ExperimentalMaterialApi
@@ -35,7 +36,8 @@ import com.revbase.zaidanarrafif.presentation.student.quran_screen.component.Lis
 fun QuranScreen(
     navController: NavController,
     viewModel: QuranViewModel = hiltViewModel(),
-    savedState: Bundle
+    savedState: Bundle,
+    studentData: Siswa
 ) {
     val state = viewModel.state.value
     val downloadState = viewModel.downloadState
@@ -88,17 +90,19 @@ fun QuranScreen(
             )
         }
         if (isDownloadErrorDialogShown) {
-            FailedToDownloadAlertDialog(
+            FailedActionAlertDialog(
                 onDismiss = {
                     isDownloadErrorDialogShown = false
                     errorMessage = ""
                 },
-                message = errorMessage
+                message = errorMessage,
+                title = "Opps, download gagal..",
+                animRes = R.raw.download_failed
             )
         }
 
         Text(
-            text = "Assalamua'laikum Rizki",
+            text = "Assalamua'laikum ${studentData.nama_panggilan}",
             fontSize = 14.sp,
             fontFamily = Constant.LATO_FONT_FAMILY
         )

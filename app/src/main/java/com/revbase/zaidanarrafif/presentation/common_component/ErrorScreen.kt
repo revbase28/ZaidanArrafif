@@ -26,9 +26,10 @@ fun ErrorScreen(
     modifier: Modifier = Modifier,
     showButton: Boolean = false,
     onButtonClicked: () -> Unit = {},
-    buttonText: String = ""
+    buttonText: String = "",
+    anim : Int = R.raw.no_internet
 ) {
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.no_internet))
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(anim))
 
     Column(
         modifier = modifier,

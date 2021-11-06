@@ -14,11 +14,11 @@ import javax.inject.Inject
 class GetAllDailyWorshipJournalUseCase @Inject constructor(
     private val repository: JournalRepository
 ) {
-    operator fun invoke():Flow<Resource<List<Journal>>> = flow{
+    operator fun invoke(token:String):Flow<Resource<List<Journal>>> = flow{
         Log.d("GetAllDailyWJournalUC", "GetAllDailyWJournalUC  executed")
         try {
             emit(Resource.Loading<List<Journal>>())
-            val allDailyWorshipJournal = repository.getAllDailyWorshipJournal().data.map { DailyJournalDTO->
+            val allDailyWorshipJournal = repository.getAllDailyWorshipJournal(token).data.map { DailyJournalDTO->
                 DailyJournalDTO.toJournal()
             }
             Log.d("get_all_W_journalUC", "get all W journal executed")

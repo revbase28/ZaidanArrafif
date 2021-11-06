@@ -28,8 +28,12 @@ interface ZaidanAPI {
     ): Response<Any>
 
     @GET("kegiatan?jenis=kegiatan")
-    suspend fun getAllDailyActivityJournal():JournalResponse
+    suspend fun getAllDailyActivityJournal(
+        @Header("Authorization")token: String
+    ):JournalResponse
 
     @GET("kegiatan?jenis=ibadah")
-    suspend fun getAllDailyWorshipJournal():JournalResponse
+    suspend fun getAllDailyWorshipJournal(
+        @Header("Authorization")token: String
+    ):JournalResponse
 }

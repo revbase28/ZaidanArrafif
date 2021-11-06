@@ -27,7 +27,9 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.Pink
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
-fun SelectRole() {
+fun SelectRole(
+    onRoleSelected: (Boolean) -> Unit
+) {
     var isTeacherRoleSelected by remember {
         mutableStateOf(false)
     }
@@ -49,6 +51,7 @@ fun SelectRole() {
             onSelect = {
                 isStudentRoleSelected = true
                 isTeacherRoleSelected = false
+                onRoleSelected(true)
             },
             text = "Masuk sebagai siswa"
         )
@@ -60,6 +63,7 @@ fun SelectRole() {
             onSelect = {
                 isStudentRoleSelected = false
                 isTeacherRoleSelected = true
+                onRoleSelected(false)
             },
             text = "Masuk sebagai guru"
 

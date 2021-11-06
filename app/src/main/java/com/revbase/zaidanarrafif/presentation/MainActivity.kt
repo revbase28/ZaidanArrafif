@@ -20,6 +20,7 @@ import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
+import com.revbase.zaidanarrafif.presentation.teacher.teacher_main_screen.TeacherMainScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,6 +75,14 @@ class MainActivity: ComponentActivity() {
                                 savedState = savedState
                             )
                         }
+
+                        composable(
+                            route = Screen.TeacherMainScreen.route
+                        ) {
+                            TeacherMainScreen(mainNavController = navController, savedState = savedState)
+                        }
+
+
                     }
                 }
             }

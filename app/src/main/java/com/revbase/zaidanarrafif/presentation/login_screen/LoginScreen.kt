@@ -61,8 +61,11 @@ fun LoginScreen(
                     var textFieldPasswordBackground by remember { mutableStateOf(LightGrey) }
                     var username by remember { mutableStateOf("") }
                     var password by remember { mutableStateOf("") }
+                    var isStudent by remember { mutableStateOf(false) }
 
-                    SelectRole()
+                    SelectRole(onRoleSelected = {
+                        isStudent = it
+                    })
                     Spacer(modifier = Modifier.height(16.dp))
                     CustomTextField(
                         color = textFieldUsernameBackground,
@@ -102,7 +105,10 @@ fun LoginScreen(
                     PrimaryButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            navController.navigate(Screen.StudentMainScreen.route)
+                            if (isStudent)
+                                navController.navigate(Screen.StudentMainScreen.route)
+                            else
+                                navController.navigate(Screen.TeacherMainScreen.route)
                         },
                         text = "Masuk",
                         textSize = 18.sp

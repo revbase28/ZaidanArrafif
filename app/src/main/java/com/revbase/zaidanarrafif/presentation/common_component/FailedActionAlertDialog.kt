@@ -25,11 +25,13 @@ import com.revbase.zaidanarrafif.presentation.common_component.PrimaryButton
 import com.revbase.zaidanarrafif.presentation.common_component.SecondaryButton
 
 @Composable
-fun FailedToDownloadAlertDialog(
+fun FailedActionAlertDialog(
     onDismiss: () -> Unit,
-    message: String
+    title: String,
+    message: String,
+    animRes: Int
 ) {
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.download_failed))
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(animRes))
     AlertDialog(
         onDismissRequest = {
             onDismiss()
@@ -58,7 +60,7 @@ fun FailedToDownloadAlertDialog(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Opps, download gagal..",
+                    text = title,
                     style = TextStyle(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,

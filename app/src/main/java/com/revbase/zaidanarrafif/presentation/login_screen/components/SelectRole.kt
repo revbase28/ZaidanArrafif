@@ -28,15 +28,12 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.Pink
 @ExperimentalMaterialApi
 @Composable
 fun SelectRole(
-    onRoleSelected: (Boolean) -> Unit
+    isStudentRoleSelected: Boolean,
+    isTeacherRoleSelected: Boolean,
+    onStudentSelect: () -> Unit,
+    onTeacherSelect: () -> Unit,
+    hasError: Boolean
 ) {
-    var isTeacherRoleSelected by remember {
-        mutableStateOf(false)
-    }
-    var isStudentRoleSelected by remember {
-        mutableStateOf(false)
-    }
-    
     Row(
         modifier = Modifier
             .height(200.dp)
@@ -47,26 +44,23 @@ fun SelectRole(
         CardRoleOption(
             imageUrl = "https://cdn-icons-png.flaticon.com/512/2784/2784461.png",
             modifier = Modifier.weight(1F),
-            isSelected = isStudentRoleSelected,
+            isSelected = isStudentRoleSelected || hasError,
             onSelect = {
-                isStudentRoleSelected = true
-                isTeacherRoleSelected = false
-                onRoleSelected(true)
+                onStudentSelect()
             },
-            text = "Masuk sebagai siswa"
+            text = "Masuk sebagai siswa",
+            borderColor = if(hasError) Color.Red else Pink
         )
         Spacer(modifier = Modifier.width(16.dp))
         CardRoleOption(
             imageUrl = "https://cdn-icons-png.flaticon.com/512/2784/2784488.png",
             modifier = Modifier.weight(1F),
-            isSelected = isTeacherRoleSelected,
+            isSelected = isTeacherRoleSelected || hasError,
             onSelect = {
-                isStudentRoleSelected = false
-                isTeacherRoleSelected = true
-                onRoleSelected(false)
+                onTeacherSelect()
             },
-            text = "Masuk sebagai guru"
-
+            text = "Masuk sebagai guru",
+            borderColor = if(hasError) Color.Red else Pink
         )
     }
 }
@@ -79,7 +73,8 @@ fun CardRoleOption(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
     onSelect: ()->Unit,
-    text: String
+    text: String,
+    borderColor: Color
 ) {
     Card(
         modifier = modifier
@@ -87,7 +82,7 @@ fun CardRoleOption(
         shape = RoundedCornerShape(12.dp),
         backgroundColor = LightGrey,
         border = if(isSelected) {
-            BorderStroke(width = 2.dp, color = Pink)
+            BorderStroke(width = 2.dp, color = borderColor)
         } else null,
         onClick = onSelect
     ) {
@@ -107,7 +102,6 @@ fun CardRoleOption(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
-
                 )
             }
         }

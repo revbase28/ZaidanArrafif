@@ -12,12 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.Siswa
 import com.revbase.zaidanarrafif.domain.models.BottomNavItem
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.student.hafalan_screen.HafalanScreen
@@ -32,14 +34,16 @@ import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 @Composable
 fun StudentMainScreen(
     mainNavController: NavController,
+    viewModel: StudentMainViewModel = hiltViewModel(),
     savedState: Bundle
 ) {
+    val state = viewModel.studentData
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         TopBar(
-            starCount = 25,
+            starCount = state.value.stars,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Color.White)
@@ -90,7 +94,7 @@ fun StudentMainScreen(
             backgroundColor = WhiteBackground
         ) {
             Box(modifier = Modifier.padding(bottom = it.calculateBottomPadding())) {
-                StudentNavigation(navController = navController, mainNavController = mainNavController, savedState = savedState)
+                StudentNavigation(navController = navController, mainNavController = mainNavController, savedState = savedState, studentData = state.value)
             }
         }
     }
@@ -102,14 +106,15 @@ fun StudentMainScreen(
 fun StudentNavigation(
     navController: NavHostController,
     mainNavController: NavController,
-    savedState: Bundle
+    savedState: Bundle,
+    studentData: Siswa
 ) {
     NavHost(
         navController = navController,
         startDestination =Screen.QuranScreen.route
     ) {
         composable(route = Screen.QuranScreen.route) {
-            QuranScreen(navController = mainNavController, savedState = savedState)
+            QuranScreen(navController = mainNavController, savedState = savedState, studentData = studentData)
         }
 
         composable(route = Screen.JournalMainScreen.route) {
@@ -125,7 +130,7 @@ fun StudentNavigation(
         }
 
         composable(route = Screen.ProfileScreen.route) {
-            ProfileScreen()
+            ProfileScreen(navController = mainNavController)
         }
     }
 }

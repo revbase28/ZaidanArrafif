@@ -11,23 +11,23 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.revbase.zaidanarrafif.common.Constant
 
 @Composable
 fun ErrorText(
-    errorText: String
+    errorText: String,
+    size: TextUnit = 12.sp,
+    modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Center
-    ) {
-        Text(
-            text = errorText,
-            color = MaterialTheme.colors.error,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
-    }
+    Text(
+        text = errorText,
+        color = MaterialTheme.colors.error,
+        textAlign = TextAlign.Center,
+        modifier = modifier,
+        fontFamily = Constant.LATO_FONT_FAMILY,
+        fontSize = size
+    )
 }

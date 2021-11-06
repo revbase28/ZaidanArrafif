@@ -24,5 +24,6 @@ class StudentMainViewModel @Inject constructor(
                 _state.value = it
             }
         }
+
     }
 }

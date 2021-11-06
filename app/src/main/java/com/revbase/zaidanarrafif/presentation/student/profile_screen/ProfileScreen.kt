@@ -1,6 +1,7 @@
 package com.revbase.zaidanarrafif.presentation.student.profile_screen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -38,12 +39,15 @@ fun ProfileScreen(
             textSize = 14.sp
         )
         if(logoutState.value.isLoading){
-            LoadingScreen(isDimmed = true)
+            LoadingScreen(
+                isDimmed = true,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
     
-    LaunchedEffect(key1 = logoutState) {
-        logoutState.value?.let {
+    LaunchedEffect(key1 = logoutState.value) {
+        logoutState.value.let {
             if(it.logoutCode == Constant.LOGOUT_SUCCESS){
                 navController.navigate(Screen.LoginScreen.route){
                     popUpTo(navController.graph.findStartDestination().id)

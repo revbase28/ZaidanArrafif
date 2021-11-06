@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.di
 
+import android.app.Activity
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
@@ -69,7 +70,7 @@ class AppModule {
     @Named("Journal")
     fun provideRetrofitForJournal(client: OkHttpClient) :Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://f12d-125-164-20-136.ngrok.io/api/")
+            .baseUrl("https://zaidanarrafif.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

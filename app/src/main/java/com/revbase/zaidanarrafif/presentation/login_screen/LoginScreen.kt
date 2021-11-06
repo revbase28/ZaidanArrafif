@@ -1,5 +1,7 @@
 package com.revbase.zaidanarrafif.presentation.login_screen
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,11 +12,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.revbase.zaidanarrafif.R
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.presentation.Screen
@@ -33,6 +39,7 @@ fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val activity = (LocalContext.current as? Activity)
     var textFieldUsernameBackground by remember { mutableStateOf(LightGrey) }
     var textFieldPasswordBackground by remember { mutableStateOf(LightGrey) }
     var username by remember { mutableStateOf("") }
@@ -49,7 +56,7 @@ fun LoginScreen(
     var isFailedDialogShown by remember { mutableStateOf(false) }
 
     val loginSiswaState = viewModel.loginSiswaState.value
-    val loginGuruState = viewModel.loginSiswaState.value
+    val loginGuruState = viewModel.loginGuruState.value
 
     LaunchedEffect(key1 = loginSiswaState, key2 = loginGuruState) {
         if (loginSiswaState.error.isNotBlank() || loginGuruState.error.isNotBlank()) {
@@ -58,14 +65,27 @@ fun LoginScreen(
 
         if (isStudentRoleSelected) {
             loginSiswaState.loginData?.let {
-                navController.navigate(Screen.StudentMainScreen.route)
+                navController.navigate(Screen.StudentMainScreen.route){
+                    popUpTo(Screen.LoginScreen.route){
+                        inclusive = true
+                    }
+                }
             }
         } else if (isTeacherRoleSelected) {
             loginGuruState.loginData?.let {
-                navController.navigate(Screen.TeacherMainScreen.route)
+                navController.navigate(Screen.TeacherMainScreen.route){
+                    popUpTo(Screen.LoginScreen.route){
+                        inclusive = true
+                    }
+                }
             }
         }
     }
+
+    BackHandler {
+        activity?.finish()
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()

@@ -42,7 +42,7 @@ class MainActivity: ComponentActivity() {
                 Surface(color = WhiteBackground) {
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.LoginScreen.route
+                        startDestination = Screen.SplashScreen.route
                     ) {
                         composable(route = Screen.SplashScreen.route) {
                             SplashScreen(navController = navController)
@@ -57,7 +57,7 @@ class MainActivity: ComponentActivity() {
                         }
 
                         composable(route = Screen.TeacherMainScreen.route) {
-                            TeacherMainScreen()
+                            TeacherMainScreen(navController = navController)
                         }
 
                         composable(Screen.ActivityJournalScreen.route + "/{journalType}") { backStackEntry ->

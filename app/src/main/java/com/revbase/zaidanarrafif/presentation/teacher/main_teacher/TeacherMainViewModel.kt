@@ -1,13 +1,12 @@
-package com.revbase.zaidanarrafif.presentation.student.profile_screen
+package com.revbase.zaidanarrafif.presentation.teacher.main_teacher
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.PreferenceManager
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.domain.repositories.LoginRepository
 import com.revbase.zaidanarrafif.domain.use_case.logout.LogoutUseCase
-import com.revbase.zaidanarrafif.presentation.login_screen.LoginSiswaState
+import com.revbase.zaidanarrafif.presentation.student.profile_screen.LogoutState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -16,13 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+class TeacherMainViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
     private val preferenceManager: PreferenceManager
 ): ViewModel() {
 
-    private val _logoutState = mutableStateOf(LogoutState())
     private var _token = ""
+    private val _logoutState = mutableStateOf(LogoutState())
     val logoutState = _logoutState
 
     init {

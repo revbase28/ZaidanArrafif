@@ -8,8 +8,8 @@ import com.revbase.zaidanarrafif.R
 object Constant {
     const val QURAN_API_BASE_URL = "https://api.quran.sutanlab.id/"
     const val LOGOUT_SUCCESS = 204
-    const val UNAME_PASS_NOT_MATCH = "Credentials not match"
-    const val BAD_REQUEST = "HTTP 400 "
+    const val AS_STUDENT = "student"
+    const val AS_TEACHER = "teacher"
     const val AUDIO_PLAYING_STATE = "isPlayingAudio"
     const val CURRENT_PLAYED_SURAH = "surahPlayed"
     const val CURRENT_PLAYED_AYAH = "ayahPlayed"

@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.revbase.zaidanarrafif.common.Constant.AS_STUDENT
+import com.revbase.zaidanarrafif.common.Constant.AS_TEACHER
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.Guru
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.Siswa
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +17,7 @@ class PreferenceManager(val context: Context) {
     private val dataStore = context.prefDataStore
 
     private val TOKEN = stringPreferencesKey("token")
+    private val USERTYPE = stringPreferencesKey("userType")
     private val NIS = stringPreferencesKey("nis")
     private val NAME = stringPreferencesKey("name")
     private val USERNAME = stringPreferencesKey("username")
@@ -30,6 +33,7 @@ class PreferenceManager(val context: Context) {
     suspend fun storeStudentData(studentData: Siswa, token: String) {
         dataStore.edit { pref ->
             pref[TOKEN] = token
+            pref[USERTYPE] = AS_STUDENT
             pref[NIS] = studentData.nis.toString()
             pref[NAME] = studentData.nama_siswa
             pref[USERNAME] = studentData.username
@@ -45,6 +49,10 @@ class PreferenceManager(val context: Context) {
 
     fun getToken(): Flow<String> = dataStore.data.map { pref ->
         pref[TOKEN] ?: ""
+    }
+
+    fun getUserType(): Flow<String> = dataStore.data.map { pref ->
+        pref[USERTYPE] ?: ""
     }
 
     fun getStudentDataFromPreferences(): Flow<Siswa> = dataStore.data.map { pref ->
@@ -65,6 +73,7 @@ class PreferenceManager(val context: Context) {
     suspend fun storeTeacherData(teacherData: Guru, token: String) {
         dataStore.edit { pref ->
             pref[TOKEN] = token
+            pref[USERTYPE] = AS_TEACHER
             pref[NAME] = teacherData.nama_guru
             pref[NIP] = teacherData.nip.toString()
         }

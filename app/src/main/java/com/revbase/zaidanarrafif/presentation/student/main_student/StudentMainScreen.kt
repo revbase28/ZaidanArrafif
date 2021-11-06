@@ -130,7 +130,7 @@ fun StudentNavigation(
         }
 
         composable(route = Screen.ProfileScreen.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = mainNavController)
         }
     }
 }

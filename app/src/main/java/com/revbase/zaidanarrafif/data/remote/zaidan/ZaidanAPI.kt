@@ -3,6 +3,7 @@ package com.revbase.zaidanarrafif.data.remote.zaidan
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginGuruResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginSiswaResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -32,4 +33,12 @@ interface ZaidanAPI {
 
     @GET("kegiatan?jenis=ibadah")
     suspend fun getAllDailyWorshipJournal():JournalResponse
+
+    @Headers("Accept: application/json")
+    @GET("guru/{nip}/jurnal")
+    suspend fun getJournalSummary(
+        @Path("nip") nip: Int,
+        @Header("Authorization") token: String,
+        @Query("jenis") jenis: String? = null
+    ): JournalSummaryResponse
 }

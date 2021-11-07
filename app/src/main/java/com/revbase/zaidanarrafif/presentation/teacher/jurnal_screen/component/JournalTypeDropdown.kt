@@ -27,7 +27,7 @@ fun JournalTypeDropdown(
     onClick: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false)}
-    val dropdownItems = listOf("Jurnal Kegiatan", "Jurnal Ibadah")
+    val dropdownItems = listOf("Kegiatan", "Ibadah")
     var selectedIndex by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
@@ -36,7 +36,7 @@ fun JournalTypeDropdown(
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
         Text(
-            text = dropdownItems[selectedIndex],
+            text = "Jurnal " + dropdownItems[selectedIndex],
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -54,7 +54,7 @@ fun JournalTypeDropdown(
                     selectedIndex = index
                     onClick(s)
                 }) {
-                    Text(text = s)
+                    Text(text = "Jurnal $s")
                 }
             }
         }

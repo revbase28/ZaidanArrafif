@@ -57,7 +57,7 @@ class MainActivity: ComponentActivity() {
                         }
 
                         composable(route = Screen.TeacherMainScreen.route) {
-                            TeacherMainScreen(navController = navController)
+                            TeacherMainScreen(mainNavController = navController, savedState = savedState)
                         }
 
                         composable(Screen.ActivityJournalScreen.route + "/{journalType}") { backStackEntry ->

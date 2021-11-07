@@ -87,6 +87,10 @@ class PreferenceManager(val context: Context) {
         )
     }
 
+    fun getNip(): Flow<Int> = dataStore.data.map { pref ->
+        pref[NIP]?.toInt() ?: 0
+    }
+
     suspend fun cleanPref() {
         dataStore.edit {
             it.clear()

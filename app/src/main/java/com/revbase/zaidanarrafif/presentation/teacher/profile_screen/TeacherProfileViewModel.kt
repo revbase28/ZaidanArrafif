@@ -1,11 +1,10 @@
-package com.revbase.zaidanarrafif.presentation.teacher.main_teacher
+package com.revbase.zaidanarrafif.presentation.teacher.profile_screen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.PreferenceManager
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.domain.use_case.get_journal_summary.GetJournalSummaryUseCase
 import com.revbase.zaidanarrafif.domain.use_case.logout.LogoutUseCase
 import com.revbase.zaidanarrafif.presentation.student.profile_screen.LogoutState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,14 +15,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TeacherMainViewModel @Inject constructor(
+class TeacherProfileViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
-    private val getJournalSummaryUseCase: GetJournalSummaryUseCase,
     private val preferenceManager: PreferenceManager
 ): ViewModel() {
 
     private var _token = ""
-    private var _nip = 0
     private val _logoutState = mutableStateOf(LogoutState())
     val logoutState = _logoutState
 
@@ -31,9 +28,6 @@ class TeacherMainViewModel @Inject constructor(
         viewModelScope.launch {
             preferenceManager.getToken().collect {
                 _token = it
-            }
-            preferenceManager.getNip().collect {
-                _nip = it
             }
         }
     }

@@ -13,6 +13,6 @@ sealed class Screen(val route: String) {
     object RankScreen: Screen("rank_screen")
     object ProfileScreen: Screen("profile_screen")
 
-    object TeacherMainScreen: Screen("teacher_main_screen")
     object TeacherJournalScreen: Screen("teacher_journal_screen")
+    object TeacherProfileScreen: Screen("teacher_profile_screen")
 }

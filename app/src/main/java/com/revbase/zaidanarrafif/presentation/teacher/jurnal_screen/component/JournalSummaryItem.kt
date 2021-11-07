@@ -18,11 +18,13 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.domain.models.JournalSummary
 
 @ExperimentalCoilApi
-@Preview(showBackground = true)
 @Composable
-fun JournalSummaryItem() {
+fun JournalSummaryItem(
+    journalSummaryData: JournalSummary
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,7 +41,7 @@ fun JournalSummaryItem() {
         ) {
             Column(modifier = Modifier.fillMaxWidth(0.7f)) {
                 Text(
-                    text = "Activity",
+                    text = journalSummaryData.journal.description,
                     style = TextStyle(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -50,7 +52,7 @@ fun JournalSummaryItem() {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "xx Siswa Telah Melakukan Kegiatan",
+                    text = journalSummaryData.totalStudent.toString() + " Siswa Telah Melakukan Kegiatan",
                     style = TextStyle(
                         color = Color.Black,
                         fontFamily = Constant.LATO_FONT_FAMILY,
@@ -60,7 +62,7 @@ fun JournalSummaryItem() {
             }
             
             Image(
-                painter = rememberImagePainter("https://cdn-icons-png.flaticon.com/512/760/760644.png"),
+                painter = rememberImagePainter(journalSummaryData.journal.iconURL),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp)
             )

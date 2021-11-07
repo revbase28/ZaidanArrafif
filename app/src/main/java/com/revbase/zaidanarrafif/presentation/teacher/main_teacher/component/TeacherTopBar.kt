@@ -1,4 +1,4 @@
-package com.revbase.zaidanarrafif.presentation.teacher.teacher_main_screen.component
+package com.revbase.zaidanarrafif.presentation.teacher.main_teacher.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,6 @@ import coil.ImageLoader
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.revbase.zaidanarrafif.R
-import com.revbase.zaidanarrafif.presentation.student.main_student.component.StartCount
 
 @Composable
 fun TeacherTopBar(

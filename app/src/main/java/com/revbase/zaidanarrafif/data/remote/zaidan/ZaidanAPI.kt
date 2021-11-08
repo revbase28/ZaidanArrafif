@@ -1,6 +1,7 @@
 package com.revbase.zaidanarrafif.data.remote.zaidan
 
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LeaderboardResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginGuruResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginSiswaResponse
 import retrofit2.Response
@@ -32,4 +33,11 @@ interface ZaidanAPI {
 
     @GET("kegiatan?jenis=ibadah")
     suspend fun getAllDailyWorshipJournal():JournalResponse
+
+    @Headers("Accept: application/json")
+    @GET("siswa/{nis}/leaderboard")
+    suspend fun getLeaderboard(
+        @Path("nis") nis: Int,
+        @Header("Authorization") token: String
+    ): LeaderboardResponse
 }

@@ -7,17 +7,11 @@ import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import com.revbase.zaidanarrafif.common.Constant.QURAN_API_BASE_URL
 import com.revbase.zaidanarrafif.common.PreferenceManager
-import com.revbase.zaidanarrafif.data.DownloadRepoImpl
-import com.revbase.zaidanarrafif.data.QuranRepoImpl
-import com.revbase.zaidanarrafif.data.JournalRepoImpl
-import com.revbase.zaidanarrafif.data.LoginRepoImpl
+import com.revbase.zaidanarrafif.data.*
 import com.revbase.zaidanarrafif.data.remote.quran.QuranAPI
 import com.revbase.zaidanarrafif.data.remote.zaidan.AuthInterceptor
 import com.revbase.zaidanarrafif.data.remote.zaidan.ZaidanAPI
-import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
-import com.revbase.zaidanarrafif.domain.repositories.JournalRepository
-import com.revbase.zaidanarrafif.domain.repositories.LoginRepository
-import com.revbase.zaidanarrafif.domain.repositories.QuranRepository
+import com.revbase.zaidanarrafif.domain.repositories.*
 import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioUseCase
 import dagger.Module
 import dagger.Provides
@@ -99,4 +93,9 @@ class AppModule {
     @Singleton
     fun providePreferencesManager(@ApplicationContext context: Context): PreferenceManager =
         PreferenceManager(context)
+
+    @Provides
+    @Singleton
+    fun provideLeaderboardRepository(api: ZaidanAPI): LeaderboardRepository =
+        LeaderboardRepoImpl(api)
 }

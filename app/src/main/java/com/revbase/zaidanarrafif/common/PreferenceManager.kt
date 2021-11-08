@@ -56,7 +56,8 @@ class PreferenceManager(val context: Context) {
     }
 
     fun getStudentDataFromPreferences(): Flow<Siswa> = dataStore.data.map { pref ->
-        Siswa(
+        print("====Getdatafromfreference")
+        val siswa = Siswa(
             nis = pref[NIS]?.toInt() ?: 0,
             nama_siswa = pref[NAME] ?: "",
             nama_panggilan = pref[NICKNAME] ?: "",
@@ -68,6 +69,8 @@ class PreferenceManager(val context: Context) {
             tanggal_lahir = pref[BIRTH_DATE] ?: "",
             username = pref[USERNAME] ?: ""
         )
+        print("Siswa sekrang nimnya adalah ${siswa.nis}")
+        siswa
     }
 
     suspend fun storeTeacherData(teacherData: Guru, token: String) {

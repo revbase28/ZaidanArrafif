@@ -2,9 +2,9 @@ package com.revbase.zaidanarrafif.domain.use_case.get_daily_journal
 
 import android.util.Log
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.toJournal
-import com.revbase.zaidanarrafif.domain.models.Journal
-import com.revbase.zaidanarrafif.domain.repositories.JournalRepository
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.toStudentActivity
+import com.revbase.zaidanarrafif.domain.models.StudentActivity
+import com.revbase.zaidanarrafif.domain.repositories.DailyJournalRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -12,25 +12,25 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GetAllDailyWorshipJournalUseCase @Inject constructor(
-    private val repository: JournalRepository
+    private val repository: DailyJournalRepository
 ) {
-    operator fun invoke(token:String):Flow<Resource<List<Journal>>> = flow{
+    operator fun invoke(token:String):Flow<Resource<List<StudentActivity>>> = flow{
         Log.d("GetAllDailyWJournalUC", "GetAllDailyWJournalUC  executed")
         try {
-            emit(Resource.Loading<List<Journal>>())
+            emit(Resource.Loading<List<StudentActivity>>())
             val allDailyWorshipJournal = repository.getAllDailyWorshipJournal(token).data.map { DailyJournalDTO->
-                DailyJournalDTO.toJournal()
+                DailyJournalDTO.toStudentActivity()
             }
             Log.d("get_all_W_journalUC", "get all W journal executed")
             Log.d("allDailyWJournal", "$allDailyWorshipJournal")
-            emit(Resource.Success<List<Journal>>(data = allDailyWorshipJournal))
+            emit(Resource.Success<List<StudentActivity>>(data = allDailyWorshipJournal))
         }
         catch (e:HttpException)
         {
-            emit(Resource.Error<List<Journal>>(e.message?:"Failed to fetch data"))
+            emit(Resource.Error<List<StudentActivity>>(e.message?:"Failed to fetch data"))
         }
         catch (e: IOException) {
-            emit(Resource.Error<List<Journal>>("IOException: $e"))
+            emit(Resource.Error<List<StudentActivity>>("IOException: $e"))
         }
     }
 

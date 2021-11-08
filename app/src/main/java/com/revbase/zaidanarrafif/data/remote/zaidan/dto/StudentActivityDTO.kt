@@ -1,17 +1,17 @@
 package com.revbase.zaidanarrafif.data.remote.zaidan.dto
 
-import com.revbase.zaidanarrafif.domain.models.Journal
+import com.revbase.zaidanarrafif.domain.models.StudentActivity
 
-data class DailyJournalDTO(
+data class StudentActivityDTO(
     val id: Int,
     val deskripsi: String,
     val jenis: String,
     val url_icon : String,
 )
 
-fun DailyJournalDTO.toJournal():Journal{
+fun StudentActivityDTO.toStudentActivity():StudentActivity{
 
-    return  Journal(
+    return  StudentActivity(
         id = this.id,
         description = deskripsi,
         type = jenis,

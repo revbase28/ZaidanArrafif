@@ -1,7 +1,8 @@
 package com.revbase.zaidanarrafif.data.remote.zaidan.dto
 
-data class JournalResponse (
+
+data class StudentActivityResponse(
     val success: Boolean,
     val message: String,
-    val data:JournalDTO
+    val data: List<StudentActivityDTO>
 )

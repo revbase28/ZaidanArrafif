@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.domain.models.Journal
 import com.revbase.zaidanarrafif.domain.models.StudentActivity
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -24,7 +25,8 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalCoilApi
 @Composable
 fun JournalItem(
-    jurnalData: StudentActivity,
+    activityData: StudentActivity,
+    todaysJournal: Journal?,
     textSize: TextUnit = 14.sp,
 ) {
     Card(
@@ -44,7 +46,7 @@ fun JournalItem(
             Box(modifier = androidx.compose.ui.Modifier.fillMaxWidth(0.4f)) {
 
                 Text(
-                    text = jurnalData.description,
+                    text = activityData.description,
                     style = TextStyle(
                         color = Color.Black,
                         fontFamily = Constant.LATO_FONT_FAMILY,
@@ -54,12 +56,12 @@ fun JournalItem(
                 )
             }
             Image(
-                painter = rememberImagePainter(jurnalData.iconURL),
+                painter = rememberImagePainter(activityData.iconURL),
                 contentDescription = null,
                 modifier = androidx.compose.ui.Modifier
                     .size(60.dp)
             )
-            JournalCheckBox(jurnalData.id)
+            JournalCheckBox(id = activityData.id, journalPerformed =  todaysJournal)
         }
     }
     Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))

@@ -26,4 +26,8 @@ class DailyJournalRepoImpl @Inject constructor(
          return api.createJournal( token = token , nis =  nis, kegiatan = kegiatan, date = formatedDate)
     }
 
+    override suspend fun getTodaysJournal(token:String, nis:Int, jenis:String?):JournalResponse{
+        return api.getTodaysJournal(token = token, nis = nis, jenis = jenis)
+    }
+
 }

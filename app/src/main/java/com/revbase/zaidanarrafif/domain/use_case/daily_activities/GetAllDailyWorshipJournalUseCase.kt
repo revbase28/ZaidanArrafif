@@ -1,4 +1,4 @@
-package com.revbase.zaidanarrafif.domain.use_case.get_daily_journal
+package com.revbase.zaidanarrafif.domain.use_case.daily_activities
 
 import android.util.Log
 import com.revbase.zaidanarrafif.common.Resource
@@ -11,26 +11,26 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetAllDailyActivityJournalUseCase @Inject constructor(
+class GetAllDailyWorshipJournalUseCase @Inject constructor(
     private val repository: DailyJournalRepository
 ) {
     operator fun invoke(token:String):Flow<Resource<List<StudentActivity>>> = flow{
-        Log.d("GetAllDailyActivityJournalUC", "GetAllDailyActivityJournalUC  executed")
+        Log.d("GetAllDailyWJournalUC", "GetAllDailyWJournalUC  executed")
         try {
             emit(Resource.Loading<List<StudentActivity>>())
-            val allDailyActivityJournal = repository.getAllDailyActivityJournal(token).data.map { DailyActivityDTO->
-                DailyActivityDTO.toStudentActivity()
+            val allDailyWorshipJournal = repository.getAllDailyWorshipJournal(token).data.map { DailyJournalDTO->
+                DailyJournalDTO.toStudentActivity()
             }
-            Log.d("get_all_A_journalUC", "get all journal executed")
-            Log.d("allDailyAJournal", "$allDailyActivityJournal")
-            emit(Resource.Success<List<StudentActivity>>(data = allDailyActivityJournal))
+            Log.d("get_all_W_journalUC", "get all W journal executed")
+            Log.d("allDailyWJournal", "$allDailyWorshipJournal")
+            emit(Resource.Success<List<StudentActivity>>(data = allDailyWorshipJournal))
         }
         catch (e:HttpException)
         {
-            emit(Resource.Error<List<StudentActivity>>(e.localizedMessage?:"Failed to fetch data"))
+            emit(Resource.Error<List<StudentActivity>>(e.message?:"Failed to fetch data"))
         }
         catch (e: IOException) {
-            emit(Resource.Error<List<StudentActivity>>("$e"))
+            emit(Resource.Error<List<StudentActivity>>("IOException: $e"))
         }
     }
 

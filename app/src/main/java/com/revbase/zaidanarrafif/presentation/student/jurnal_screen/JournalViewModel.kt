@@ -8,9 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.PreferenceManager
 import com.revbase.zaidanarrafif.common.Resource
 import com.revbase.zaidanarrafif.domain.models.Journal
-import com.revbase.zaidanarrafif.domain.use_case.create_daily_journal.CreateDailyJournalUseCase
-import com.revbase.zaidanarrafif.domain.use_case.get_daily_journal.GetAllDailyActivityJournalUseCase
-import com.revbase.zaidanarrafif.domain.use_case.get_daily_journal.GetAllDailyWorshipJournalUseCase
+import com.revbase.zaidanarrafif.domain.use_case.daily_journal.CreateDailyJournalUseCase
+import com.revbase.zaidanarrafif.domain.use_case.daily_activities.GetAllDailyActivityJournalUseCase
+import com.revbase.zaidanarrafif.domain.use_case.daily_activities.GetAllDailyWorshipJournalUseCase
+import com.revbase.zaidanarrafif.domain.use_case.daily_journal.GetTodaysJournalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -19,11 +20,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@InternalCoroutinesApi
+
 @HiltViewModel
 class JournalViewModel @Inject constructor(
     private val getAllDailyActivityJournalUseCase: GetAllDailyActivityJournalUseCase,
     private val preferenceManager: PreferenceManager,
+    private val getTodaysJournalUseCase: GetTodaysJournalUseCase,
     private val createDailyJournalUseCase: CreateDailyJournalUseCase,
     private val getAllDailyWorshipJournalUseCase: GetAllDailyWorshipJournalUseCase,
 ) : ViewModel() {
@@ -114,6 +116,22 @@ class JournalViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
+    }
+     fun getTodaysJournal(jenis:String?): JournalState {
+        getTodaysJournalUseCase("Bearer $_token",_nis,jenis = jenis).onEach { result->
+            when(result){
+                is Resource.Success->{
+                    _journalState.value = JournalState(journal = result.data)
+                }
+                is Resource.Error->{
+                    _journalState.value = JournalState(error = result.message?:"Terjadi kesalahan tidak terduga")
+                }
+                is Resource.Loading->{
+                    _journalState.value = JournalState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+         return _journalState.value
     }
 
 }

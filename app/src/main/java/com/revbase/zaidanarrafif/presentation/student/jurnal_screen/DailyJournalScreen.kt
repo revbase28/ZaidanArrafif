@@ -40,8 +40,10 @@ fun DailyJournalScreen(
 
             viewModel.getAllDailyWorshipJournal()
         }
+     viewModel.getTodaysJournal(jenis = null)
     }
     val state = viewModel.state.value
+    val journalState = viewModel.journalState.value
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,8 +92,8 @@ fun DailyJournalScreen(
             }
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.studentActivityList) { journal ->
-                    JournalItem(jurnalData = journal)
+                items(state.studentActivityList) { activity ->
+                    JournalItem(activityData = activity, todaysJournal = journalState.journal)
                 }
 
             }

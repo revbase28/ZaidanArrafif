@@ -1,11 +1,9 @@
-package com.revbase.zaidanarrafif.domain.use_case.create_daily_journal
+package com.revbase.zaidanarrafif.domain.use_case.daily_journal
 
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalDTO
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.toJournal
 import com.revbase.zaidanarrafif.domain.models.Journal
 import com.revbase.zaidanarrafif.domain.repositories.DailyJournalRepository
-import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException

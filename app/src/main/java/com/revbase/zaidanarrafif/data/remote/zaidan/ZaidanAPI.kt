@@ -50,4 +50,12 @@ interface ZaidanAPI {
     ):JournalResponse
 
 
+    @GET("siswa/{nis}/jurnal/today")
+    suspend fun getTodaysJournal(
+        @Header("Authorization")token: String,
+        @Header("Accept")accept: String = "application/json",
+        @Path("nis")nis:Int,
+        @Query("jenis")jenis:String?
+    ):JournalResponse
+
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.PreferenceManager
 import com.revbase.zaidanarrafif.common.Resource
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.Guru
 import com.revbase.zaidanarrafif.domain.use_case.logout.LogoutUseCase
 import com.revbase.zaidanarrafif.presentation.student.profile_screen.LogoutState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ class TeacherProfileViewModel @Inject constructor(
 ): ViewModel() {
 
     private var _token = ""
+    var teacher: Guru? = null
     private val _logoutState = mutableStateOf(LogoutState())
     val logoutState = _logoutState
 
@@ -28,6 +30,12 @@ class TeacherProfileViewModel @Inject constructor(
         viewModelScope.launch {
             preferenceManager.getToken().collect {
                 _token = it
+            }
+        }
+
+        viewModelScope.launch {
+            preferenceManager.getTeacherData().collect {
+                teacher = it
             }
         }
     }

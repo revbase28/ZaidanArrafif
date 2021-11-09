@@ -35,14 +35,21 @@ fun DailyJournalScreen(
 ) {
 
     LaunchedEffect(key1 = Unit) {
-        if (journalType == "ACTIVITY_JOURNAL") {
+        if (journalType == JournalType.Kegiatan.queryString) {
             viewModel.getAllDailyActivityJournal()
         } else {
 
             viewModel.getAllDailyWorshipJournal()
         }
+<<<<<<< Updated upstream
     }
     val state = viewModel.state.value
+=======
+     viewModel.getTodaysJournal(jenis = JournalType.Today)
+    }
+    val state = viewModel.state.value
+    val journalState = viewModel.todayJournalState.value
+>>>>>>> Stashed changes
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,6 +97,7 @@ fun DailyJournalScreen(
                 )
             }
         } else {
+            Log.d("Journal Content","${journalState.journal}")
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.journalList) { journal ->
                     JournalItem(jurnalData = journal)

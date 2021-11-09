@@ -8,5 +8,10 @@ interface JournalRepository {
 
     suspend fun getAllDailyWorshipJournal():JournalResponse
 
-    suspend fun getJournalSummary(nip: Int, token: String, jenis: String?): JournalSummaryResponse
+    suspend fun getJournalSummary(
+        nip: Int,
+        token: String,
+        jenis: String?,
+        date: String?
+    ): JournalSummaryResponse
 }

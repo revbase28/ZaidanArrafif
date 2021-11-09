@@ -17,11 +17,11 @@ import javax.inject.Inject
 class GetJournalSummaryUseCase @Inject constructor(
     private val repository: JournalRepository
 ) {
-    operator fun invoke(nip: Int, token: String, jenis: String?): Flow<Resource<List<JournalSummary>>> = flow{
+    operator fun invoke(nip: Int, token: String, jenis: String?, date: String?): Flow<Resource<List<JournalSummary>>> = flow{
         Log.d("GetJournalSummaryUC", "GetJournalSummaryUC  executed")
         try {
             emit(Resource.Loading<List<JournalSummary>>())
-            val journalSummary = repository.getJournalSummary(nip, token, jenis).data.map { JournalSummaryDTO ->
+            val journalSummary = repository.getJournalSummary(nip, token, jenis, date).data.map { JournalSummaryDTO ->
                 JournalSummaryDTO.toJournalSummary()
             }
             Log.d("get_summary_journalUC", "get journal summary executed")

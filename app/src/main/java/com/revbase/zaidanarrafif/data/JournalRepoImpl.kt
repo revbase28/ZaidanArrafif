@@ -18,7 +18,7 @@ class JournalRepoImpl @Inject constructor(
         return api.getAllDailyWorshipJournal()
     }
 
-    override suspend fun getJournalSummary(nip: Int, token: String, jenis: String?): JournalSummaryResponse {
-        return api.getJournalSummary(nip, token, jenis)
+    override suspend fun getJournalSummary(nip: Int, token: String, jenis: String?, date: String?): JournalSummaryResponse {
+        return api.getJournalSummary(nip, token, jenis, date)
     }
 }

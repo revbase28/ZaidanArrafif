@@ -39,6 +39,7 @@ interface ZaidanAPI {
     suspend fun getJournalSummary(
         @Path("nip") nip: Int,
         @Header("Authorization") token: String,
-        @Query("jenis") jenis: String? = null
+        @Query("jenis") jenis: String? = null,
+        @Query("date") date: String? = null
     ): JournalSummaryResponse
 }

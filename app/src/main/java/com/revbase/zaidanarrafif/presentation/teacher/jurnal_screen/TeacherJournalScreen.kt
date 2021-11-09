@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.flowlayout.FlowColumn
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.DatePicker
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.JournalSummaryItem
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.JournalTypeDropdown
 import java.lang.String.format
@@ -39,7 +40,9 @@ fun TeacherJournalScreen(
     navController: NavController,
     viewModel: TeacherJournalViewModel = hiltViewModel()
 ) {
-    val date = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date())
+    var date by remember {
+        mutableStateOf(SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date()))
+    }
     var typeOfJournal by remember { mutableStateOf("Kegiatan") }
 
     LaunchedEffect(key1 = Unit) {
@@ -60,28 +63,18 @@ fun TeacherJournalScreen(
         )
         
         Spacer(modifier = Modifier.height(18.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 2.dp,
-                    color = Color.Black,
-                    shape = RoundedCornerShape(size = 10.dp)
-                )
-                .padding(vertical = 8.dp)
-        ) {
-            Text(
-                text = date,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        DatePicker(
+            currentDate = date,
+            onDateClick = {
+                date = it
+                viewModel.getJournalSummary(typeOfJournal, date)
+            }
+        )
         
         Spacer(modifier = Modifier.height(14.dp))
         JournalTypeDropdown(onClick = {
             typeOfJournal = it
-            viewModel.getJournalSummary(it)
+            viewModel.getJournalSummary(it, date)
         })
         
         Spacer(modifier = Modifier.height(18.dp))

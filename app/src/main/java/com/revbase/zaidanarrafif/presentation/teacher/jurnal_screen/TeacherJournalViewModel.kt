@@ -43,8 +43,8 @@ class TeacherJournalViewModel @Inject constructor(
         }
     }
 
-    fun getJournalSummary(jenis: String?) {
-        getJournalSummaryUseCase(_nip, "Bearer $_token", jenis).onEach { result ->
+    fun getJournalSummary(jenis: String?, date: String? = null) {
+        getJournalSummaryUseCase(_nip, "Bearer $_token", jenis, date).onEach { result ->
             when(result) {
                 is Resource.Success -> {
                     _state.value = JournalSummaryState(journalSummaries = result.data ?: emptyList())

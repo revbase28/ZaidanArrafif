@@ -41,7 +41,7 @@ fun JournalSummaryItem(
         ) {
             Column(modifier = Modifier.fillMaxWidth(0.7f)) {
                 Text(
-                    text = journalSummaryData.journal.description,
+                    text = journalSummaryData.activity.description,
                     style = TextStyle(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
@@ -62,7 +62,7 @@ fun JournalSummaryItem(
             }
             
             Image(
-                painter = rememberImagePainter(journalSummaryData.journal.iconURL),
+                painter = rememberImagePainter(journalSummaryData.activity.iconURL),
                 contentDescription = null,
                 modifier = Modifier.size(60.dp)
             )

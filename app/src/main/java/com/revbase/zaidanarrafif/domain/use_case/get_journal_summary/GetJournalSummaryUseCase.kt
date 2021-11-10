@@ -2,12 +2,9 @@ package com.revbase.zaidanarrafif.domain.use_case.get_journal_summary
 
 import android.util.Log
 import com.revbase.zaidanarrafif.common.Resource
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryDTO
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.toJournalSummary
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.toJournal
-import com.revbase.zaidanarrafif.domain.models.Journal
 import com.revbase.zaidanarrafif.domain.models.JournalSummary
-import com.revbase.zaidanarrafif.domain.repositories.JournalRepository
+import com.revbase.zaidanarrafif.domain.repositories.DailyJournalRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -15,7 +12,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GetJournalSummaryUseCase @Inject constructor(
-    private val repository: JournalRepository
+    private val repository: DailyJournalRepository
 ) {
     operator fun invoke(nip: Int, token: String, jenis: String?, date: String?): Flow<Resource<List<JournalSummary>>> = flow{
         Log.d("GetJournalSummaryUC", "GetJournalSummaryUC  executed")

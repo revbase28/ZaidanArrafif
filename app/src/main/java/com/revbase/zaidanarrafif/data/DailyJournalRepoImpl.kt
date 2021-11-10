@@ -3,6 +3,7 @@ package com.revbase.zaidanarrafif.data
 import com.revbase.zaidanarrafif.data.remote.zaidan.ZaidanAPI
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.StudentActivityResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryResponse
 import com.revbase.zaidanarrafif.domain.repositories.DailyJournalRepository
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +29,10 @@ class DailyJournalRepoImpl @Inject constructor(
 
     override suspend fun getTodaysJournal(token:String, nis:Int, jenis:String?):JournalResponse{
         return api.getTodaysJournal(token = token, nis = nis, jenis = jenis)
+    }
+
+    override suspend fun getJournalSummary(nip: Int, token: String, jenis: String?, date: String?): JournalSummaryResponse {
+        return api.getJournalSummary(nip, token, jenis, date)
     }
 
 }

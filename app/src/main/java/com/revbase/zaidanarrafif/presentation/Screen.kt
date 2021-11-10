@@ -16,4 +16,7 @@ sealed class Screen(val route: String) {
     object TeacherJournalScreen: Screen("teacher_journal_screen")
     object TeacherProfileScreen: Screen("teacher_profile_screen")
     object TeacherActivityDetailScreen: Screen("teacher_activity_detail_screen")
+    object TeacherHafalanScreen: Screen("teacher_hafalan_screen")
+    object HafalanFeedbackScreen: Screen("hafalan_feedback_screen")
+    object ListStudentScreen: Screen("list_student_screen")
 }

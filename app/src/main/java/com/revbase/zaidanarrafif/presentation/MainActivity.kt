@@ -22,6 +22,7 @@ import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
+import com.revbase.zaidanarrafif.presentation.teacher.hafalan_screen.HafalanFeedbackScreen
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.ActivityDetail
 import com.revbase.zaidanarrafif.presentation.teacher.main_teacher.TeacherMainScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
@@ -102,6 +103,14 @@ class MainActivity: ComponentActivity() {
                                 navController = navController,
                                 activityId = it.arguments!!.getInt(Constant.PARAM_ACTIVITY_ID),
                                 date = it.arguments!!.getString("date")
+                            )
+                        }
+
+                        composable(
+                            route = Screen.HafalanFeedbackScreen.route
+                        ) {
+                            HafalanFeedbackScreen(
+                                navController = navController
                             )
                         }
                     }

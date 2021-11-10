@@ -31,6 +31,8 @@ import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.domain.models.BottomNavItem
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.student.main_student.BottomNavBar
+import com.revbase.zaidanarrafif.presentation.teacher.ListStudentScreen.ListStudentScreen
+import com.revbase.zaidanarrafif.presentation.teacher.hafalan_screen.TeacherHafalanScreen
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.TeacherJournalScreen
 import com.revbase.zaidanarrafif.presentation.teacher.profile_screen.TeacherProfileScreen
 import com.revbase.zaidanarrafif.presentation.teacher.main_teacher.component.TeacherTopBar
@@ -85,13 +87,13 @@ fun TeacherMainScreen(
                         ),
                         BottomNavItem(
                             name = "Hafalan",
-                            route = Screen.HafalanScreen.route,
+                            route = Screen.TeacherHafalanScreen.route,
                             selectedIcon = Icons.Filled.Mic,
                             unselectedIcon = Icons.Outlined.MicNone
                         ),
                         BottomNavItem(
                             name = "Daftar Siswa",
-                            route = Screen.ProfileScreen.route,
+                            route = Screen.ListStudentScreen.route,
                             selectedIcon = Icons.Filled.Pages,
                             unselectedIcon = Icons.Outlined.Pages
                         ),
@@ -129,6 +131,14 @@ fun TeacherNavigation(
 
         composable(Screen.TeacherProfileScreen.route) {
             TeacherProfileScreen(navController = mainNavController)
+        }
+
+        composable(Screen.TeacherHafalanScreen.route) {
+            TeacherHafalanScreen(navController = mainNavController)
+        }
+
+        composable(Screen.ListStudentScreen.route) {
+            ListStudentScreen()
         }
     }
 }

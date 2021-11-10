@@ -16,9 +16,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.HafalanDTO
 import com.revbase.zaidanarrafif.presentation.login_screen.LoginScreen
 import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
+import com.revbase.zaidanarrafif.presentation.student.hafalan_detail_screen.HafalanDetailScreen
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
@@ -81,6 +85,13 @@ class MainActivity: ComponentActivity() {
                                 ),
                                 savedState = savedState
                             )
+                        }
+                        
+                        composable(route = Screen.HafalanDetailScreen.route){
+                            var hafalanObj = navController.previousBackStackEntry?.arguments?.getParcelable<HafalanDTO>("hafalanData")
+                            hafalanObj?.let {
+                                HafalanDetailScreen(navController = navController, hafalanData = it)
+                            }
                         }
                     }
                 }

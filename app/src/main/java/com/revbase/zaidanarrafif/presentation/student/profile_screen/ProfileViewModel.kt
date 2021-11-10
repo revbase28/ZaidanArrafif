@@ -34,7 +34,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun logout() {
-        logoutUseCase("Bearer $_token").onEach { result ->
+        logoutUseCase(_token).onEach { result ->
             when(result){
                 is Resource.Success -> {
                     preferenceManager.cleanPref()

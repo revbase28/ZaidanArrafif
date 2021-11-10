@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.revbase.zaidanarrafif.presentation.ui.theme.Blue
@@ -19,7 +20,8 @@ fun PlayAudioButton(
     onClick: ()->Unit,
     modifier: Modifier = Modifier,
     size: Dp = 40.dp,
-    cornerRadius: Dp = 8.dp
+    cornerRadius: Dp = 8.dp,
+    icon: ImageVector = Icons.Filled.VolumeUp
 ) {
     Card(
         modifier = modifier.size(size),
@@ -31,7 +33,7 @@ fun PlayAudioButton(
             onClick = { onClick() },
         ) {
             Icon(
-                imageVector = Icons.Filled.VolumeUp,
+                imageVector = icon,
                 contentDescription = "play surah",
                 tint = Color.White
             )

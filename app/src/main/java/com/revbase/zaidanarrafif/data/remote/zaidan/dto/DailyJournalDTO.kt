@@ -10,12 +10,10 @@ data class DailyJournalDTO(
 )
 
 fun DailyJournalDTO.toJournal():Journal{
-
     return  Journal(
         id = this.id,
         description = deskripsi,
         type = jenis,
         iconURL = url_icon
     )
-
 }

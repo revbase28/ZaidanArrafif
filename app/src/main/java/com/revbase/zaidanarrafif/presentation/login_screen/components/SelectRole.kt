@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.presentation.ui.theme.LightGrey
 import com.revbase.zaidanarrafif.presentation.ui.theme.Pink
 
@@ -91,7 +92,6 @@ fun CardRoleOption(
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
                 Image(painter = rememberImagePainter(data = imageUrl),
                     contentDescription = null,
                     modifier = Modifier.size(128.dp))
@@ -101,7 +101,8 @@ fun CardRoleOption(
                     style = androidx.compose.ui.text.TextStyle(textAlign = TextAlign.Center),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(10.dp),
+                    fontFamily = Constant.LATO_FONT_FAMILY
                 )
             }
         }

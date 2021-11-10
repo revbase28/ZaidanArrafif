@@ -26,12 +26,14 @@ import com.revbase.zaidanarrafif.presentation.teacher.main_teacher.TeacherMainSc
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
     @Inject lateinit var savedState: Bundle
 
+    @InternalCoroutinesApi
     @ExperimentalCoilApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {

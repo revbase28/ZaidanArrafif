@@ -46,6 +46,7 @@ class LoginViewModel @Inject constructor(
         loginGuruUseCase(username, password).onEach { result ->
             when (result) {
                 is Resource.Success -> {
+
                     _loginGuruState.value = LoginGuruState(loginData = result.data)
                 }
                 is Resource.Error -> {

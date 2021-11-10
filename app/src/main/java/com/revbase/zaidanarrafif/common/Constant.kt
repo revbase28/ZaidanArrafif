@@ -21,4 +21,6 @@ object Constant {
         Font(R.font.lato_regular, FontWeight.Normal),
         Font(R.font.lato_bold, FontWeight.Bold),
     )
+
+    const val PARAM_ACTIVITY_ID = "activity_id"
 }

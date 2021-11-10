@@ -69,7 +69,7 @@ class AppModule {
     @Named("Journal")
     fun provideRetrofitForJournal(client: OkHttpClient) :Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://zaidanarrafif.com/api/")
+            .baseUrl("http://10.0.2.2:8000/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

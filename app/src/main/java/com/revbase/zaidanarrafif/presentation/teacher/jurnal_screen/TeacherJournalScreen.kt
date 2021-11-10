@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.flowlayout.FlowColumn
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.DatePicker
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.JournalSummaryItem
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.JournalTypeDropdown
@@ -110,7 +111,17 @@ fun TeacherJournalScreen(
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.journalSummaries) { journalSummary ->
-                    JournalSummaryItem(journalSummary)
+                    JournalSummaryItem(
+                        journalSummaryData = journalSummary,
+                        onCardClick = {
+                            println(Screen.TeacherActivityDetailScreen.route +
+                                    "/${journalSummary.activity.id}" + "/$date")
+                            navController.navigate(
+                                Screen.TeacherActivityDetailScreen.route +
+                                    "/${journalSummary.activity.id}" + "/$date"
+                            )
+                        }
+                    )
                 }
             }
         }

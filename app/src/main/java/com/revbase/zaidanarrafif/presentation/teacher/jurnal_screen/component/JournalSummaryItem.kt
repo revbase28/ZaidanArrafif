@@ -2,6 +2,7 @@ package com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -23,12 +24,16 @@ import com.revbase.zaidanarrafif.domain.models.JournalSummary
 @ExperimentalCoilApi
 @Composable
 fun JournalSummaryItem(
+    onCardClick: () -> Unit,
     journalSummaryData: JournalSummary
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White),
+            .background(Color.White)
+            .clickable {
+                onCardClick()
+            },
         shape = RoundedCornerShape(size = 10.dp),
         elevation = 2.dp
     ) {

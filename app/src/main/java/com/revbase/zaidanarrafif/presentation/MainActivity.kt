@@ -22,6 +22,7 @@ import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
+import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.ActivityDetail
 import com.revbase.zaidanarrafif.presentation.teacher.main_teacher.TeacherMainScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
@@ -82,6 +83,25 @@ class MainActivity: ComponentActivity() {
                                     Constant.PARAM_SURAH_NUMBER
                                 ),
                                 savedState = savedState
+                            )
+                        }
+
+                        composable(
+                            route = Screen.TeacherActivityDetailScreen.route +
+                                    "/{${Constant.PARAM_ACTIVITY_ID}}" + "/{date}",
+                            arguments = listOf(
+                                navArgument(name = Constant.PARAM_ACTIVITY_ID) {
+                                    type = NavType.IntType
+                                },
+                                navArgument(name = "date") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            ActivityDetail(
+                                navController = navController,
+                                activityId = it.arguments!!.getInt(Constant.PARAM_ACTIVITY_ID),
+                                date = it.arguments!!.getString("date")
                             )
                         }
                     }

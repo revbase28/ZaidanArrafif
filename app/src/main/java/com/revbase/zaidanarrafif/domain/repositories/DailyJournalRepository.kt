@@ -3,6 +3,7 @@ package com.revbase.zaidanarrafif.domain.repositories
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.StudentActivityResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.TeacherActivitySummaryResponse
 
 interface DailyJournalRepository {
     suspend fun getAllDailyActivityJournal(token:String):StudentActivityResponse
@@ -19,4 +20,11 @@ interface DailyJournalRepository {
         jenis: String?,
         date: String?
     ): JournalSummaryResponse
+
+    suspend fun getActivityDetailInJournalSummary(
+        nip: Int,
+        activityId: Int,
+        token: String,
+        date: String?
+    ): TeacherActivitySummaryResponse
 }

@@ -5,6 +5,7 @@ import com.revbase.zaidanarrafif.data.remote.zaidan.dto.StudentActivityResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginGuruResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginSiswaResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.TeacherActivitySummaryResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -67,4 +68,13 @@ interface ZaidanAPI {
         @Query("jenis") jenis: String? = null,
         @Query("date") date: String? = null
     ): JournalSummaryResponse
+
+    @Headers("Accept: application/json")
+    @GET("guru/{nip}/jurnal/kegiatan/{id}/siswa")
+    suspend fun getActivityDetailInJournalSummary(
+        @Path("nip") nip: Int,
+        @Path("id") activityId: Int,
+        @Header("Authorization") token: String,
+        @Query("date") date: String? = null
+    ): TeacherActivitySummaryResponse
 }

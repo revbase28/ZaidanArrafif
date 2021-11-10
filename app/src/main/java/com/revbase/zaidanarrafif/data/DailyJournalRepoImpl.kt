@@ -4,6 +4,7 @@ import com.revbase.zaidanarrafif.data.remote.zaidan.ZaidanAPI
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.StudentActivityResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.TeacherActivitySummaryResponse
 import com.revbase.zaidanarrafif.domain.repositories.DailyJournalRepository
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,6 +34,15 @@ class DailyJournalRepoImpl @Inject constructor(
 
     override suspend fun getJournalSummary(nip: Int, token: String, jenis: String?, date: String?): JournalSummaryResponse {
         return api.getJournalSummary(nip, token, jenis, date)
+    }
+
+    override suspend fun getActivityDetailInJournalSummary(
+        nip: Int,
+        activityId: Int,
+        token: String,
+        date: String?
+    ): TeacherActivitySummaryResponse {
+        return api.getActivityDetailInJournalSummary(nip, activityId, token, date)
     }
 
 }

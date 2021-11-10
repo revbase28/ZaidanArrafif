@@ -16,7 +16,7 @@ class CreateDailyJournalUseCase @Inject constructor(
         try {
             emit(Resource.Loading<Journal>())
             val response  = repository.createDailyJournal(token,kegiatan,nis)
-            val journal = response.data.toJournal()
+            val journal = response.data!!.toJournal()
             if(response.success)
             {
                 emit(Resource.Success<Journal>(data = journal))

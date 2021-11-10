@@ -29,15 +29,20 @@ class JournalViewModel @Inject constructor(
     private val createDailyJournalUseCase: CreateDailyJournalUseCase,
     private val getAllDailyWorshipJournalUseCase: GetAllDailyWorshipJournalUseCase,
 ) : ViewModel() {
-
-
     private val _state = mutableStateOf(StudentActivityState())
     val state: State<StudentActivityState> = _state
 
+    private val _ibadahJournalState = mutableStateOf(JournalState())
+    val ibadahJournalState : State<JournalState> = _ibadahJournalState;
+
+    private val _kegiatanJournalState = mutableStateOf(JournalState())
+    val kegiatanJournalState : State<JournalState> = _kegiatanJournalState;
+
+    private val _todayJournalState = mutableStateOf(JournalState())
+    val todayJournalState : State<JournalState> = _todayJournalState;
+
     private val _journalState = mutableStateOf(JournalState())
-
-
-    val journalState : State<JournalState> = _journalState;
+    val journalState:State<JournalState> = _journalState
 
     private var _token = ""
     private  var _nis = 0
@@ -45,27 +50,18 @@ class JournalViewModel @Inject constructor(
     init {
         Log.d("journal_vm", "Journal VM is Executed")
         viewModelScope.launch {
-
             preferenceManager.getToken().collect {
-                println("Token")
                 _token = it
-
             }
         }
         viewModelScope.launch {
-
             preferenceManager.getStudentDataFromPreferences().collect{
-                println("Masuk Siswa!")
-                println("=============>${it.nis}")
                 _nis = it.nis
             }
-
-            }
-
-
+        }
     }
 
-     fun getAllDailyActivityJournal() {
+    fun getAllDailyActivityJournal() {
         getAllDailyActivityJournalUseCase("Bearer $_token").onEach { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -82,22 +78,20 @@ class JournalViewModel @Inject constructor(
             Log.d("state_value", "${_state.value}")
         }.launchIn(viewModelScope)
     }
-     fun getAllDailyWorshipJournal() {
+
+    fun getAllDailyWorshipJournal() {
         getAllDailyWorshipJournalUseCase("Bearer $_token").onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     _state.value = StudentActivityState(studentActivityList = result.data ?: emptyList())
                 }
                 is Resource.Error -> {
-                    Log.d("teserror","${result.message}")
-
                     _state.value = StudentActivityState(error = result.message ?: "Failed to fetch data")
                 }
                 is Resource.Loading -> {
                     _state.value = StudentActivityState(isLoading = true)
                 }
             }
-            Log.d("state_value", "${_state.value}")
         }.launchIn(viewModelScope)
     }
 
@@ -115,23 +109,36 @@ class JournalViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-
     }
-     fun getTodaysJournal(jenis:String?): JournalState {
-        getTodaysJournalUseCase("Bearer $_token",_nis,jenis = jenis).onEach { result->
-            when(result){
+
+    fun getTodaysJournal(jenis : JournalType) {
+        getTodaysJournalUseCase("Bearer $_token",_nis,jenis = jenis.queryString).onEach { result->
+            val newJournalState = when(result){
                 is Resource.Success->{
-                    _journalState.value = JournalState(journal = result.data)
+                    JournalState(journal = result.data)
                 }
                 is Resource.Error->{
-                    _journalState.value = JournalState(error = result.message?:"Terjadi kesalahan tidak terduga")
+                    JournalState(error = result.message?:"Terjadi kesalahan tidak terduga")
                 }
                 is Resource.Loading->{
-                    _journalState.value = JournalState(isLoading = true)
+                    JournalState(isLoading = true)
+                }
+            }
+     
+            when(jenis) {
+                is JournalType.Ibadah -> {
+                    Log.d("JournalState","${JournalType.Ibadah.queryString}")
+                    _ibadahJournalState.value = newJournalState
+                }
+                is JournalType.Kegiatan -> {
+                    Log.d("JournalState","${JournalType.Kegiatan.queryString}")
+                    _kegiatanJournalState.value = newJournalState
+                }
+                is JournalType.Today -> {
+                    Log.d("JournalState","${JournalType.Today.queryString}")
+                    _todayJournalState.value = newJournalState
                 }
             }
         }.launchIn(viewModelScope)
-         return _journalState.value
     }
-
 }

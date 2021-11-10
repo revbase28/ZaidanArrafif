@@ -40,10 +40,10 @@ fun DailyJournalScreen(
 
             viewModel.getAllDailyWorshipJournal()
         }
-     viewModel.getTodaysJournal(jenis = null)
+     viewModel.getTodaysJournal(JournalType.Today)
     }
     val state = viewModel.state.value
-    val journalState = viewModel.journalState.value
+    val journalState = viewModel.todayJournalState.value
     Column(
         modifier = Modifier
             .fillMaxSize()

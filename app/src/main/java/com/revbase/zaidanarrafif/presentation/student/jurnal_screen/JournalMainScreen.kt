@@ -31,30 +31,23 @@ fun JurnalMainScreen(navController: NavController, viewModel:JournalViewModel = 
     }
     LaunchedEffect(key1 = Unit ){
 
-        viewModel.getTodaysJournal(jenis = "kegiatan")
+        viewModel.getTodaysJournal(JournalType.Ibadah)
+        viewModel.getTodaysJournal(JournalType.Kegiatan)
     }
-    val activity = viewModel.journalState.value.journal
+    val activity = viewModel.kegiatanJournalState.value.journal
     if(activity==null){
-        println("==============$activity==========")
         totalActivity = 0
     }
     else{
         totalActivity = activity.activityPerformed.size
-        println("============Total==$totalActivity==========")
     }
 
-    LaunchedEffect(key1 = Unit, ){
-
-        viewModel.getTodaysJournal(jenis = "ibadah")
-    }
-    val worship = viewModel.journalState.value.journal
+    val worship = viewModel.ibadahJournalState.value.journal
     if(worship==null){
-        println("==============$worship==========")
         totalWorship = 0
     }
     else{
         totalWorship = worship.activityPerformed.size
-        println("============Total==$totalActivity==========")
     }
 
     Column(

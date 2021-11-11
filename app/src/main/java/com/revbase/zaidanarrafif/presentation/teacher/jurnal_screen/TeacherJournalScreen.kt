@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.flowlayout.FlowColumn
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.common.Tools
 import com.revbase.zaidanarrafif.presentation.Screen
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.DatePicker
 import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.component.JournalSummaryItem
@@ -42,7 +43,7 @@ fun TeacherJournalScreen(
     viewModel: TeacherJournalViewModel = hiltViewModel()
 ) {
     var date by remember {
-        mutableStateOf(SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date()))
+        mutableStateOf(SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date()))
     }
     var typeOfJournal by remember { mutableStateOf("Kegiatan") }
 
@@ -57,7 +58,7 @@ fun TeacherJournalScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Riwayat Jurnal Kegiatan $date",
+            text = "Riwayat Jurnal Kegiatan ${Tools.dateTimeStringToString(date)}",
             fontFamily = Constant.LATO_FONT_FAMILY,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold

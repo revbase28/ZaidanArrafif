@@ -120,9 +120,13 @@ class MainActivity: ComponentActivity() {
                         composable(
                             route = Screen.HafalanFeedbackScreen.route
                         ) {
-                            HafalanFeedbackScreen(
-                                navController = navController
-                            )
+                            val hafalanObj = navController.previousBackStackEntry?.arguments?.getParcelable<HafalanDTO>("hafalanData")
+                            hafalanObj?.let { it1 ->
+                                HafalanFeedbackScreen(
+                                    navController = navController,
+                                    hafalanData = it1
+                                )
+                            }
                         }
                     }
                 }

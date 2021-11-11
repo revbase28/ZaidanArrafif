@@ -1,10 +1,6 @@
 package com.revbase.zaidanarrafif.data.remote.zaidan
 
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.GetHafalanResponse
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalResponse
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.StudentActivityResponse
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginGuruResponse
-import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginSiswaResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.*
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.TeacherActivitySummaryResponse
 import retrofit2.Response
@@ -85,4 +81,25 @@ interface ZaidanAPI {
         @Path ("nis") nis: Int,
         @Header ("Authorization") token: String
     ): GetHafalanResponse
+
+    @GET("guru/{nip}/hafalan")
+    suspend fun getHafalanBasedOnGuru(
+        @Path("nip") nip: Int,
+        @Header("Authorization") token: String
+    ): GetHafalanResponse
+
+    @GET("guru/{nip}/siswa")
+    suspend fun getStudentBasedOnTeacher(
+        @Path("nip") nip: Int,
+        @Header("Authorization") token: String
+    ): GetSiswaResponse
+
+    @FormUrlEncoded
+    @PUT("hafalan/{id}")
+    suspend fun updateHafalan(
+        @Path("id") hafalanId: Int,
+        @Header("Authorization") token: String,
+        @Field("komentar") comment: String,
+        @Field("star") star: Int = 0
+    ): PostHafalanResponse
 }

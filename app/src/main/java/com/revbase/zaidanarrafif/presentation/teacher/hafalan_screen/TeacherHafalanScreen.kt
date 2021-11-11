@@ -3,11 +3,14 @@ package com.revbase.zaidanarrafif.presentation.teacher.hafalan_screen
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,15 +18,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.presentation.Screen
+import com.revbase.zaidanarrafif.presentation.common_component.LoadingScreen
 import com.revbase.zaidanarrafif.presentation.teacher.hafalan_screen.component.TableCell
+import com.revbase.zaidanarrafif.presentation.teacher.hafalan_screen.component.TableHeader
 
 @Composable
 fun TeacherHafalanScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: TeacherHafalanViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getHafalan()
+    }
+    val state = viewModel.hafalanState.value
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,109 +56,89 @@ fun TeacherHafalanScreen(
             shape = RoundedCornerShape(10.dp),
             elevation = 2.dp
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)) {
-                    Column(
-                        modifier = Modifier.weight(0.1f),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Divider(modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp),
-                            color = Color.Black
-                        )
-                    }
-
-                    Column(
-                        modifier = Modifier.weight(0.3f),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Divider(modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp),
-                            color = Color.Black
-                        )
-                    }
-
-                    Column(
-                        modifier = Modifier.weight(0.3f),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Divider(modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp),
-                            color = Color.Black
-                        )
-                    }
-
-                    Column(
-                        modifier = Modifier.weight(0.3f),
-                        horizontalAlignment = Alignment.End
-                    ) {
-
-                    }
+            if (state.isLoading) {
+                LoadingScreen(modifier = Modifier.fillMaxSize())
+            } else if (state.error.isNotBlank()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                    Text(
+                        text = state.error,
+                        color = MaterialTheme.colors.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    )
                 }
-                Column(
-                    modifier = Modifier
+            } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Row(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(all = 8.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "No",
-                            fontFamily = Constant.LATO_FONT_FAMILY,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
+                        .padding(horizontal = 8.dp)) {
+                        Column(
                             modifier = Modifier.weight(0.1f),
-                            textAlign = TextAlign.Center
-                        )
-
-                        Text(
-                            text = "Nama",
-                            fontFamily = Constant.LATO_FONT_FAMILY,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.weight(0.3f),
-                            textAlign = TextAlign.Center
-                        )
-
-                        Text(
-                            text = "Surat",
-                            fontFamily = Constant.LATO_FONT_FAMILY,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.weight(0.3f),
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = "Komentar & Rekaman",
-                            fontFamily = Constant.LATO_FONT_FAMILY,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.weight(0.3f),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    Divider(thickness = 1.dp, color = Color.Black)
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(15) {
-                            TableCell(
-                                index = 1,
-                                onButtonClick = {
-                                    navController.navigate(Screen.HafalanFeedbackScreen.route)
-                                }
+                            horizontalAlignment = Alignment.End
+                        ) {
+                            Divider(modifier = Modifier
+                                .fillMaxHeight()
+                                .width(1.dp),
+                                color = Color.Black
                             )
+                        }
+
+                        Column(
+                            modifier = Modifier.weight(0.3f),
+                            horizontalAlignment = Alignment.End
+                        ) {
+                            Divider(modifier = Modifier
+                                .fillMaxHeight()
+                                .width(1.dp),
+                                color = Color.Black
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier.weight(0.3f),
+                            horizontalAlignment = Alignment.End
+                        ) {
+                            Divider(modifier = Modifier
+                                .fillMaxHeight()
+                                .width(1.dp),
+                                color = Color.Black
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier.weight(0.3f),
+                            horizontalAlignment = Alignment.End
+                        ) {
+
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = 8.dp),
+                    ) {
+                        TableHeader()
+                        Divider(thickness = 1.dp, color = Color.Black)
+                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                            itemsIndexed(state.listHafalan) { index, item ->
+                                TableCell(
+                                    index = index,
+                                    studentName = item.siswa.nama_siswa,
+                                    surahName = item.surat,
+                                    onButtonClick = {
+                                        navController.currentBackStackEntry
+                                            ?.arguments
+                                            ?.putParcelable("hafalanData", item)
+                                        navController.navigate(Screen.HafalanFeedbackScreen.route)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
-
         }
     }
 }

@@ -17,7 +17,11 @@ import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.presentation.student.main_student.component.StartCount
 
 @Composable
-fun StudentItem() {
+fun StudentItem(
+    index: Int,
+    studentName: String,
+    studentStars: Int
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -35,7 +39,7 @@ fun StudentItem() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "1",
+                    text = "${index + 1}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     fontFamily = Constant.LATO_FONT_FAMILY,
@@ -51,13 +55,13 @@ fun StudentItem() {
                 )
                 Spacer(modifier = Modifier.width(14.dp))
                 Text(
-                    text = "Rizki Maulana",
+                    text = studentName,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     fontFamily = Constant.LATO_FONT_FAMILY
                 )
             }
-            StartCount(count = 20)
+            StartCount(count = studentStars)
         }
     }
 }

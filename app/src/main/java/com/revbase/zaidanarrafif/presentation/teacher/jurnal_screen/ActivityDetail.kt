@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.common.Tools
 import com.revbase.zaidanarrafif.presentation.common_component.LoadingScreen
 import com.revbase.zaidanarrafif.presentation.common_component.ScreenTitleBar
 
@@ -72,7 +73,8 @@ fun ActivityDetail(
             }
         } else {
             Text(
-                text = "Jurnal ${state.activityDetail.kegiatan?.jenis} Tanggal ${date}",
+                text = "Jurnal ${state.activityDetail.kegiatan?.jenis} " +
+                        "Tanggal ${date?.let { Tools.dateTimeStringToString(it) }}",
                 style = textStyle
             )
             Spacer(modifier = Modifier.height(14.dp))

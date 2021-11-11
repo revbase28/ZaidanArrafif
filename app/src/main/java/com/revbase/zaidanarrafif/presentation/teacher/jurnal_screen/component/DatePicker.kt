@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.revbase.zaidanarrafif.common.Tools
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,7 +29,7 @@ fun DatePicker(
 ) {
     val activity = LocalContext.current
 
-    val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     val now = Calendar.getInstance()
     val dateString = dateFormat.parse(currentDate)
     if (dateString != null)
@@ -62,7 +63,7 @@ fun DatePicker(
             }
     ) {
         Text(
-            text = date,
+            text = Tools.dateTimeStringToString(date),
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth()

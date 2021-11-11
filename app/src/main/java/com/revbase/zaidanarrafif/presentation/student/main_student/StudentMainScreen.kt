@@ -122,7 +122,7 @@ fun StudentNavigation(
         }
 
         composable(route = Screen.HafalanScreen.route) {
-            HafalanScreen()
+            HafalanScreen(studentData = studentData,  mainNavController = mainNavController)
         }
 
         composable(route = Screen.RankScreen.route) {

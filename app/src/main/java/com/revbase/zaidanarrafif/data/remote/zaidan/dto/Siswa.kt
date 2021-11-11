@@ -1,5 +1,9 @@
 package com.revbase.zaidanarrafif.data.remote.zaidan.dto
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Siswa(
     val guru_setoran: String = "",
     val kelas: String = "",
@@ -11,4 +15,4 @@ data class Siswa(
     val tanggal_lahir: String = "",
     val username: String = "",
     val walikelas: String = ""
-)
+) : Parcelable

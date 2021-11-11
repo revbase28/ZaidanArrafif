@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.data.remote.zaidan
 
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.GetHafalanResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.JournalResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.StudentActivityResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.LoginGuruResponse
@@ -77,4 +78,11 @@ interface ZaidanAPI {
         @Header("Authorization") token: String,
         @Query("date") date: String? = null
     ): TeacherActivitySummaryResponse
+    suspend fun getAllDailyWorshipJournal():JournalResponse
+
+    @GET("siswa/{nis}/hafalan")
+    suspend fun getHafalan(
+        @Path ("nis") nis: Int,
+        @Header ("Authorization") token: String
+    ): GetHafalanResponse
 }

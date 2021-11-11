@@ -1,18 +1,16 @@
 package com.revbase.zaidanarrafif.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import com.revbase.zaidanarrafif.common.Constant.QURAN_API_BASE_URL
 import com.revbase.zaidanarrafif.common.PreferenceManager
-import com.revbase.zaidanarrafif.data.DownloadRepoImpl
-import com.revbase.zaidanarrafif.data.QuranRepoImpl
-import com.revbase.zaidanarrafif.data.DailyJournalRepoImpl
-import com.revbase.zaidanarrafif.data.LoginRepoImpl
+import com.revbase.zaidanarrafif.data.*
 import com.revbase.zaidanarrafif.data.remote.quran.QuranAPI
+import com.revbase.zaidanarrafif.data.remote.zaidan.AuthInterceptor
 import com.revbase.zaidanarrafif.data.remote.zaidan.ZaidanAPI
-import com.revbase.zaidanarrafif.domain.repositories.DownloadRepository
-import com.revbase.zaidanarrafif.domain.repositories.DailyJournalRepository
-import com.revbase.zaidanarrafif.domain.repositories.LoginRepository
-import com.revbase.zaidanarrafif.domain.repositories.QuranRepository
+import com.revbase.zaidanarrafif.domain.repositories.*
 import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioUseCase
 import dagger.Module
 import dagger.Provides
@@ -69,7 +67,7 @@ class AppModule {
     @Named("Journal")
     fun provideRetrofitForJournal(client: OkHttpClient) :Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8000/api/")
+            .baseUrl("https://zaidanarrafif.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
@@ -88,6 +86,11 @@ class AppModule {
     @Singleton
     fun provideJournalRepository(api:ZaidanAPI): DailyJournalRepository =
         DailyJournalRepoImpl(api)
+
+    @Provides
+    @Singleton
+    fun provideHafalanRepository(api: ZaidanAPI): HafalanRepository =
+        HafalanRepoImpl(api)
 
     @Provides
     @Singleton

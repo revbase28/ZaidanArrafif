@@ -16,7 +16,7 @@ class LogoutUseCase @Inject constructor(
     operator fun invoke(token: String) = flow<Resource<Int>> {
         try {
             emit(Resource.Loading<Int>())
-            val response = repository.logout(token)
+            val response = repository.logout("Bearer $token")
             if(response.code() == LOGOUT_SUCCESS)
                 emit(Resource.Success(response.code()))
             else

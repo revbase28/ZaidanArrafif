@@ -3,6 +3,9 @@ package com.revbase.zaidanarrafif.data.remote.zaidan
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.*
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.JournalSummaryResponse
 import com.revbase.zaidanarrafif.data.remote.zaidan.dto.teacher.TeacherActivitySummaryResponse
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -80,6 +83,17 @@ interface ZaidanAPI {
         @Path ("nis") nis: Int,
         @Header ("Authorization") token: String
     ): GetHafalanResponse
+
+    @Multipart
+    @Headers("Accept: application/json")
+    @POST("siswa/{nis}/hafalan")
+    suspend fun postHafalan(
+        @Path ("nis") nis: Int,
+        @Header ("Authorization") token: String,
+        @Part("surat") surah: RequestBody,
+        @Part("catatan") catatan: RequestBody,
+        @Part file: MultipartBody.Part
+    ): PostHafalanResponse
 
     @GET("guru/{nip}/hafalan")
     suspend fun getHafalanBasedOnGuru(

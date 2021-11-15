@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioFromLinkUseCase
 import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HafalanDetailViewModel @Inject constructor(
-    private val audioUseCase: PlayAudioUseCase
+    private val audioUseCase: PlayAudioFromLinkUseCase
 ): ViewModel(){
 
     val audioProgress = mutableStateOf(0F)
@@ -31,7 +32,7 @@ class HafalanDetailViewModel @Inject constructor(
         }.launchIn(CoroutineScope(Dispatchers.IO))
     }
 
-    fun isPlaying(): Boolean {
-        return audioUseCase.isMediaPlaying()
+    fun stopAudio() {
+        audioUseCase.stop()
     }
 }

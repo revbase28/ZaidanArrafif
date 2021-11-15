@@ -29,8 +29,6 @@ fun HafalanDetailScreen(
 ) {
 
     var audioProgress by remember{ mutableStateOf(viewModel.audioProgress) }
-    var audioDuration by remember{ mutableStateOf(viewModel.duration) }
-    var currentAudioSec by remember{ mutableStateOf(viewModel.currentSec) }
 
     Column(
         modifier = Modifier
@@ -89,8 +87,10 @@ fun HafalanDetailScreen(
             fontFamily = Constant.LATO_FONT_FAMILY,
             modifier = Modifier.fillMaxWidth()
         )
-        Text(text = audioProgress.value.toString())
-        Text(text = audioDuration.value.toString())
-        Text(text = currentAudioSec.value.toString())
+    }
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            viewModel.stopAudio()
+        }
     }
 }

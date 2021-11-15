@@ -23,4 +23,5 @@ object Constant {
     )
 
     const val PARAM_ACTIVITY_ID = "activity_id"
+    var listSurah = mutableListOf<String>()
 }

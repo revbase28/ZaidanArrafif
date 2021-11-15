@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.data.remote.quran.dto
 
+import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.domain.models.Surah
 
 data class SurahDTO(

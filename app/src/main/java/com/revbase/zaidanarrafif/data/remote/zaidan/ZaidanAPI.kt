@@ -74,7 +74,6 @@ interface ZaidanAPI {
         @Header("Authorization") token: String,
         @Query("date") date: String? = null
     ): TeacherActivitySummaryResponse
-    suspend fun getAllDailyWorshipJournal():JournalResponse
 
     @GET("siswa/{nis}/hafalan")
     suspend fun getHafalan(
@@ -102,4 +101,11 @@ interface ZaidanAPI {
         @Field("komentar") comment: String,
         @Field("star") star: Int = 0
     ): PostHafalanResponse
+
+    @Headers("Accept: application/json")
+    @GET("siswa/{nis}/leaderboard")
+    suspend fun getLeaderboard(
+        @Path("nis") nis: Int,
+        @Header("Authorization") token: String
+    ): LeaderboardResponse
 }

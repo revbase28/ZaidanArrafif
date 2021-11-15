@@ -27,8 +27,10 @@ class LoginSiswaUseCase @Inject constructor(
                 emit(Resource.Error<LoginSiswaResponseDTO>(message = loginData.errors))
         } catch (e: HttpException) {
             emit(Resource.Error<LoginSiswaResponseDTO>(e.localizedMessage ?: "Terjadi kesalahan tidak terduga"))
+            Log.e("LoginErr", e.response().toString())
         } catch (e: IOException) {
             emit(Resource.Error<LoginSiswaResponseDTO>("Tidak bisa terhubung ke server, coba periksa koneksi internet"))
+            Log.e("LoginErr", e.toString())
         }
     }
 }

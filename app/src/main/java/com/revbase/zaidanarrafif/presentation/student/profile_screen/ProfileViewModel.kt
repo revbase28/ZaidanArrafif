@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.PreferenceManager
 import com.revbase.zaidanarrafif.common.Resource
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.Siswa
 import com.revbase.zaidanarrafif.domain.repositories.LoginRepository
 import com.revbase.zaidanarrafif.domain.use_case.logout.LogoutUseCase
 import com.revbase.zaidanarrafif.presentation.login_screen.LoginSiswaState
@@ -23,12 +24,19 @@ class ProfileViewModel @Inject constructor(
 
     private val _logoutState = mutableStateOf(LogoutState())
     private var _token = ""
+    var student: Siswa? = null
     val logoutState = _logoutState
 
     init {
         viewModelScope.launch {
             preferenceManager.getToken().collect {
                 _token = it
+            }
+        }
+
+        viewModelScope.launch {
+            preferenceManager.getStudentDataFromPreferences().collect {
+                student = it
             }
         }
     }

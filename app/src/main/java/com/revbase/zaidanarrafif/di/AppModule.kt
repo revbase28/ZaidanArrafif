@@ -101,4 +101,9 @@ class AppModule {
     @Singleton
     fun providePreferencesManager(@ApplicationContext context: Context): PreferenceManager =
         PreferenceManager(context)
+
+    @Provides
+    @Singleton
+    fun provideLeaderboardRepository(api: ZaidanAPI): LeaderboardRepository =
+        LeaderboardRepoImpl(api)
 }

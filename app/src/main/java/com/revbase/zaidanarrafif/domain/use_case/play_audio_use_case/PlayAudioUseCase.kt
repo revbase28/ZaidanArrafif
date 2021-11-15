@@ -13,8 +13,9 @@ import javax.inject.Inject
 class PlayAudioUseCase @Inject constructor(
     private val context: Context
 ) {
-    private val mp = MediaPlayer()
-    private var duration = 1F
+
+    private var mp: MediaPlayer? = null
+    private var isMpReleased = false
 
     operator fun invoke(fileName: String, surah: String): MediaPlayer {
         val dir = File("${context.filesDir}/$surah/$fileName")
@@ -27,34 +28,45 @@ class PlayAudioUseCase @Inject constructor(
 
     private fun play(file: File): MediaPlayer {
         val uri = Uri.fromFile(file)
-        try {
-            mp.reset()
-            mp.setDataSource(context, uri)
-        } catch (e: IllegalStateException) {
-            mp.stop()
-            mp.reset()
-            mp.setDataSource(context, uri)
+        if (isMpReleased || mp == null) {
+            mp = MediaPlayer.create(context, uri)
+            isMpReleased = false
         }
-        mp.prepare()
-        mp.start()
-        return mp
+        mp?.let { mp ->
+            if(!isMpReleased){
+                mp.stop()
+            }
+            mp.reset()
+            mp.setDataSource(context, uri)
+            mp.prepare()
+            mp.start()
+        }
+        return mp!!
     }
 
     fun pause() {
-        mp.pause()
+        mp!!.pause()
     }
 
     fun playAgain(): MediaPlayer {
-        mp.seekTo(mp.currentPosition)
-        mp.start()
-        return mp
+        mp?.let { mp ->
+            mp.seekTo(mp.currentPosition)
+            mp.start()
+        }
+        return mp!!
     }
 
     fun stop() {
-        mp.stop()
+        mp?.let { mp ->
+            if(!isMpReleased){
+                mp.stop()
+                mp.release()
+                isMpReleased = true
+            }
+        }
     }
 
     fun isMediaPlaying(): Boolean {
-        return mp.isPlaying
+        return mp!!.isPlaying
     }
 }

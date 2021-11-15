@@ -136,7 +136,7 @@ class JournalViewModel @Inject constructor(
                 }
                 is JournalType.Today -> {
                     Log.d("JournalState","${JournalType.Today.queryString}")
-                    _todayJournalState.value = newJournalState
+                    _journalState.value = newJournalState
                 }
             }
         }.launchIn(viewModelScope)

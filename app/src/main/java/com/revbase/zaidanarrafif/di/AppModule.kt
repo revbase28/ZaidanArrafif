@@ -12,7 +12,9 @@ import com.revbase.zaidanarrafif.data.remote.quran.QuranAPI
 import com.revbase.zaidanarrafif.data.remote.zaidan.AuthInterceptor
 import com.revbase.zaidanarrafif.data.remote.zaidan.ZaidanAPI
 import com.revbase.zaidanarrafif.domain.repositories.*
+import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioFromLinkUseCase
 import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioUseCase
+import com.revbase.zaidanarrafif.domain.use_case.record_audio_use_case.RecordAudioUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -95,6 +97,15 @@ class AppModule {
     @Singleton
     fun providePlayAudioUseCase(@ApplicationContext context: Context): PlayAudioUseCase =
         PlayAudioUseCase(context)
+
+    @Provides
+    fun provideRecordAudioUseCase(@ApplicationContext context: Context): RecordAudioUseCase =
+        RecordAudioUseCase(context)
+
+    @Provides
+    @Singleton
+    fun providePlayAudioFromLinkUseCase(): PlayAudioFromLinkUseCase =
+        PlayAudioFromLinkUseCase()
 
     @Provides
     @Singleton

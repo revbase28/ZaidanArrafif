@@ -61,7 +61,9 @@ fun HafalanScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         PrimaryButton(
-            onClick = {  },
+            onClick = {
+                mainNavController.navigate(Screen.TambahHafalanScreen.route)
+            },
             text = "Tambah Setoran Hafalan" ,
             textSize = 16.sp,
             modifier = Modifier.fillMaxWidth()

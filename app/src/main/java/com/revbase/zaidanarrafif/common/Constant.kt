@@ -21,4 +21,5 @@ object Constant {
         Font(R.font.lato_regular, FontWeight.Normal),
         Font(R.font.lato_bold, FontWeight.Bold),
     )
+    var listSurah = mutableListOf<String>()
 }

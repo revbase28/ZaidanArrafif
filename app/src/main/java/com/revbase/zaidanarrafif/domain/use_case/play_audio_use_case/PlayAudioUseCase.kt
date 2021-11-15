@@ -18,8 +18,17 @@ class PlayAudioUseCase @Inject constructor(
 
     operator fun invoke(fileName: String, surah: String): MediaPlayer {
         val dir = File("${context.filesDir}/$surah/$fileName")
-        val uri = Uri.fromFile(dir)
+        return play(dir)
+    }
+
+    operator fun invoke(file: File): MediaPlayer {
+        return play(file)
+    }
+
+    private fun play(file: File): MediaPlayer {
+        val uri = Uri.fromFile(file)
         try {
+            mp.reset()
             mp.setDataSource(context, uri)
         } catch (e: IllegalStateException) {
             mp.stop()
@@ -29,30 +38,6 @@ class PlayAudioUseCase @Inject constructor(
         mp.prepare()
         mp.start()
         return mp
-    }
-
-    operator fun invoke(audioUrl: String){
-        try {
-            mp.setDataSource(audioUrl)
-        } catch (e: IllegalStateException) {
-            mp.stop()
-            mp.reset()
-            mp.setDataSource(audioUrl)
-        }
-
-        try {
-            mp.prepareAsync()
-        } catch (e: IllegalStateException) {
-            mp.stop()
-            mp.reset()
-            mp.setDataSource(audioUrl)
-            mp.prepareAsync()
-        }
-
-        mp.setOnPreparedListener {
-            it.start()
-            duration = it.duration.toFloat()
-        }
     }
 
     fun pause() {
@@ -71,17 +56,5 @@ class PlayAudioUseCase @Inject constructor(
 
     fun isMediaPlaying(): Boolean {
         return mp.isPlaying
-    }
-
-    fun listenToMediaProgress(): Flow<Map<String, Number>> = flow {
-        while (mp.currentPosition != mp.duration) {
-            emit(
-                mapOf(
-                    "duration" to duration / 1000F,
-                    "progress" to (mp.currentPosition.toFloat() / duration),
-                    "currentSec" to mp.currentPosition,
-                )
-            )
-        }
     }
 }

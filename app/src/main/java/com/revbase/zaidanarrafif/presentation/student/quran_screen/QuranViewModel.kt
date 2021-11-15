@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.revbase.zaidanarrafif.common.Resource
 import com.revbase.zaidanarrafif.domain.models.Surah
 import com.revbase.zaidanarrafif.domain.models.SurahDetail
@@ -117,5 +118,9 @@ class QuranViewModel @Inject constructor(
                 }
             }
         }.launchIn(CoroutineScope(Dispatchers.IO))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

@@ -1,6 +1,7 @@
 package com.revbase.zaidanarrafif.domain.use_case.get_all_surah
 
 import android.util.Log
+import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Resource
 import com.revbase.zaidanarrafif.data.remote.quran.dto.toSurah
 import com.revbase.zaidanarrafif.domain.models.Surah
@@ -20,6 +21,7 @@ class GetAllSurahUseCase @Inject constructor(
         try {
             emit(Resource.Loading<List<Surah>>())
             val allSurah = repository.getAllSurah().data.map { surahDTO ->
+                if(Constant.listSurah.size != 114) Constant.listSurah.add(surahDTO.name.transliteration.id)
                 surahDTO.toSurah()
             }
             Log.d("Use case", "get all surat executed")

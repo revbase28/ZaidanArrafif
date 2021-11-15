@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.revbase.zaidanarrafif.common.Constant
@@ -26,6 +27,7 @@ import com.revbase.zaidanarrafif.presentation.student.hafalan_detail_screen.Hafa
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
+import com.revbase.zaidanarrafif.presentation.student.tambah_hafalan.TambahHafalanScreen
 import com.revbase.zaidanarrafif.presentation.teacher.main_teacher.TeacherMainScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
@@ -36,6 +38,7 @@ import javax.inject.Inject
 class MainActivity: ComponentActivity() {
     @Inject lateinit var savedState: Bundle
 
+    @ExperimentalPermissionsApi
     @ExperimentalCoilApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +95,10 @@ class MainActivity: ComponentActivity() {
                             hafalanObj?.let {
                                 HafalanDetailScreen(navController = navController, hafalanData = it)
                             }
+                        }
+                        
+                        composable(route = Screen.TambahHafalanScreen.route){
+                            TambahHafalanScreen(navController = navController)
                         }
                     }
                 }

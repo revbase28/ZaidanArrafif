@@ -30,6 +30,7 @@ import com.revbase.zaidanarrafif.R
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.common.Tools
 import com.revbase.zaidanarrafif.common.Tools.getTimeStampAsString
+import com.revbase.zaidanarrafif.common.Tools.removeWhiteSpaces
 import com.revbase.zaidanarrafif.presentation.common_component.FailedActionAlertDialog
 import com.revbase.zaidanarrafif.presentation.common_component.LoadingScreen
 import com.revbase.zaidanarrafif.presentation.common_component.PrimaryButton
@@ -160,7 +161,7 @@ fun TambahHafalanScreen(
                                 recordingFile = viewModel.stopAudioRecording()
                                 isStoped = true
                             } else {
-                                viewModel.recordAudio("${surahName}_${viewModel.studentData.value.nama_siswa}_${getTimeStampAsString()}")
+                                viewModel.recordAudio("${surahName}_${viewModel.studentData.value.nama_siswa.removeWhiteSpaces()}_${getTimeStampAsString()}")
                                 isStoped = false
                             }
                             isRecording = !isRecording

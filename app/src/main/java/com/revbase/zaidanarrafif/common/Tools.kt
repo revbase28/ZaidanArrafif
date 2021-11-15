@@ -22,7 +22,7 @@ object Tools {
             "Desember"
         )
 
-        val dateSplitTime = dateTimeString.split(" ");
+        val dateSplitTime = dateTimeString.split(" ")
         val date = LocalDate.parse(dateSplitTime[0], DateTimeFormatter.ISO_DATE)
 
         return "${date.dayOfMonth} ${listOfMonthInIndonesia[date.monthValue - 1]} ${date.year}"
@@ -31,7 +31,7 @@ object Tools {
     fun getTimeStampAsString(): String {
         val timeStamp = System.currentTimeMillis()
         val date = Date(timeStamp)
-        val format = SimpleDateFormat("yyMMdd HH:mm")
+        val format = SimpleDateFormat("yyMMdd_HH_mm")
         return format.format(date).toString()
     }
 
@@ -40,5 +40,9 @@ object Tools {
         val second = if(minute == 0) value else value % 60
 
         return minute.toString().padStart(2, '0') + ":" + second.toString().padStart(2, '0')
+    }
+
+    fun String.removeWhiteSpaces(): String {
+        return this.replace(" ","")
     }
 }

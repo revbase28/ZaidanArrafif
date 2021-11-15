@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revbase.zaidanarrafif.common.PreferenceManager
 import com.revbase.zaidanarrafif.common.Resource
+import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioFromLinkUseCase
 import com.revbase.zaidanarrafif.domain.use_case.play_audio_use_case.PlayAudioUseCase
 import com.revbase.zaidanarrafif.domain.use_case.update_hafalan_use_case.UpdateHafalanUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HafalanFeedbackViewModel @Inject constructor(
-    private val playAudioUseCase: PlayAudioUseCase,
+    private val playAudioUseCase: PlayAudioFromLinkUseCase,
     private val updateHafalanUseCase: UpdateHafalanUseCase,
     private val preferenceManager: PreferenceManager
 ): ViewModel() {

@@ -7,7 +7,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\Asus\.android\avd\Pixel_3a_API_30_x86.avd" />
+            <value value="C:\Users\asus\.android\avd\Pixel_3a_API_30_Google_Play.avd" />
           </Key>
         </deviceKey>
       </Target>

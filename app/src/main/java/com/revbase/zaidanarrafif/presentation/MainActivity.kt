@@ -8,27 +8,41 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.revbase.zaidanarrafif.common.Constant
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.HafalanDTO
 import com.revbase.zaidanarrafif.presentation.login_screen.LoginScreen
 import com.revbase.zaidanarrafif.presentation.splash.SplashScreen
+import com.revbase.zaidanarrafif.presentation.student.hafalan_detail_screen.HafalanDetailScreen
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.DailyJournalScreen
 import com.revbase.zaidanarrafif.presentation.student.main_student.StudentMainScreen
 import com.revbase.zaidanarrafif.presentation.student.surah_screen.SurahScreen
+import com.revbase.zaidanarrafif.presentation.teacher.hafalan_screen.HafalanFeedbackScreen
+import com.revbase.zaidanarrafif.presentation.teacher.jurnal_screen.ActivityDetail
+import com.revbase.zaidanarrafif.presentation.student.tambah_hafalan.TambahHafalanScreen
+import com.revbase.zaidanarrafif.presentation.teacher.main_teacher.TeacherMainScreen
 import com.revbase.zaidanarrafif.presentation.ui.theme.WhiteBackground
 import com.revbase.zaidanarrafif.presentation.ui.theme.ZaidanArrafifTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
     @Inject lateinit var savedState: Bundle
 
+    @ExperimentalPermissionsApi
+    @InternalCoroutinesApi
     @ExperimentalCoilApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +53,7 @@ class MainActivity: ComponentActivity() {
                 Surface(color = WhiteBackground) {
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.LoginScreen.route
+                        startDestination = Screen.SplashScreen.route
                     ) {
                         composable(route = Screen.SplashScreen.route) {
                             SplashScreen(navController = navController)
@@ -52,6 +66,11 @@ class MainActivity: ComponentActivity() {
                         composable(route = Screen.StudentMainScreen.route) {
                             StudentMainScreen(mainNavController = navController, savedState = savedState)
                         }
+
+                        composable(route = Screen.TeacherMainScreen.route) {
+                            TeacherMainScreen(mainNavController = navController, savedState = savedState)
+                        }
+
                         composable(Screen.ActivityJournalScreen.route + "/{journalType}") { backStackEntry ->
                             DailyJournalScreen(
                                 navController,
@@ -73,6 +92,48 @@ class MainActivity: ComponentActivity() {
                                 ),
                                 savedState = savedState
                             )
+                        }
+
+                        composable(route = Screen.HafalanDetailScreen.route){
+                            var hafalanObj = navController.previousBackStackEntry?.arguments?.getParcelable<HafalanDTO>("hafalanData")
+                            hafalanObj?.let {
+                                HafalanDetailScreen(navController = navController, hafalanData = it)
+                            }
+                        }
+
+                        composable(route = Screen.TambahHafalanScreen.route){
+                            TambahHafalanScreen(navController = navController)
+                        }
+
+                        composable(
+                            route = Screen.TeacherActivityDetailScreen.route +
+                                    "/{${Constant.PARAM_ACTIVITY_ID}}" + "/{date}",
+                            arguments = listOf(
+                                navArgument(name = Constant.PARAM_ACTIVITY_ID) {
+                                    type = NavType.IntType
+                                },
+                                navArgument(name = "date") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            ActivityDetail(
+                                navController = navController,
+                                activityId = it.arguments!!.getInt(Constant.PARAM_ACTIVITY_ID),
+                                date = it.arguments!!.getString("date")
+                            )
+                        }
+
+                        composable(
+                            route = Screen.HafalanFeedbackScreen.route
+                        ) {
+                            val hafalanObj = navController.previousBackStackEntry?.arguments?.getParcelable<HafalanDTO>("hafalanData")
+                            hafalanObj?.let { it1 ->
+                                HafalanFeedbackScreen(
+                                    navController = navController,
+                                    hafalanData = it1
+                                )
+                            }
                         }
                     }
                 }

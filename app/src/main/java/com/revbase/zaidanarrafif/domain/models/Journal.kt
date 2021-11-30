@@ -1,8 +1,10 @@
 package com.revbase.zaidanarrafif.domain.models
 
-data class Journal(
-    val id: Int,
-    val description: String,
-    val type: String ,
-    val iconURL: String,
+import java.util.*
+
+data class Journal (
+    val date: String,
+    val studentId: Int,
+    val id:Int,
+    val activityPerformed:  List<Int>
 )

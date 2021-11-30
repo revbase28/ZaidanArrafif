@@ -36,7 +36,8 @@ fun CustomPasswordTextField(
     color: Color,
     height: Dp = 62.dp,
     onTextChanged: (String) -> Unit,
-    onFocusChanged: (FocusState) -> Unit
+    onFocusChanged: (FocusState) -> Unit,
+    hasError: Boolean
 ) {
     Box(
         contentAlignment = Alignment.BottomCenter
@@ -62,6 +63,7 @@ fun CustomPasswordTextField(
             label = {
                 Text(text = "Password")
             },
+            isError = hasError,
             textStyle = TextStyle(
                 fontFamily = Constant.LATO_FONT_FAMILY,
                 fontSize = 21.sp
@@ -74,7 +76,9 @@ fun CustomPasswordTextField(
                     Color.Transparent
                 } else {
                     DarkGrey
-                }
+                },
+                errorBorderColor = Color.Red,
+                errorLabelColor = Color.Red
             ),
             visualTransformation = if(passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {

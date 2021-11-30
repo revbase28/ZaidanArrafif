@@ -10,9 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,12 +18,15 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.domain.models.Journal
-import java.lang.reflect.Modifier
+import com.revbase.zaidanarrafif.domain.models.StudentActivity
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 @ExperimentalCoilApi
 @Composable
 fun JournalItem(
-    jurnalData: Journal,
+    activityData: StudentActivity,
+    todaysJournal: Journal?,
     textSize: TextUnit = 14.sp,
 ) {
     Card(
@@ -45,7 +46,7 @@ fun JournalItem(
             Box(modifier = androidx.compose.ui.Modifier.fillMaxWidth(0.4f)) {
 
                 Text(
-                    text = jurnalData.description,
+                    text = activityData.description,
                     style = TextStyle(
                         color = Color.Black,
                         fontFamily = Constant.LATO_FONT_FAMILY,
@@ -55,12 +56,12 @@ fun JournalItem(
                 )
             }
             Image(
-                painter = rememberImagePainter(jurnalData.iconURL),
+                painter = rememberImagePainter(activityData.iconURL),
                 contentDescription = null,
                 modifier = androidx.compose.ui.Modifier
                     .size(60.dp)
             )
-            JournalCheckBox()
+            JournalCheckBox(id = activityData.id, journalPerformed =  todaysJournal)
         }
     }
     Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))

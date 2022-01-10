@@ -73,7 +73,7 @@ class MainActivity: ComponentActivity() {
 
                         composable(Screen.ActivityJournalScreen.route + "/{journalType}") { backStackEntry ->
                             DailyJournalScreen(
-                                navController,
+                                savedState = savedState,
                                 backStackEntry.arguments?.getString("journalType")!!
                             )
                         }

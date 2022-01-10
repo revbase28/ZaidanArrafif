@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.student.jurnal_screen
 
+import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -28,7 +29,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalCoilApi
 @Composable
 fun DailyJournalScreen(
-    navController: NavController,
+    savedState: Bundle,
     journalType: String,
     viewModel: JournalViewModel = hiltViewModel()
 ) {
@@ -50,7 +51,7 @@ fun DailyJournalScreen(
             .padding(start = 16.dp, end = 16.dp, top = 24.dp)
     ) {
         Text(
-            text = "Assalamua'laikum Rizki",
+            text = "Assalamua'laikum ${savedState.getString("student_name")}",
             fontSize = 14.sp,
             fontFamily = Constant.LATO_FONT_FAMILY
         )

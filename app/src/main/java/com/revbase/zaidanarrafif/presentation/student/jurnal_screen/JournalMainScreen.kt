@@ -1,5 +1,6 @@
 package com.revbase.zaidanarrafif.presentation.student.jurnal_screen
 
+import android.os.Bundle
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
@@ -16,6 +17,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.revbase.zaidanarrafif.common.Constant
 import com.revbase.zaidanarrafif.R
+import com.revbase.zaidanarrafif.data.remote.zaidan.dto.Siswa
 import com.revbase.zaidanarrafif.domain.models.Journal
 import com.revbase.zaidanarrafif.presentation.student.jurnal_screen.component.JournalMainItem
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -24,7 +26,7 @@ import kotlinx.coroutines.flow.flow
 
 @ExperimentalCoilApi
 @Composable
-fun JurnalMainScreen(navController: NavController, viewModel:JournalViewModel = hiltViewModel()) {
+fun JurnalMainScreen(navController: NavController, studentData:Siswa, viewModel:JournalViewModel = hiltViewModel(), savedState: Bundle,) {
     var totalActivity by remember {
         mutableStateOf(0)
     }
@@ -51,6 +53,7 @@ fun JurnalMainScreen(navController: NavController, viewModel:JournalViewModel = 
     else{
         totalWorship = worship.activityPerformed.size
     }
+    savedState.putString("student_name",studentData.nama_panggilan)
 
     Column(
         modifier = Modifier
@@ -62,7 +65,7 @@ fun JurnalMainScreen(navController: NavController, viewModel:JournalViewModel = 
                 JournalMainItem(
                     journalType = "Jurnal Kegiatan",
                     icon = R.drawable.jurnal_kegiatan_icon,
-                    progress = " $totalActivity dari 11 kegiatan sudah rizki lakukan",
+                    progress = " $totalActivity dari 11 kegiatan sudah ${studentData.nama_panggilan} lakukan",
                     onClick = {
                         navController.navigate(com.revbase.zaidanarrafif.presentation.Screen.ActivityJournalScreen.route+"/ACTIVITY_JOURNAL")
                     }
@@ -72,7 +75,7 @@ fun JurnalMainScreen(navController: NavController, viewModel:JournalViewModel = 
                 JournalMainItem(
                     journalType = "Jurnal Ibadah",
                     icon = R.drawable.jurnal_ibadah_icon,
-                    progress = "$totalWorship dari 14 ibadah sudah rizki lakukan",
+                    progress = "$totalWorship dari 14 ibadah sudah ${studentData.nama_panggilan} lakukan",
                     onClick = {
                         navController.navigate(com.revbase.zaidanarrafif.presentation.Screen.ActivityJournalScreen.route+"/WORSHIP_JOURNAL")
 

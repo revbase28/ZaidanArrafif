@@ -118,7 +118,7 @@ fun StudentNavigation(
         }
 
         composable(route = Screen.JournalMainScreen.route) {
-            JurnalMainScreen(navController = mainNavController)
+            JurnalMainScreen(navController = mainNavController,studentData = studentData, savedState = savedState)
         }
 
         composable(route = Screen.HafalanScreen.route) {
